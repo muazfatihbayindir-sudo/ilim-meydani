@@ -255,6 +255,77 @@ button.chip{cursor:pointer}.chip.on{border-color:var(--gold);background:var(--go
 .qbox b.code{font:800 40px/1 var(--body);letter-spacing:.18em;padding-left:.18em}
 .code-in{text-transform:uppercase;letter-spacing:.2em;font-weight:800}.code-in::placeholder{letter-spacing:0;font-weight:500;text-transform:none}
 .lb div span:last-child{color:var(--muted)}.lb div.me span:last-child{color:inherit}
+/* hareket */
+@keyframes glow{0%{box-shadow:0 0 0 0 var(--ok)}40%{box-shadow:0 0 0 7px color-mix(in srgb,var(--ok) 30%,transparent);transform:scale(1.02)}100%{box-shadow:0 0 0 0 transparent}}
+@keyframes shake{20%{transform:translateX(-7px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(2px)}}
+@keyframes pop{0%{transform:scale(.82)}60%{transform:scale(1.08)}}
+@keyframes flip{0%,49%{background:var(--surface);border-color:var(--line);color:var(--ink)}0%{transform:rotateX(0)}49%,50%{transform:rotateX(90deg)}100%{transform:rotateX(0)}}
+@keyframes flipin{from{transform:perspective(600px) rotateY(90deg);opacity:.2}}
+@keyframes fire{0%{transform:scale(.72);filter:brightness(1.9)}60%{transform:scale(1.06)}}
+@keyframes flyl{from{transform:translateX(-45%);opacity:0}}
+@keyframes flyr{from{transform:translateX(45%);opacity:0}}
+@keyframes pulse{50%{opacity:.3}}
+.opt.ok.fx-in{animation:glow .7s}.opt.no.fx-in{animation:shake .42s}
+.cell.fx-in{animation:fire .5s}.chip.fx-in{animation:pop .3s}.card.sel.fx-in{animation:pop .25s}.clues li.fx-in{animation:rise .4s both}
+.tile.fx-in:not(:empty){animation:pop .14s}
+.tile.ok.fx-in,.tile.mid.fx-in,.tile.x.fx-in{animation:flip .5s both;animation-delay:calc(var(--i)*.13s)}
+.arena .card.fx-in{animation:flipin .5s both}.arena .slot:nth-child(2) .card.fx-in{animation-delay:.22s}
+.out.fx-in{animation:pop .5s}.pl.rdy.fx-in{animation:pop .3s}
+.ball.l.fx-in{animation:flyl .34s cubic-bezier(.2,.7,.2,1)}.ball.r.fx-in{animation:flyr .34s cubic-bezier(.2,.7,.2,1)}
+.bar i[data-low="1"]{animation:pulse .7s infinite}
+.clock:has(i[data-low="1"]) span{color:var(--coral)}
+.burst{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:40}
+.tr{display:flex;align-items:center;gap:8px}
+.sndb{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);color:var(--muted)}
+.sndb svg{width:18px;height:18px}.sndb.on{color:var(--gold);border-color:var(--hair)}
+
+/* kart tasarımı */
+.card{position:relative;font-family:var(--display);font-weight:400;font-size:12.5px;background:linear-gradient(160deg,var(--surface2),var(--surface) 62%)}
+.card::before{content:"";position:absolute;inset:3px;border:1px solid var(--hair);border-radius:9px;pointer-events:none}
+.card::after{content:"";position:absolute;left:50%;bottom:7px;width:5px;height:5px;background:var(--gold);transform:translateX(-50%) rotate(45deg);opacity:.65;pointer-events:none}
+.card small{font-family:var(--body);font-weight:800}
+.pool .card,.hand.mine .card{font-size:14px;min-height:84px;padding:8px 6px 14px}
+.card.back{background:var(--surface2);background-image:repeating-linear-gradient(45deg,transparent 0 6px,var(--hair) 6px 7px),repeating-linear-gradient(-45deg,transparent 0 6px,var(--hair) 6px 7px)}
+.card.back::after{display:none}
+.card.back .star{font-size:18px;color:var(--gold);background:var(--surface2);border-radius:50%;box-shadow:0 0 0 7px var(--surface2)}
+.arena .card{font-size:15px;box-shadow:var(--shadow)}
+
+/* çini pano */
+.grid{background:var(--surface2);border-color:var(--hair);gap:5px;padding:7px}
+.hd{color:var(--ink);background:color-mix(in srgb,var(--surface) 70%,transparent);border-radius:10px}
+.cell{border-radius:10px;border-color:transparent;background:linear-gradient(150deg,color-mix(in srgb,var(--surface) 82%,var(--ink)),var(--bg));box-shadow:inset 0 1px 0 color-mix(in srgb,var(--ink) 14%,transparent),inset 0 -2px 0 color-mix(in srgb,var(--bg) 60%,#000)}
+.cell .plus{position:relative;width:26px;height:26px;font-size:0}
+.cell .plus::before,.cell .plus::after{content:"";position:absolute;inset:5px;border:1.5px solid var(--gold);opacity:.38}
+.cell .plus::after{transform:rotate(45deg)}
+.cell:hover:not(:disabled) .plus::before,.cell:hover:not(:disabled) .plus::after{opacity:.8}
+.cell.me{background:linear-gradient(150deg,color-mix(in srgb,var(--turq) 34%,var(--surface)),var(--turq-soft));border-color:var(--turq)}
+.cell.bot{background:linear-gradient(150deg,color-mix(in srgb,var(--coral) 34%,var(--surface)),var(--coral-soft));border-color:var(--coral)}
+.bgrid .cell{background:linear-gradient(150deg,color-mix(in srgb,var(--surface) 82%,var(--ink)),var(--surface))}
+.bgrid .cell.me{background:linear-gradient(150deg,color-mix(in srgb,var(--turq) 34%,var(--surface)),var(--turq-soft))}
+
+/* pingpong sahası */
+.court{position:relative;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;min-height:168px;padding:10px 0;border-block:1px solid var(--line)}
+.court::before{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:1.5px dashed var(--hair)}
+.ball{position:relative;max-width:64%;padding:7px 14px;border-radius:999px;font-weight:700;font-size:13.5px;border:1px solid var(--line);background:var(--surface);line-height:1.25}
+.ball.l{align-self:flex-start;border-color:var(--turq);background:var(--turq-soft)}
+.ball.r{align-self:flex-end;border-color:var(--coral);background:var(--coral-soft);text-align:right}
+.ball small{display:block;font-size:10.5px;font-weight:600;color:var(--muted)}
+.court .hint{position:relative;align-self:center;margin:auto;background:var(--bg);padding:2px 10px}
+
+/* harita */
+#map .grat{fill:none;stroke:var(--line);stroke-width:.6;opacity:.55}
+
+/* oda ve tepkiler */
+.pls{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px}
+.pl{display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 4px 9px;border-radius:16px;border:1px solid var(--line);background:var(--surface);text-align:center;min-width:0;opacity:.7}
+.pl.rdy{opacity:1;border-color:var(--hair)}.pl.self{background:var(--surface2)}
+.pl b{font-size:12.5px;font-weight:700;line-height:1.2;overflow-wrap:anywhere}
+.pl small{font-size:10.5px;color:var(--muted)}.pl.rdy small{color:var(--ok)}
+.rxbar{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-top:6px}.rxbar::-webkit-scrollbar{display:none}
+.rxbar .chip{white-space:nowrap;flex:none;cursor:pointer;font-size:12.5px}
+#rx{position:fixed;left:0;right:0;top:calc(14px + env(safe-area-inset-top,0px));display:flex;flex-direction:column;align-items:center;gap:6px;z-index:35;pointer-events:none}
+.rxb{background:var(--surface2);color:var(--ink);border:1px solid var(--hair);border-radius:999px;padding:8px 16px;font-weight:700;font-size:14px;box-shadow:var(--shadow);animation:rise .3s both;max-width:calc(100% - 32px)}
+.rxb b{color:var(--gold);margin-right:6px}
 #toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);border-radius:999px;padding:10px 18px;font-weight:700;font-size:13.5px;z-index:30;max-width:calc(100% - 32px);text-align:center;box-shadow:var(--shadow)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -272,9 +343,10 @@ button.chip{cursor:pointer}.chip.on{border-color:var(--gold);background:var(--go
 <body>
 <div id="app"></div>
 <div id="toast" hidden></div>
+<div id="rx" aria-live="polite"></div>
 
 <script>
-const DATA = {"s":[[1,"Fâtiha",7,1,5,1],[2,"Bakara",286,0,87,1],[3,"Âl-i İmrân",200,0,89,3],[4,"Nisâ",176,0,92,4],[5,"Mâide",120,0,112,6],[6,"En‘âm",165,1,55,7],[7,"A‘râf",206,1,39,8],[8,"Enfâl",75,0,88,9],[9,"Tevbe",129,0,113,10],[10,"Yûnus",109,1,51,11],[11,"Hûd",123,1,52,11],[12,"Yûsuf",111,1,53,12],[13,"Ra‘d",43,0,96,13],[14,"İbrâhîm",52,1,72,13],[15,"Hicr",99,1,54,14],[16,"Nahl",128,1,70,14],[17,"İsrâ",111,1,50,15],[18,"Kehf",110,1,69,15],[19,"Meryem",98,1,44,16],[20,"Tâhâ",135,1,45,16],[21,"Enbiyâ",112,1,73,17],[22,"Hac",78,0,103,17],[23,"Mü’minûn",118,1,74,18],[24,"Nûr",64,0,102,18],[25,"Furkân",77,1,42,18],[26,"Şuarâ",227,1,47,19],[27,"Neml",93,1,48,19],[28,"Kasas",88,1,49,20],[29,"Ankebût",69,1,85,20],[30,"Rûm",60,1,84,21],[31,"Lokmân",34,1,57,21],[32,"Secde",30,1,75,21],[33,"Ahzâb",73,0,90,21],[34,"Sebe’",54,1,58,22],[35,"Fâtır",45,1,43,22],[36,"Yâsîn",83,1,41,22],[37,"Sâffât",182,1,56,23],[38,"Sâd",88,1,38,23],[39,"Zümer",75,1,59,23],[40,"Mü’min",85,1,60,24],[41,"Fussilet",54,1,61,24],[42,"Şûrâ",53,1,62,25],[43,"Zuhruf",89,1,63,25],[44,"Duhân",59,1,64,25],[45,"Câsiye",37,1,65,25],[46,"Ahkâf",35,1,66,26],[47,"Muhammed",38,0,95,26],[48,"Fetih",29,0,111,26],[49,"Hucurât",18,0,106,26],[50,"Kâf",45,1,34,26],[51,"Zâriyât",60,1,67,26],[52,"Tûr",49,1,76,27],[53,"Necm",62,1,23,27],[54,"Kamer",55,1,37,27],[55,"Rahmân",78,0,97,27],[56,"Vâkıa",96,1,46,27],[57,"Hadîd",29,0,94,27],[58,"Mücâdele",22,0,105,28],[59,"Haşr",24,0,101,28],[60,"Mümtehine",13,0,91,28],[61,"Saf",14,0,109,28],[62,"Cuma",11,0,110,28],[63,"Münâfikûn",11,0,104,28],[64,"Teğâbün",18,0,108,28],[65,"Talâk",12,0,99,28],[66,"Tahrîm",12,0,107,28],[67,"Mülk",30,1,77,29],[68,"Kalem",52,1,2,29],[69,"Hâkka",52,1,78,29],[70,"Meâric",44,1,79,29],[71,"Nûh",28,1,71,29],[72,"Cin",28,1,40,29],[73,"Müzzemmil",20,1,3,29],[74,"Müddessir",56,1,4,29],[75,"Kıyâme",40,1,31,29],[76,"İnsân",31,0,98,29],[77,"Mürselât",50,1,33,29],[78,"Nebe’",40,1,80,30],[79,"Nâziât",46,1,81,30],[80,"Abese",42,1,24,30],[81,"Tekvîr",29,1,7,30],[82,"İnfitâr",19,1,82,30],[83,"Mutaffifîn",36,1,86,30],[84,"İnşikâk",25,1,83,30],[85,"Bürûc",22,1,27,30],[86,"Târık",17,1,36,30],[87,"A‘lâ",19,1,8,30],[88,"Gâşiye",26,1,68,30],[89,"Fecr",30,1,10,30],[90,"Beled",20,1,35,30],[91,"Şems",15,1,26,30],[92,"Leyl",21,1,9,30],[93,"Duhâ",11,1,11,30],[94,"İnşirâh",8,1,12,30],[95,"Tîn",8,1,28,30],[96,"Alak",19,1,1,30],[97,"Kadir",5,1,25,30],[98,"Beyyine",8,0,100,30],[99,"Zilzâl",8,0,93,30],[100,"Âdiyât",11,1,14,30],[101,"Kâria",11,1,30,30],[102,"Tekâsür",8,1,16,30],[103,"Asr",3,1,13,30],[104,"Hümeze",9,1,32,30],[105,"Fîl",5,1,19,30],[106,"Kureyş",4,1,29,30],[107,"Mâûn",7,1,17,30],[108,"Kevser",3,1,15,30],[109,"Kâfirûn",6,1,18,30],[110,"Nasr",3,0,114,30],[111,"Tebbet",5,1,6,30],[112,"İhlâs",4,1,22,30],[113,"Felak",5,1,20,30],[114,"Nâs",6,1,21,30]],"sajda":[7,13,16,17,19,22,25,27,32,38,41,53,84,96]};
+const DATA = {"s":[[1,"Fâtiha",7,1,5,1],[2,"Bakara",286,0,87,1],[3,"Âl-i İmrân",200,0,89,3],[4,"Nisâ",176,0,92,4],[5,"Mâide",120,0,112,6],[6,"En‘âm",165,1,55,7],[7,"A‘râf",206,1,39,8],[8,"Enfâl",75,0,88,9],[9,"Tevbe",129,0,113,10],[10,"Yûnus",109,1,51,11],[11,"Hûd",123,1,52,11],[12,"Yûsuf",111,1,53,12],[13,"Ra‘d",43,0,96,13],[14,"İbrâhîm",52,1,72,13],[15,"Hicr",99,1,54,14],[16,"Nahl",128,1,70,14],[17,"İsrâ",111,1,50,15],[18,"Kehf",110,1,69,15],[19,"Meryem",98,1,44,16],[20,"Tâhâ",135,1,45,16],[21,"Enbiyâ",112,1,73,17],[22,"Hac",78,0,103,17],[23,"Mü’minûn",118,1,74,18],[24,"Nûr",64,0,102,18],[25,"Furkân",77,1,42,18],[26,"Şuarâ",227,1,47,19],[27,"Neml",93,1,48,19],[28,"Kasas",88,1,49,20],[29,"Ankebût",69,1,85,20],[30,"Rûm",60,1,84,21],[31,"Lokmân",34,1,57,21],[32,"Secde",30,1,75,21],[33,"Ahzâb",73,0,90,21],[34,"Sebe’",54,1,58,22],[35,"Fâtır",45,1,43,22],[36,"Yâsîn",83,1,41,22],[37,"Sâffât",182,1,56,23],[38,"Sâd",88,1,38,23],[39,"Zümer",75,1,59,23],[40,"Mü’min",85,1,60,24],[41,"Fussilet",54,1,61,24],[42,"Şûrâ",53,1,62,25],[43,"Zuhruf",89,1,63,25],[44,"Duhân",59,1,64,25],[45,"Câsiye",37,1,65,25],[46,"Ahkâf",35,1,66,26],[47,"Muhammed",38,0,95,26],[48,"Fetih",29,0,111,26],[49,"Hucurât",18,0,106,26],[50,"Kâf",45,1,34,26],[51,"Zâriyât",60,1,67,26],[52,"Tûr",49,1,76,27],[53,"Necm",62,1,23,27],[54,"Kamer",55,1,37,27],[55,"Rahmân",78,0,97,27],[56,"Vâkıa",96,1,46,27],[57,"Hadîd",29,0,94,27],[58,"Mücâdele",22,0,105,28],[59,"Haşr",24,0,101,28],[60,"Mümtehine",13,0,91,28],[61,"Saf",14,0,109,28],[62,"Cuma",11,0,110,28],[63,"Münâfikûn",11,0,104,28],[64,"Teğâbün",18,0,108,28],[65,"Talâk",12,0,99,28],[66,"Tahrîm",12,0,107,28],[67,"Mülk",30,1,77,29],[68,"Kalem",52,1,2,29],[69,"Hâkka",52,1,78,29],[70,"Meâric",44,1,79,29],[71,"Nûh",28,1,71,29],[72,"Cin",28,1,40,29],[73,"Müzzemmil",20,1,3,29],[74,"Müddessir",56,1,4,29],[75,"Kıyâme",40,1,31,29],[76,"İnsân",31,0,98,29],[77,"Mürselât",50,1,33,29],[78,"Nebe’",40,1,80,30],[79,"Nâziât",46,1,81,30],[80,"Abese",42,1,24,30],[81,"Tekvîr",29,1,7,30],[82,"İnfitâr",19,1,82,30],[83,"Mutaffifîn",36,1,86,30],[84,"İnşikâk",25,1,83,30],[85,"Bürûc",22,1,27,30],[86,"Târık",17,1,36,30],[87,"A‘lâ",19,1,8,30],[88,"Gâşiye",26,1,68,30],[89,"Fecr",30,1,10,30],[90,"Beled",20,1,35,30],[91,"Şems",15,1,26,30],[92,"Leyl",21,1,9,30],[93,"Duhâ",11,1,11,30],[94,"İnşirâh",8,1,12,30],[95,"Tîn",8,1,28,30],[96,"Alak",19,1,1,30],[97,"Kadir",5,1,25,30],[98,"Beyyine",8,0,100,30],[99,"Zilzâl",8,0,93,30],[100,"Âdiyât",11,1,14,30],[101,"Kâria",11,1,30,30],[102,"Tekâsür",8,1,16,30],[103,"Asr",3,1,13,30],[104,"Hümeze",9,1,32,30],[105,"Fîl",5,1,19,30],[106,"Kureyş",4,1,29,30],[107,"Mâûn",7,1,17,30],[108,"Kevser",3,1,15,30],[109,"Kâfirûn",6,1,18,30],[110,"Nasr",3,0,114,30],[111,"Tebbet",5,1,6,30],[112,"İhlâs",4,1,22,30],[113,"Felak",5,1,20,30],[114,"Nâs",6,1,21,30]],"sajda":[7,13,16,17,19,22,25,27,32,38,41,53,84,96],"land":"M105.1,43.1L96.6,48.6L96.0,50.2L96.4,51.3L97.6,52.6L98.3,54.0L96.5,54.3L94.6,54.4L93.6,54.3L92.6,54.3L89.6,57.3L88.0,58.3L86.0,58.9L84.1,59.2L83.1,59.2L82.2,59.6L81.7,60.3L81.4,61.5L80.3,61.4L79.8,60.3L79.1,59.9L77.2,60.1L76.3,60.1L73.2,59.0L72.3,58.6L71.7,57.8L70.1,54.6L69.9,52.3L71.4,52.9L72.7,52.2L74.1,51.0L75.6,50.5L76.6,50.7L77.6,50.9L79.3,50.5L80.1,48.8L80.3,46.8L83.2,47.4L86.3,47.7L88.7,47.8L91.1,47.4L98.5,45.3L100.6,44.0L102.0,43.6L104.2,42.5L106.5,41.9ZM390.0,0.0L390.0,182.4L387.4,182.0L384.6,182.1L383.3,181.7L382.2,180.9L378.3,176.9L378.3,175.4L375.9,171.5L375.3,170.1L374.7,166.3L374.1,165.3L371.6,163.7L371.2,162.7L371.8,161.3L371.8,160.2L370.4,159.3L368.5,158.7L368.0,157.5L368.4,155.3L368.1,153.8L366.3,151.5L363.8,149.2L361.2,145.7L360.2,144.9L359.6,142.6L358.7,139.9L357.3,139.7L350.3,142.9L348.2,141.1L342.2,137.9L341.3,136.7L342.0,136.3L342.8,136.1L344.3,136.7L345.3,136.0L344.9,135.0L343.4,134.3L341.3,134.4L341.9,135.4L339.9,136.3L339.5,137.6L339.8,139.1L339.9,141.3L339.1,142.3L338.5,142.8L335.9,142.9L334.7,143.9L333.9,144.1L332.4,144.5L330.8,144.2L327.3,142.7L326.2,142.6L324.7,143.2L324.5,144.4L325.1,146.4L326.2,148.5L327.2,150.3L327.4,151.1L326.5,151.0L325.8,150.6L324.5,150.3L322.0,152.6L320.5,153.9L322.5,154.8L324.0,154.8L325.0,154.4L325.8,155.0L326.4,156.4L326.7,157.6L328.0,161.7L329.1,163.1L330.5,165.6L331.0,166.9L331.3,168.0L332.2,169.6L333.1,171.2L333.5,172.9L335.2,176.9L337.6,180.0L338.1,181.1L338.5,182.9L338.1,183.5L337.9,184.2L339.7,185.9L342.7,187.4L343.8,187.7L345.1,188.4L344.1,189.4L345.8,191.7L347.8,194.0L350.0,194.5L352.9,198.0L357.3,200.3L359.9,203.3L358.9,203.0L358.0,202.6L357.7,204.2L358.0,205.7L359.3,207.0L360.5,207.9L361.0,209.6L360.0,213.4L359.1,213.0L358.4,213.0L358.8,215.8L359.6,217.9L360.6,219.5L361.4,221.9L362.0,222.9L364.9,225.5L365.7,227.6L366.6,231.5L368.3,233.7L369.3,235.4L370.6,236.9L371.1,235.8L371.2,235.1L370.1,229.9L369.8,225.9L369.9,225.1L370.5,224.2L371.6,222.1L372.2,220.1L373.8,215.5L375.5,213.7L378.0,212.4L380.1,214.9L382.6,216.9L383.1,219.1L382.3,220.9L381.6,223.7L382.1,225.0L382.2,226.1L382.9,228.0L383.5,230.4L383.6,232.1L383.3,233.7L382.4,235.0L380.7,239.0L378.1,240.1L379.2,240.9L380.4,240.8L380.5,241.5L379.8,242.5L378.8,244.9L380.2,245.3L381.5,245.5L382.5,245.9L383.6,244.9L383.9,245.6L384.6,246.5L385.7,246.3L386.6,249.6L387.4,250.8L388.5,251.3L390.0,251.4L390.0,402.5L387.3,404.1L385.9,404.5L384.8,405.5L383.6,406.3L379.0,408.3L374.0,409.8L366.1,411.7L363.0,413.7L360.2,415.0L356.0,415.4L350.2,417.3L347.0,418.8L342.9,421.3L342.0,422.1L341.3,423.9L340.1,425.5L337.7,428.1L335.8,429.4L334.7,429.4L332.3,430.2L329.5,430.3L324.8,429.4L323.6,430.0L322.6,431.1L319.1,432.8L315.4,436.4L312.7,437.3L308.3,438.4L305.3,439.9L303.3,440.5L300.7,440.8L295.8,440.6L291.2,441.2L286.9,442.1L284.9,444.0L282.7,447.0L278.9,448.2L278.0,449.3L276.9,451.5L274.5,452.1L272.3,452.5L270.0,451.5L265.8,454.1L264.2,454.6L261.8,454.7L260.1,455.3L258.9,455.1L257.3,454.0L254.1,452.8L251.7,453.6L251.5,451.1L247.5,443.4L248.3,436.7L248.3,435.8L247.6,432.8L245.2,430.1L245.3,426.6L244.5,424.2L243.9,421.6L244.1,421.0L242.9,416.4L242.5,415.6L242.4,414.8L242.7,414.2L242.7,413.5L242.1,412.3L241.4,410.0L238.2,408.2L238.8,406.5L239.5,407.1L240.3,407.6L240.5,406.5L240.5,405.7L239.1,400.6L241.1,393.8L240.5,387.8L240.3,386.3L239.4,384.2L239.3,382.7L238.8,381.2L238.0,380.1L236.5,378.9L236.3,377.2L235.2,375.6L233.8,374.3L232.9,371.9L232.3,368.7L228.4,364.5L223.5,360.6L221.9,358.4L219.5,354.0L218.3,350.5L215.0,346.4L214.9,344.9L214.3,343.0L213.6,340.8L213.2,339.2L209.8,331.8L208.8,330.7L207.8,329.0L207.6,327.8L207.3,327.1L205.0,325.9L202.8,322.8L196.3,317.9L193.1,317.5L190.6,315.7L188.7,313.4L186.7,309.5L183.2,305.3L180.3,299.2L181.2,297.0L181.2,295.5L180.2,292.9L179.2,290.9L178.5,289.0L179.1,286.2L179.3,283.2L179.9,281.6L180.3,279.8L179.8,276.2L178.8,274.3L178.9,273.1L177.8,272.4L176.8,271.0L177.8,271.1L176.1,269.1L175.4,268.1L174.8,265.5L174.0,263.5L171.3,258.9L170.0,256.2L167.2,252.6L164.1,250.0L162.2,248.8L161.2,247.7L159.6,247.6L157.8,246.1L156.6,246.0L155.1,245.8L153.3,242.8L151.7,240.0L149.2,236.3L149.8,235.3L150.6,233.8L150.2,231.7L149.8,230.4L148.7,227.9L145.0,221.6L144.0,220.7L142.4,219.6L141.4,216.9L141.0,214.4L138.4,213.3L134.1,204.5L131.5,201.4L130.5,199.3L127.6,196.0L126.2,192.6L123.2,189.5L120.6,184.1L116.7,178.7L115.0,177.7L111.0,177.3L109.2,176.9L107.6,178.1L107.5,176.6L108.6,174.5L110.1,170.2L110.5,166.4L113.0,155.0L113.5,152.7L113.3,151.4L112.2,152.8L111.3,153.6L109.4,156.5L107.5,165.7L104.8,172.9L104.5,177.4L104.0,179.0L102.7,181.3L101.1,183.5L98.2,182.4L93.6,178.4L90.9,174.7L88.0,172.3L85.3,169.1L84.5,166.8L84.6,165.3L83.4,161.8L82.5,160.0L79.1,156.2L78.2,154.2L77.4,153.3L76.7,152.0L75.5,147.0L74.2,143.9L72.7,144.8L72.9,146.1L71.7,147.9L70.8,150.0L71.5,151.8L74.2,154.4L74.8,155.6L75.4,158.1L75.3,161.5L75.7,162.7L77.7,165.2L78.5,166.7L78.9,168.0L79.6,169.2L81.6,171.4L84.5,175.5L87.3,178.4L89.3,179.7L90.1,181.1L90.3,184.6L90.2,186.3L92.0,189.5L92.6,191.1L94.3,192.4L95.1,193.9L95.8,196.3L96.8,203.5L98.3,205.3L102.8,214.7L106.7,220.7L108.6,225.2L111.4,230.6L116.9,242.5L120.2,246.2L121.5,248.2L123.9,249.8L126.5,252.1L124.0,251.9L122.5,252.4L122.1,253.8L122.0,255.0L122.3,261.0L122.9,264.1L125.1,269.9L126.7,271.7L127.5,272.8L128.6,273.6L133.7,275.6L136.8,279.8L143.5,285.1L144.1,286.6L144.4,291.0L145.1,294.3L147.6,298.9L149.7,301.5L150.5,302.8L150.5,304.1L149.8,303.4L148.7,302.9L148.5,305.1L148.8,306.7L149.0,309.6L149.9,312.7L149.3,315.6L149.4,320.5L150.5,326.5L150.3,330.2L152.1,339.0L153.9,343.9L154.9,345.1L156.0,345.7L158.1,346.1L161.2,348.6L163.7,351.2L164.6,352.6L165.8,354.1L166.6,353.8L167.9,354.7L171.8,357.3L172.4,358.5L177.3,368.9L179.3,375.0L181.0,381.4L182.4,390.9L183.6,395.8L185.6,398.3L187.0,402.8L188.2,403.0L189.0,404.2L190.5,408.5L191.5,410.1L192.0,408.8L192.0,408.0L191.6,406.6L192.0,405.0L192.8,403.9L194.6,405.3L195.7,406.4L196.0,408.5L196.4,409.6L198.3,412.1L199.9,412.8L202.1,413.0L203.9,413.5L205.3,414.4L208.0,417.0L214.1,419.2L219.1,425.9L221.9,430.6L231.5,437.7L233.1,441.1L234.0,444.4L236.0,444.2L239.4,447.9L240.4,450.6L243.2,451.6L243.8,450.0L245.1,451.4L245.6,453.4L245.9,454.3L248.6,457.8L249.5,459.6L250.4,462.8L249.9,464.5L249.2,465.6L248.1,466.7L244.5,469.2L240.5,470.8L237.9,474.0L236.0,473.8L236.3,475.0L237.0,475.2L238.1,474.9L240.3,474.0L242.3,473.6L244.5,473.5L246.4,473.9L247.7,475.1L250.9,477.8L254.0,483.4L257.6,487.9L262.6,492.1L264.5,493.5L266.3,494.3L275.4,494.2L281.7,490.4L287.6,487.6L289.5,487.0L292.9,487.8L296.6,488.0L300.0,488.8L301.7,488.6L308.3,485.4L312.5,482.3L315.3,481.0L316.5,480.9L320.3,482.0L325.3,481.6L332.2,478.9L334.3,478.3L336.0,478.3L339.7,479.5L342.3,479.2L347.5,477.9L351.7,476.0L359.3,474.6L365.1,471.0L366.1,469.3L367.8,467.1L370.4,466.4L376.8,469.0L377.9,469.2L377.5,470.7L377.3,472.3L376.0,475.0L375.1,478.1L375.7,482.7L376.0,490.2L375.9,491.3L375.4,492.4L375.3,493.3L374.6,493.5L374.8,494.2L376.8,493.4L376.8,492.5L378.5,493.1L379.8,493.5L380.1,494.4L378.1,494.8L377.1,494.3L374.3,495.1L372.6,496.0L372.1,497.5L371.8,502.0L0.0,502.0L0.0,123.8L8.4,124.6L13.1,126.5L15.8,128.1L17.4,128.5L18.8,128.5L20.8,127.9L23.2,126.8L25.8,125.3L31.3,121.4L33.3,120.7L34.6,120.9L36.1,120.9L36.8,119.8L37.6,119.1L38.1,118.3L38.9,117.3L41.8,117.0L47.5,115.3L46.8,116.1L41.6,118.0L43.9,118.3L46.1,117.6L48.8,117.2L49.2,116.4L49.6,114.9L51.9,115.0L57.3,117.3L58.6,117.3L62.4,116.1L63.2,115.8L64.4,116.5L67.2,119.4L66.2,119.3L63.2,116.8L63.0,118.1L61.3,120.3L63.4,121.2L65.2,121.5L66.1,122.8L66.7,123.8L68.4,123.4L69.6,121.9L69.0,121.1L68.5,120.2L70.2,120.9L73.6,123.7L74.8,124.3L76.1,124.2L78.9,123.4L79.7,123.5L83.4,122.5L83.8,123.3L84.4,124.0L87.4,123.2L92.1,123.2L95.9,122.3L100.4,120.0L103.8,116.8L105.2,115.0L108.5,109.4L110.6,104.0L112.5,96.5L113.8,92.7L115.0,90.2L115.5,88.1L116.3,86.8L117.0,85.0L117.8,82.6L119.2,80.6L122.1,73.9L123.7,71.1L124.3,67.3L126.8,63.9L128.7,62.9L129.6,61.9L129.6,60.4L128.3,56.4L128.2,54.7L128.2,52.7L129.1,49.8L128.7,48.4L128.6,47.5L128.4,46.3L126.2,43.5L127.4,38.6L128.3,37.3L129.3,35.9L128.2,33.0L126.9,30.3L128.1,28.6L130.5,26.5L133.1,24.0L133.1,22.5L132.9,21.4L132.2,20.6L130.8,19.5L128.5,20.7L126.8,21.9L125.7,22.2L124.5,22.9L123.9,24.2L122.5,25.1L120.1,25.6L116.6,24.5L112.8,22.8L110.7,21.5L108.9,21.2L107.3,21.8L102.4,25.0L97.9,29.8L96.7,30.6L92.5,32.6L89.7,33.3L88.4,33.1L82.9,34.0L80.1,34.1L77.9,35.2L73.7,34.0L71.1,32.6L69.6,31.1L67.1,27.8L65.3,26.3L61.4,24.9L54.5,21.5L52.6,21.1L48.0,20.6L43.0,20.3L41.9,21.6L41.6,26.4L40.7,27.8L40.4,30.3L39.8,31.0L38.8,31.5L37.3,30.7L36.3,30.3L33.9,31.4L29.1,32.8L27.4,33.1L21.9,31.2L19.9,30.0L18.6,28.7L18.1,26.5L17.3,25.3L17.2,24.4L16.9,23.4L15.8,23.0L14.6,23.8L13.3,23.7L11.7,23.3L7.9,21.4L5.0,21.3L3.2,23.6L1.8,24.3L0.3,24.5L1.4,22.4L0.0,22.5L0.0,21.0L1.3,19.4L3.7,18.0L2.2,17.4L0.0,17.5L0.0,0.0ZM340.1,0.0L340.6,2.0L341.5,4.0L342.6,5.9L344.0,7.2L347.3,8.6L348.9,9.0L353.0,9.3L357.2,10.0L359.6,10.6L360.4,11.1L361.0,11.8L363.0,15.3L366.1,17.7L372.6,21.3L375.7,22.5L386.2,24.8L390.0,24.8L390.0,0.0ZM144.7,226.2L143.1,225.0L142.4,224.1L141.7,223.5L138.6,222.3L138.2,221.5L138.7,220.7L139.0,221.5L139.6,221.9L142.1,223.1L145.0,225.4ZM227.3,381.6L228.6,381.7L228.0,381.1L228.5,380.0L230.2,381.7L230.2,383.7L229.3,383.4L228.7,382.4L226.9,382.7L225.9,382.2L224.3,380.5L223.9,379.2L225.2,378.4L225.6,377.4L225.2,376.4L226.2,376.6L226.7,377.6L226.7,380.0L226.6,381.0ZM197.3,399.9L198.0,400.8L198.8,400.4L201.6,401.1L201.5,402.0L199.9,402.0L198.2,401.6L196.6,401.7L194.6,401.4L194.2,399.9L195.4,400.6L196.1,400.2L195.3,399.2L194.0,399.0L194.1,398.2L195.0,397.5L194.3,396.4L195.7,396.7L196.6,397.3L197.1,398.1ZM367.4,217.2L366.8,218.6L366.3,218.1L365.1,215.8L365.4,214.1L364.9,211.7L365.1,211.1L366.7,210.7L366.6,211.6L367.4,212.9L367.5,215.1ZM329.5,150.2L328.5,150.6L327.3,149.4L326.3,147.0L326.9,146.1L327.2,145.3L327.6,144.2L328.7,144.6L330.6,147.3L330.6,148.5ZM0.0,29.2L2.8,28.2L3.8,28.1L3.7,29.2L2.3,32.1L1.1,33.5L1.5,34.7L0.0,34.9Z"};
 
 /* ---------- yardımcılar ---------- */
 const $ = (s, r = document) => r.querySelector(s);
@@ -418,7 +490,7 @@ function buildQuiz(topic) {
 }
 
 /* ---------- kabuk ---------- */
-let P = { lp: 0, seen: {}, miss: [], done: {}, best: 0 };
+let P = { lp: 0, seen: {}, miss: [], done: {}, best: 0, snd: false };
 try { P = Object.assign(P, JSON.parse(localStorage.getItem('ilim-meydani') || '{}')); } catch (e) {}
 const save = () => { try { localStorage.setItem('ilim-meydani', JSON.stringify(P)); } catch (e) {} };
 const rank = () => P.lp < 100 ? 'Talebe' : P.lp < 300 ? 'Kalfa' : P.lp < 600 ? 'Usta' : 'Üstat';
@@ -471,7 +543,7 @@ function countdown(sec, onEnd) { stopClock(); tMax = sec; tLeft = sec; paintTime
 function paintTime() { const a = $('#tm'), b = $('#tb'); if (a) a.textContent = Math.ceil(tLeft) + ' sn'; if (b) { b.style.width = (tLeft / tMax * 100) + '%'; b.dataset.low = tLeft < 6 ? 1 : 0; } }
 let toastT; function toast(m) { const t = $('#toast'); t.textContent = m; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 2200); }
 const clockH = () => '<div class="clock"><span id="tm" class="num"></span><div class="bar"><i id="tb"></i></div></div>';
-const vsH = (a, b) => `<div class="vs"><div class="p"><span class="medal me"><i>S</i></span><div><b>Sen</b><small>${rank()}</small></div></div><div class="sc num"><span class="a">${a}</span><em>vs</em><span class="b">${b}</span></div><div class="p r"><div><b>${G.opp}</b><small>bot</small></div><span class="medal bot"><i>${G.opp[0]}</i></span></div></div>`;
+const vsH = (a, b) => `<div class="vs"><div class="p"><span class="medal me"><i>S</i></span><div><b>Sen</b><small>${rank()}</small></div></div><div class="sc num"><span class="a" data-n="a">${a}</span><em>vs</em><span class="b" data-n="b">${b}</span></div><div class="p r"><div><b>${G.opp}</b><small>bot</small></div><span class="medal bot"><i>${G.opp[0]}</i></span></div></div>`;
 
 const ICON = {
   mp: '<circle cx="8.5" cy="8.5" r="3.2"/><path d="M2.5 19.5c0-3.3 2.7-5.3 6-5.3s6 2 6 5.3"/><circle cx="17" cy="9.5" r="2.6"/><path d="M16.5 14.4c2.9 0 5 1.7 5 4.6"/>',
@@ -499,9 +571,9 @@ const RANKS = [[0, 'Talebe'], [100, 'Kalfa'], [300, 'Usta'], [600, 'Üstat']];
 function rankBar() { let i = 0; RANKS.forEach((r, j) => { if (P.lp >= r[0]) i = j; }); const nx = RANKS[i + 1];
   return `<div class="rankbar"><div><span>${RANKS[i][1]}</span><span class="num">${nx ? `${nx[1]} rütbesine ${nx[0] - P.lp} LP` : 'En yüksek rütbe'}</span></div><div class="bar"><i style="width:${nx ? (P.lp - RANKS[i][0]) / (nx[0] - RANKS[i][0]) * 100 : 100}%"></i></div></div>`; }
 function home() {
-  stopAll(); G = null; sheet = null; app.classList.add('enter');
+  stopAll(); G = null; sheet = null; fxReset(); app.classList.add('enter');
   const gd = P.done['g' + today()], kd = P.done['k' + today()], vs = Object.entries(MODES).filter(([, m]) => !m.grp);
-  app.innerHTML = `<header class="top"><span class="brand">İlim Meydanı</span><span class="lp"><span class="star"></span><b class="num">${P.lp}</b> LP</span></header>
+  app.innerHTML = `<header class="top"><span class="brand">İlim Meydanı</span><span class="tr">${sndB()}<span class="lp"><span class="star"></span><b class="num">${P.lp}</b> LP</span></span></header>
   ${rankBar()}
   <button class="hero" data-act="open" data-mode="gunluk">${patH()}<span class="eyebrow">Günün bulmacası · ${dateTR()}</span><h1>${gd ? 'Bugünkü ızgara tamam' : 'Bugünün ızgarası hazır'}</h1>
     <p>${gd ? 'Sonucunu görebilirsin. Yeni ızgara yarın gelir.' : 'Herkes aynı dokuz kareyi çözüyor. Süre yok, 12 tahmin hakkın var.'}</p><span class="cta">${gd ? 'Sonucu gör' : 'Çöz'}</span></button>
@@ -519,14 +591,14 @@ function openMode(k) { const m = MODES[k];
   <p class="lede">${m.sub}</p><ul class="rules">${m.rules.map(r => `<li><b>${r[0]}</b><span>${r[1]}</span></li>`).join('')}</ul>
   <div class="topics ${m.topics.length === 1 ? 'one' : ''}">${m.topics.map(t => `<button class="btn" data-act="start" data-mode="${k}" data-topic="${t}">${TOPIC[t]}</button>`).join('')}</div></div></div>`); }
 function start(mode, topic) {
-  stopAll(); sheet = null; app.classList.remove('enter');
+  stopAll(); sheet = null; fxReset(); app.classList.remove('enter');
   if (MODES[mode].solo) { $('.overlay')?.remove(); G = { mode, topic, opp: '' }; return window[mode + 'Start'](); }
   const opp = pick(BOTS);
   app.innerHTML = `<div class="center">${patH()}<span class="medal big"><i>?</i></span><span class="eyebrow">${MODES[mode].name} · ${TOPIC[topic]}</span><h1>Rakip aranıyor</h1><button class="btn ghost" data-act="home">İptal</button></div>`;
   later(() => { G = { mode, topic, opp }; window[mode + 'Start'](); }, 1300);
 }
 function finish(kind, title, delta, extra = '', again = true) {
-  stopAll(); P.lp = Math.max(0, P.lp + delta); save();
+  stopAll(); P.lp = Math.max(0, P.lp + delta); save(); if (kind === 'w') burst();
   app.insertAdjacentHTML('beforeend', `<div class="overlay"><div class="sheet"><div class="out ${kind}">${title}</div>${extra}
   <div class="delta num">${delta > 0 ? '+' : ''}${delta} LP · toplam ${P.lp}</div>
   ${again ? `<button class="btn" data-act="start" data-mode="${G.mode}" data-topic="${G.topic}">Tekrar oyna</button>` : ''}<button class="btn ghost" data-act="home">Ana sayfa</button></div></div>`);
@@ -585,7 +657,7 @@ const resH = m => m.map(e => `<button class="opt" data-act="pick" data-id="${e.i
 function tttPick(id) { const i = G.sel, e = G.deck.ents.find(x => x.id === id), ok = tttValid(i).includes(e), steal = G.steal;
   if (steal) G.jk.steal--;
   if (ok) { G.cells[i] = { o: 'me', e }; G.used.add(e.id); if (steal) toast('Kare artık senin'); } else toast('Yanlış cevap: ' + e.name);
-  tttTurn('bot'); }
+  fb(ok); tttTurn('bot'); }
 
 /* ---------- Kart Savaşı ---------- */
 function kartStart() { const deck = DECKS[G.topic]; Object.assign(G, { deck, phase: 'draft', pool: shuffle(deck.ents).slice(0, 12), pickd: [], sc: [0, 0], round: 0, jk: { hint: 3, dbl: 3 } }); kartRender(); }
@@ -611,13 +683,13 @@ function kartPlay(id) { if (G.rev) return; stopClock(); const q = G.q;
   G.my = G.hand.find(e => e.id === id); G.hand = G.hand.filter(e => e !== G.my);
   G.their = Math.random() < .6 ? G.bot.reduce((a, b) => a[q.k] * q.d >= b[q.k] * q.d ? a : b) : pick(G.bot); G.bot = G.bot.filter(e => e !== G.their);
   G.res = Math.sign((G.my[q.k] - G.their[q.k]) * q.d); if (G.res > 0) G.sc[0] += G.dbl ? 2 : 1; if (G.res < 0) G.sc[1]++;
-  G.rev = true; kartRender(); later(kartRound, 2600); }
+  G.rev = true; if (G.res) fb(G.res > 0); kartRender(); later(kartRound, 2600); }
 
 /* ---------- Bilgi Yarışması ---------- */
 function quizStart() { const names = shuffle(BOTS.filter(b => b !== G.opp)).slice(0, 2);
   Object.assign(G, { qs: buildQuiz(G.topic), round: 0, pl: [{ n: 'Sen', me: 1, s: 0 }, { n: G.opp, s: 0 }, ...names.map(n => ({ n, s: 0 }))], jk: { half: 3, dbl: 3 } }); quizRound(); }
 function quizRender() { const q = G.q, rev = G.rev, done = G.ans != null || rev;
-  app.innerHTML = `<div class="lb">${G.pl.slice().sort((a, b) => b.s - a.s).map((p, i) => `<div class="${p.me ? 'me' : ''}"><span>${i + 1}</span><span>${p.n}</span><span class="num">${p.s}</span></div>`).join('')}</div>
+  app.innerHTML = `<div class="lb">${G.pl.slice().sort((a, b) => b.s - a.s).map((p, i) => `<div class="${p.me ? 'me' : ''}" data-flip="${p.n}"><span>${i + 1}</span><span>${p.n}</span><span class="num" data-n="s-${p.n}">${p.s}</span></div>`).join('')}</div>
   <h2 style="text-align:center">Tur ${G.round}/8 · ${TOPIC[G.topic]}${G.dbl ? ' · 2X' : ''}</h2>` + clockH() + `<div class="qbox">${q.ctx ? `<span class="ctx">${q.ctx}</span><br>` : ''}<b>${q.t}</b></div>
   <div class="opts">${q.opts.map((o, i) => `<button class="opt ${G.gone.includes(i) ? 'gone' : ''} ${rev ? (i === q.c ? 'ok' : i === G.ans ? 'no' : '') : i === G.ans ? 'sel' : ''}" data-act="ans" data-i="${i}" ${done ? 'disabled' : ''}>${o.l}${rev && o.n != null ? `<small class="num">${o.n}</small>` : ''}</button>`).join('')}</div>
   <div class="jok"><button class="jk" data-act="qhalf" ${!done && !G.gone.length && G.jk.half ? '' : 'disabled'}>Yarı Yarıya<small>iki şıkkı ele · ${G.jk.half} hak</small></button>
@@ -628,7 +700,7 @@ function quizRound() { if (G.round === 8) { const o = G.pl.slice().sort((a, b) =
   G.q = G.qs[G.round++]; G.ans = null; G.rev = G.dbl = false; G.gone = []; quizRender(); countdown(13, quizReveal); }
 function quizReveal() { if (G.rev) return; stopClock(); G.rev = true; if (G.ans !== G.q.c) miss(G.q);
   for (const p of G.pl) { if (p.me) { if (G.ans === G.q.c) p.s += Math.round((500 + 500 * G.left / 13) * (G.dbl ? 2 : 1)); } else if (Math.random() < .6) p.s += Math.round(500 + 500 * Math.random() * .85); }
-  quizRender(); later(quizRound, 2400); }
+  fb(G.ans === G.q.c); quizRender(); later(quizRound, 2400); }
 
 /* ---------- yeni modlar için deste ekleri ---------- */
 DECKS.sure.goals = [{ k: 'ay', d: 1, g: 'Toplam ayet sayısı en yüksek seçkiyi kur', f: v => v + ' ayet' }, { k: 'ay', d: -1, g: 'Toplam ayet sayısı en düşük seçkiyi kur', f: v => v + ' ayet' }];
@@ -720,7 +792,7 @@ const seckiCrit = () => pick(G.deck.crit.filter(c => c !== G.crit && G.deck.ents
 function seckiRound() { if (G.round === 6) return seckiEnd(); G.round++; G.crit = seckiCrit(); seckiRender(); countdown(25, () => { toast('Süre doldu, rastgele atandı'); seckiPick(pick(seckiValid())); }); }
 function seckiPick(e) { stopClock(); const g = G.goal;
   if (G.crit.t(e) && !G.used.has(e.id)) { G.used.add(e.id); G.mine.push(e); } else { G.mine.push(null); toast(e.name + ' bu ölçüte uymuyor, yer boş kaldı'); }
-  G.theirs.push(shuffle(G.deck.ents.filter(x => G.crit.t(x))).slice(0, 2).reduce((a, b) => a[g.k] * g.d >= b[g.k] * g.d ? a : b)); seckiRound(); }
+  fb(G.mine[G.mine.length - 1] != null); G.theirs.push(shuffle(G.deck.ents.filter(x => G.crit.t(x))).slice(0, 2).reduce((a, b) => a[g.k] * g.d >= b[g.k] * g.d ? a : b)); seckiRound(); }
 function seckiRender() { const g = G.goal;
   app.innerHTML = `<div class="qbox"><span class="ctx">${g.g}</span><br><small>TUR ${G.round}/6 · BU ÖLÇÜTE UYAN BİR İSİM SEÇ</small><b>${G.crit.l}</b></div>` + clockH() +
   `<div class="pool">${[0,1,2,3,4,5].map(i => `<div class="card ${G.mine[i] ? 'sel' : ''}">${i < G.mine.length ? (G.mine[i] ? '<span class="star"></span>' + G.mine[i].name : 'boş') : i + 1}</div>`).join('')}</div>` + searchH(G.deck.ph) +
@@ -734,8 +806,8 @@ function seckiEnd() { const g = G.goal, mx = Math.max(...G.deck.ents.map(e => e[
 function kimStart() { const deck = DECKS[G.topic]; Object.assign(G, { deck, used: new Set(), sc: [0, 0], round: 0, onPick: kimPick }); kimRound(); }
 function kimRound() { if (G.round === 3) return duel(G.sc[0], G.sc[1]); G.round++; G.e = pick(G.deck.ents.filter(e => e !== G.e)); G.clues = G.deck.clues(G.e); G.i = -1; G.done = null; G.botAt = Math.random() < .15 ? 9 : 1 + rnd(4); kimNext(); }
 function kimNext() { if (G.i === 4) return kimEnd(false); G.i++; G.tried = false; kimRender(); countdown(10, kimNext); }
-function kimPick(e) { if (e === G.e) return kimEnd(true); G.tried = true; toast('Yanlış tahmin: ' + e.name); kimRender(); }
-function kimEnd(ok) { stopClock(); const mp = ok ? 5 - G.i : 0, bp = G.botAt < 5 ? 5 - G.botAt : 0; G.sc[0] += mp; G.sc[1] += bp; G.done = { mp, bp }; kimRender(); later(kimRound, 3400); }
+function kimPick(e) { if (e === G.e) return kimEnd(true); G.tried = true; fb(false); toast('Yanlış tahmin: ' + e.name); kimRender(); }
+function kimEnd(ok) { stopClock(); fb(ok); const mp = ok ? 5 - G.i : 0, bp = G.botAt < 5 ? 5 - G.botAt : 0; G.sc[0] += mp; G.sc[1] += bp; G.done = { mp, bp }; kimRender(); later(kimRound, 3400); }
 function kimRender() { const d = G.done, keep = !d && !G.tried && $('#q') ? $('#q').value : '';
   app.innerHTML = vsH(G.sc[0], G.sc[1]) + clockH() + `<div class="qbox"><small>${G.round}. TUR · ŞİMDİ BİLİRSEN ${5 - G.i} PUAN</small><b>Ben kimim?</b></div>
   <ol class="clues">${G.clues.slice(0, G.i + 1).map(c => `<li>${c}</li>`).join('')}</ol>` +
@@ -751,17 +823,17 @@ function pingTurn(w) { G.turn = w; pingRender();
   if (w === 'me') countdown(12, () => pingPoint('bot', 'Süre doldu'));
   else { countdown(12); later(() => { const v = G.deck.ents.filter(e => G.crit.t(e) && !G.used.has(e.id));
     if (v.length && Math.random() < Math.max(.4, .92 - G.rally.length * .06)) { const e = pick(v); G.used.add(e.id); G.rally.push([e, 'bot']); pingTurn('me'); } else pingPoint('me', G.opp + ' bilemedi'); }, 1100 + rnd(1700)); } }
-function pingPick(e) { if (G.crit.t(e) && !G.used.has(e.id)) { G.used.add(e.id); G.rally.push([e, 'me']); pingTurn('bot'); } else pingPoint('bot', e.name + ' uymuyor'); }
-function pingPoint(w, msg) { stopClock(); G.sc[w === 'me' ? 0 : 1]++; toast(msg + (w === 'me' ? ' · sayı senin' : ' · sayı rakibin')); G.turn = null; pingRender(); later(pingServe, 1600); }
+function pingPick(e) { if (G.crit.t(e) && !G.used.has(e.id)) { G.used.add(e.id); G.rally.push([e, 'me']); fb(true); pingTurn('bot'); } else pingPoint('bot', e.name + ' uymuyor'); }
+function pingPoint(w, msg) { stopClock(); if (w !== 'me') fb(false); G.sc[w === 'me' ? 0 : 1]++; toast(msg + (w === 'me' ? ' · sayı senin' : ' · sayı rakibin')); G.turn = null; pingRender(); later(pingServe, 1600); }
 function pingRender() {
   app.innerHTML = vsH(G.sc[0], G.sc[1]) + clockH() + `<div class="qbox"><small>İLK 3 SAYIYI ALAN KAZANIR · TEKRAR YOK</small><b>${G.crit.l}</b></div>
-  <div class="chips">${G.rally.slice(-8).map(([e, o]) => chip(e.name, o)).join('') || '<span class="hint">Henüz isim söylenmedi.</span>'}</div>` +
+  <div class="court">${G.rally.slice(-5).map(([e, o]) => ballH(e.name, o === 'me' ? 'l' : 'r')).join('') || '<span class="hint">Henüz isim söylenmedi.</span>'}</div>` +
   (G.turn === 'me' ? '<p class="turn me">Sıra sende: uyan bir isim söyle</p>' + searchH(G.deck.ph) : `<p class="turn bot">${G.turn ? G.opp + ' düşünüyor…' : 'Yeni servis geliyor'}</p>`) + quitH; paintTime(); bindSearch(); }
 
 /* ---------- Bingo ---------- */
 function bingoStart() { const deck = DECKS[G.topic]; Object.assign(G, { deck, board: shuffle(deck.crit).slice(0, 9), mine: Array(9).fill(null), bot: new Set(), seq: shuffle(deck.ents), i: -1 }); bingoNext(); }
 function bingoNext() { const m = G.mine.filter(Boolean).length, b = G.bot.size; if (m === 9 || b === 9 || G.i === 21) return duel(m, b); G.i++; G.e = G.seq[G.i]; bingoRender(); countdown(10, () => bingoPlace(-1)); }
-function bingoPlace(i) { stopClock(); if (i >= 0) { if (!G.mine[i] && G.board[i].t(G.e)) G.mine[i] = G.e; else toast(G.e.name + ' bu kareye uymuyor'); }
+function bingoPlace(i) { stopClock(); if (i >= 0) { if (!G.mine[i] && G.board[i].t(G.e)) { G.mine[i] = G.e; fb(true); } else { fb(false); toast(G.e.name + ' bu kareye uymuyor'); } }
   const f = [...G.board.keys()].filter(j => !G.bot.has(j) && G.board[j].t(G.e)); if (f.length && Math.random() < .6) G.bot.add(pick(f)); bingoNext(); }
 function bingoRender() {
   app.innerHTML = vsH(G.mine.filter(Boolean).length, G.bot.size) + clockH() + `<div class="qbox"><small>KART ${G.i + 1}/22 · UYDUĞU BOŞ KAREYE YERLEŞTİR</small><b>${G.e.name}</b></div>
@@ -773,7 +845,7 @@ function numaraStart() { Object.assign(G, { deck: DECKS[G.topic], sc: [0, 0], ro
 function numaraRound() { if (G.round === 5) return duel(G.sc[0], G.sc[1]); G.round++; G.g = pick(G.deck.guess); G.e = pick(G.deck.ents.filter(e => !G.seen.has(e))); G.seen.add(G.e); G.rev = null; numaraRender(); countdown(15, () => numaraGuess(null)); }
 function numaraGuess(v) { if (G.rev) return; stopClock(); const t = G.e[G.g.k], vals = G.deck.ents.map(e => e[G.g.k]), lo = Math.min(...vals), span = Math.max(...vals) - lo;
   const b = Math.random() < .3 ? t : Math.max(lo, t + Math.round((Math.random() - .5) * span * .3)), dm = v == null ? Infinity : Math.abs(v - t), db = Math.abs(b - t);
-  if (dm <= db) G.sc[0]++; if (db <= dm) G.sc[1]++; G.rev = { v, b, t, w: dm < db ? 'me' : db < dm ? 'bot' : '' }; numaraRender(); later(numaraRound, 3200); }
+  if (dm <= db) G.sc[0]++; if (db <= dm) G.sc[1]++; G.rev = { v, b, t, w: dm < db ? 'me' : db < dm ? 'bot' : '' }; fb(dm <= db); numaraRender(); later(numaraRound, 3200); }
 function numaraRender() { const r = G.rev;
   app.innerHTML = vsH(G.sc[0], G.sc[1]) + clockH() + `<div class="qbox"><small>TUR ${G.round}/5 · EN YAKIN TAHMİN TURU ALIR</small><b>${G.g.t(G.e)}</b></div>` +
   (r ? `<div class="cols three"><div class="qbox"><small>SEN</small><b class="num">${r.v ?? '–'}</b></div><div class="qbox"><small>DOĞRU</small><b class="num">${r.t}</b></div><div class="qbox"><small>${G.opp.toLocaleUpperCase('tr')}</small><b class="num">${r.b}</b></div></div>
@@ -787,7 +859,7 @@ function ucSpec(st) { const d = G.deck, C = d.crit, n = (...cs) => d.ents.filter
   C.forEach((a, i) => C.slice(i + 1).forEach(b => pairs.push([a, b])));
   return st === 0 ? [3, [pick(C.filter(c => n(c) >= d.min * 5))], 1] : st === 1 ? [2, pick(pairs.filter(p => n(...p) >= 3 && n(...p) <= 30)), 2] : [1, pick(pairs.filter(p => n(...p) >= 1 && n(...p) <= 6)), 3]; }
 function ucStage() { if (G.st === 2) return duel(G.sc[0], G.sc[1]); G.st++; G.stages[G.st] = ucSpec(G.st); G.tries = []; G.closed = false; ucRender(); countdown(25, ucClose); }
-function ucPick(e) { const [need, cs, pt] = G.stages[G.st], ok = cs.every(c => c.t(e)) && !G.used.has(e.id); G.used.add(e.id); G.tries.push([e, ok]); if (ok) G.sc[0] += pt; if (G.tries.length === need) ucClose(); else ucRender(); }
+function ucPick(e) { const [need, cs, pt] = G.stages[G.st], ok = cs.every(c => c.t(e)) && !G.used.has(e.id); G.used.add(e.id); G.tries.push([e, ok]); fb(ok); if (ok) G.sc[0] += pt; if (G.tries.length === need) ucClose(); else ucRender(); }
 function ucClose() { stopClock(); const [need, , pt] = G.stages[G.st]; let b = 0; for (let i = 0; i < need; i++) if (Math.random() < [.8, .6, .45][G.st]) b++;
   G.sc[1] += b * pt; toast(`${G.opp} bu turda ${b}/${need} bildi`); G.closed = true; ucRender(); later(ucStage, 2400); }
 function ucRender() { const [need, cs, pt] = G.stages[G.st];
@@ -797,7 +869,7 @@ function ucRender() { const [need, cs, pt] = G.stages[G.st];
 /* ---------- A–Z ---------- */
 function azStart() { Object.assign(G, { list: pick([AZ1, AZ2]).map(([h, c, a]) => ({ h, c, a, s: 0 })), cur: 0, botN: 10 + rnd(8) }); azRender(); countdown(120, azEnd); }
 function azNext() { const n = G.list.length; for (let k = 1; k <= n; k++) { const j = (G.cur + k) % n; if (!G.list[j].s) { G.cur = j; return azRender(); } } azEnd(); }
-function azAns() { const v = norm($('#az').value).replace(/^hz/, ''); if (!v) return; const it = G.list[G.cur]; it.s = it.a.some(x => norm(x) === v) ? 1 : 2; if (it.s === 2) toast('Doğrusu: ' + it.a[0]); azNext(); }
+function azAns() { const v = norm($('#az').value).replace(/^hz/, ''); if (!v) return; const it = G.list[G.cur]; it.s = it.a.some(x => norm(x) === v) ? 1 : 2; fb(it.s === 1); if (it.s === 2) toast('Doğrusu: ' + it.a[0]); azNext(); }
 function azEnd() { stopClock(); const m = G.list.filter(x => x.s === 1).length; duel(m, G.botN, `<p class="hint">Sen ${m}, ${G.opp} ${G.botN} doğru cevap verdi.</p>`); }
 function azRender() { const it = G.list[G.cur];
   app.innerHTML = clockH() + `<div class="ring">${G.list.map((x, i) => chip(x.h, (x.s === 1 ? 'ok' : x.s === 2 ? 'no' : '') + (i === G.cur ? ' cur' : ''))).join('')}</div>
@@ -893,7 +965,7 @@ function esmaStart() { Object.assign(G, { sc: 0, round: 0, botN: 7 + rnd(7), poo
 function esmaRound() { if (G.round === 3) return esmaEnd(); G.round++; G.set = G.pool.splice(0, 5); G.right = shuffle(G.set); G.okk = new Set(); G.sel = null; esmaRender(); }
 function esmaEnd() { stopClock(); duel(G.sc, G.botN, `<p class="hint">15 eşleştirmeden sen ${G.sc}, ${G.opp} ${G.botN} yaptı.</p>`); }
 function esmaPick(i) { if (G.sel == null) return toast('Önce soldan bir isim seç'); const a = G.set[G.sel];
-  if (G.right[i] === a) { G.okk.add(a); G.sc++; G.sel = null; if (G.okk.size === 5) return esmaRound(); } else { toast('Eşleşmedi, 3 saniye ceza'); tLeft = Math.max(.1, tLeft - 3); G.sel = null; } esmaRender(); }
+  if (G.right[i] === a) { G.okk.add(a); G.sc++; G.sel = null; fb(true); if (G.okk.size === 5) return esmaRound(); } else { fb(false); toast('Eşleşmedi, 3 saniye ceza'); tLeft = Math.max(.1, tLeft - 3); G.sel = null; } esmaRender(); }
 function esmaRender() {
   app.innerHTML = vsH(G.sc, '?') + clockH() + `<h2 style="text-align:center">Tablo ${G.round}/3 · ismi seç, sonra anlamına dokun</h2>
   <div class="pairs"><div>${G.set.map((x, i) => `<button class="opt ${G.okk.has(x) ? 'ok' : G.sel === i ? 'sel' : ''}" data-act="esl" data-i="${i}" ${G.okk.has(x) ? 'disabled' : ''}>${x[0]}</button>`).join('')}</div>
@@ -906,7 +978,7 @@ function dyGen() { const want = Math.random() < .5, k = rnd(5);
   const [t, c, ...w] = pick(Object.values(BANK).flat()); return { a: t, b: want ? c : pick(w), v: want, fix: c }; }
 function dyStart() { Object.assign(G, { sc: 0, botN: 9 + rnd(8) }); countdown(60, () => duel(G.sc, G.botN, `<p class="hint">Sen ${G.sc}, ${G.opp} ${G.botN} doğru.</p>`)); dyNext(); }
 function dyNext() { G.s = dyGen(); G.fb = null; dyRender(); }
-function dyAns(v) { if (G.fb) return; const ok = v === G.s.v; if (ok) G.sc++; G.fb = ok ? 'ok' : 'no'; dyRender(); later(dyNext, ok ? 350 : 1400); }
+function dyAns(v) { if (G.fb) return; const ok = v === G.s.v; if (ok) G.sc++; G.fb = ok ? 'ok' : 'no'; fb(ok); dyRender(); later(dyNext, ok ? 350 : 1400); }
 function dyRender() { const s = G.s;
   app.innerHTML = vsH(G.sc, '?') + clockH() + `<div class="qbox"><small>60 SANİYE · DOĞRU MU, YANLIŞ MI?</small><b>${s.a}</b><p class="stmt">${s.b}</p></div>
   <p class="turn ${G.fb === 'ok' ? 'me' : 'bot'}">${G.fb === 'ok' ? 'Doğru bildin' : G.fb ? 'Bilemedin.' + (!s.v && s.fix ? ' Doğrusu: ' + s.fix : s.v ? ' İfade doğruydu.' : ' İfade yanlıştı.') : '&nbsp;'}</p>
@@ -921,21 +993,22 @@ const PLACES = [['Mekke',39.83,21.42,'Kâbe’nin bulunduğu şehir'],['Medine',
   ['Bâbil',44.42,32.54,'Hz. İbrâhîm’in kıssasının geçtiği Mezopotamya şehri'],['Harran',39.03,36.87,'Hz. İbrâhîm’in bir süre yaşadığı şehir'],['Hicr (Medâin-i Sâlih)',37.95,26.79,'Semûd kavminin kayaları oyarak evler yaptığı yer'],
   ['Me’rib',45.33,15.42,'Sebe’ halkının yurdu; ünlü seddin bulunduğu yer'],['Necran',44.13,17.49,'Hristiyan heyetinin Medine’ye geldiği Güney Arabistan şehri']];
 const MW = 390, MH = 502, proj = (lo, la) => [((lo - 28) / 24 * MW).toFixed(1), ((38 - la) / 28 * MH).toFixed(1)];
-const LAND = [
+const LAND0 = () => [
   [[28,38],[28,36.7],[29.1,36.2],[30.6,36.85],[32,36.1],[33.8,36.2],[34.7,36.8],[36.2,36.6],[35.9,35.9],[35.7,34.6],[35.1,33.1],[34.9,32.5],[34.3,31.4],[33,31.1],[32.3,31.25],[32.55,29.95],[33.2,28.4],[34.25,27.75],[34.7,28.8],[34.95,29.5],[35,28.8],[34.6,28],[35.5,27.2],[36.5,26],[37.2,24.8],[38.1,24.05],[39.1,21.5],[40.2,20],[41.1,18.7],[42.3,17],[42.8,15.5],[43.2,13.5],[43.5,12.7],[45,12.8],[48,14],[49.5,14.8],[52,16.3],[52,24.1],[51.6,24.6],[51.5,26],[50.9,25.6],[50.6,25],[50.2,25.6],[50.1,26.6],[49.2,27.5],[48.6,28.4],[48,29.4],[48.2,29.9],[48.8,30.3],[49.8,30.2],[50.8,29.2],[51.5,27.9],[52,27.6],[52,38]],
   [[28,31.2],[29,30.9],[31,31.5],[32.3,31.25],[32.45,29.95],[32.7,29],[33.5,27.6],[34.5,25.6],[35.5,23.9],[37,21.5],[37.3,19.5],[38.5,18],[39.3,16],[40,15],[41.5,13.5],[43,12.6],[43.4,11.6],[44.5,10.5],[47,11.2],[49,11.3],[51.3,11.8],[51.3,10],[28,10]],
   [[32.3,35],[33,35.3],[34.5,35.6],[34,35],[33,34.6]]
 ].map(p => 'M' + p.map(q => proj(...q).join(',')).join('L') + 'Z');
+const LAND = DATA.land ? [DATA.land] : LAND0();
 const kmBetween = (lo1, la1, lo2, la2) => { const r = Math.PI / 180, a = Math.sin((la2 - la1) * r / 2) ** 2 + Math.cos(la1 * r) * Math.cos(la2 * r) * Math.sin((lo2 - lo1) * r / 2) ** 2; return Math.round(12742 * Math.asin(Math.sqrt(a))); };
 function haritaStart() { Object.assign(G, { sc: [0, 0], round: 0, seq: shuffle(PLACES) }); haritaRound(); }
 function haritaRound() { if (G.round === 5) return duel(G.sc[0], G.sc[1]); G.pl = G.seq[G.round++]; G.rev = null; haritaRender(); countdown(12, () => haritaGuess(null)); }
 function haritaGuess(pt) { if (G.rev) return; stopClock(); const [, lo, la] = G.pl, ang = Math.random() * 6.28, bd = Math.random() < .3 ? rnd(60) : 80 + rnd(520), b = [lo + Math.cos(ang) * bd / 100, la + Math.sin(ang) * bd / 111];
   const dm = pt ? kmBetween(pt[0], pt[1], lo, la) : Infinity, db = kmBetween(b[0], b[1], lo, la); if (dm <= db) G.sc[0]++; else G.sc[1]++;
-  G.rev = { pt, b, dm, db }; haritaRender(); later(haritaRound, 3400); }
+  G.rev = { pt, b, dm, db }; fb(dm <= db); haritaRender(); later(haritaRound, 3400); }
 function haritaRender() { const [name, lo, la, clue] = G.pl, r = G.rev, pin = (p, c, rad = 6) => { const [x, y] = proj(...p); return `<circle class="${c}" cx="${x}" cy="${y}" r="${rad}"/>`; }, [tx, ty] = proj(lo, la);
   app.innerHTML = vsH(G.sc[0], G.sc[1]) + clockH() + `<div class="qbox"><small>TUR ${G.round}/5 · HARİTADA YERİNE DOKUN, YAKIN OLAN KAZANIR</small><b>${name}</b><p class="stmt">${clue}</p></div>
-  <svg id="map" viewBox="0 0 ${MW} ${MH}" role="img" aria-label="Arap Yarımadası ve çevresinin şematik haritası"><rect class="sea" width="${MW}" height="${MH}" rx="14"/>${LAND.map(d => `<path class="land" d="${d}"/>`).join('')}
-  <text class="lbl" x="20" y="82">Akdeniz</text><text class="lbl" x="150" y="330" transform="rotate(62 150 330)">Kızıldeniz</text><text class="lbl" x="328" y="196" transform="rotate(48 328 196)">Basra Körfezi</text>
+  <svg id="map" viewBox="0 0 ${MW} ${MH}" role="img" aria-label="Arap Yarımadası ve çevresinin şematik haritası"><rect class="sea" width="${MW}" height="${MH}" rx="14"/>${LAND.map(d => `<path class="land" fill-rule="evenodd" d="${d}"/>`).join('')}<path class="grat" d="${GRAT}"/>
+  <text class="lbl" x="20" y="82">Akdeniz</text><text class="lbl" text-anchor="middle" x="150" y="296" transform="rotate(62 150 296)">Kızıldeniz</text><text class="lbl" text-anchor="middle" x="356" y="190" transform="rotate(50 356 190)">Basra Körfezi</text>
   ${r ? (r.pt ? pin(r.pt, 'pme') : '') + pin(r.b, 'pbot') + pin([lo, la], 'ptrue', 8) + `<text class="lbl on" x="${+tx + 12}" y="${+ty + 4}">${name}</text>` : ''}</svg>
   <p class="turn ${r ? (r.dm <= r.db ? 'me' : 'bot') : 'me'}">${r ? `Sen ${r.pt ? r.dm + ' km' : 'işaretlemedin'} · ${G.opp} ${r.db} km` : '&nbsp;'}</p>` + quitH; paintTime(); }
 
@@ -953,7 +1026,7 @@ function kelimeStart() { const daily = G.topic === 'gunluk', key = 'k' + today()
   const [w, c] = daily ? WLIST[seedOf(key) % WLIST.length] : pick(WLIST); Object.assign(G, { w: [...w], cat: c, rows: [], cur: [], hint: false, end: false }); kelimeRender(); }
 function kelimeKey(k) { if (G.end) return;
   if (k === '⌫') G.cur.pop();
-  else if (k === '↵') { if (G.cur.length < 5) return toast('Beş harf yaz'); const r = wScore(G.cur, G.w); G.rows.push([G.cur, r]); G.cur = [];
+  else if (k === '↵') { if (G.cur.length < 5) return toast('Beş harf yaz'); const r = wScore(G.cur, G.w); G.rows.push([G.cur, r]); G.cur = []; if (r.every(x => x === 'ok')) fb(true); else { buzz(8); snd('tap'); }
     if (r.every(x => x === 'ok') || G.rows.length === 6) { kelimeRender(); return kelimeEnd(r.every(x => x === 'ok')); } }
   else if (G.cur.length < 5) G.cur.push(k);
   kelimeRender(); }
@@ -971,7 +1044,7 @@ function gunlukStart() { const key = 'g' + today(); if (P.done[key]) return fini
   const seed = seedOf(key), deck = DECKS[['sure', 'peygamber', 'sahabe'][seed % 3]];
   Object.assign(G, seeded(seed, () => makeBoard(deck)), { deck, cells: Array.from({ length: 9 }, () => ({})), used: new Set(), tries: 12, jk: { hint: 0 }, onPick: gunlukPick }); gunlukRender(); }
 function gunlukPick(e) { const i = G.sel; G.sel = null; G.tries--;
-  if (tttValid(i).includes(e)) { G.cells[i] = { o: 'me', e }; G.used.add(e.id); } else toast('Yanlış cevap: ' + e.name);
+  if (tttValid(i).includes(e)) { G.cells[i] = { o: 'me', e }; G.used.add(e.id); fb(true); } else { fb(false); toast('Yanlış cevap: ' + e.name); }
   const n = G.cells.filter(c => c.o).length; gunlukRender();
   if (n === 9 || !G.tries) { const text = `İlim Meydanı · Günün ızgarası ${dateTR()} · ${n}/9\n` + [0, 1, 2].map(r => [0, 1, 2].map(c => G.cells[r * 3 + c].o ? '🟩' : '⬜').join('')).join('\n');
     P.done['g' + today()] = text; finish(n === 9 ? 'w' : '', n + '/9 kare', n, shareH(text), false); } }
@@ -986,7 +1059,7 @@ function seriStart() { Object.assign(G, { n: 0, pool: {} }); seriNext(); }
 function seriQ() { const t = G.topic === 'karisik' ? pick(['sure', 'siyer', 'peygamber', 'genel']) : G.topic; if (t === 'sure') return sureQ();
   if (!G.pool[t] || !G.pool[t].length) G.pool[t] = shuffle(BANK[t]); return staticQ(G.pool[t].pop()); }
 function seriNext() { G.q = seriQ(); G.ans = null; G.rev = false; seriRender(); countdown(15, () => seriAns(-1)); }
-function seriAns(i) { if (G.rev) return; stopClock(); G.ans = i; G.rev = true; const ok = i === G.q.c; if (ok) G.n++; else miss(G.q); seriRender();
+function seriAns(i) { if (G.rev) return; stopClock(); G.ans = i; G.rev = true; const ok = i === G.q.c; fb(ok); if (ok) G.n++; else miss(G.q); seriRender();
   later(ok ? seriNext : () => { const rec = G.n > P.best; P.best = Math.max(P.best, G.n); finish(rec ? 'w' : '', 'Serin: ' + G.n, Math.min(25, G.n), `<p class="hint">${rec ? 'Yeni rekor.' : 'Rekorun: ' + P.best + '.'} Yanlış yaptığın soru Öğren’e eklendi.</p>`); }, ok ? 800 : 1800); }
 function seriRender() { const q = G.q;
   app.innerHTML = `<div class="vs"><div class="p"><div><b>Seri</b><small>${TOPIC[G.topic]}</small></div></div><div class="sc num"><span class="a">${G.n}</span></div><div class="p r"><div><b class="num">${P.best}</b><small>rekor</small></div></div></div>` + clockH() +
@@ -997,7 +1070,7 @@ function ogrenStart() { Object.assign(G, { list: P.miss.slice(), done: 0, total:
 function ogrenNext() { if (!G.list.length) return finish(G.done ? 'w' : '', G.total ? G.done + '/' + G.total + ' soruyu öğrendin' : 'Bekleyen soru yok', 0,
     `<p class="hint">${G.total ? 'Bilemediklerin listede kaldı; sonra tekrar gelir.' : 'Bilgi Yarışması ya da Seri’de yanlış yaptığın sorular burada birikir.'}</p>`, G.total > 0);
   const m = G.list.shift(); G.q = { t: m.t, ctx: m.ctx, opts: m.o.map(l => ({ l })), c: m.c }; G.ans = null; G.rev = false; ogrenRender(); }
-function ogrenAns(i) { G.ans = i; G.rev = true; if (i === G.q.c) { G.done++; P.miss = P.miss.filter(m => m.t !== G.q.t); save(); } ogrenRender(); }
+function ogrenAns(i) { G.ans = i; G.rev = true; fb(i === G.q.c); if (i === G.q.c) { G.done++; P.miss = P.miss.filter(m => m.t !== G.q.t); save(); } ogrenRender(); }
 function ogrenRender() { const q = G.q;
   app.innerHTML = `<h1 style="font-size:24px">Öğren</h1><p class="lede">Daha önce yanlış yaptığın sorular. Doğru bildiğin listeden çıkar. Kalan: <b class="num">${G.list.length + 1}</b></p>
   <div class="qbox">${q.ctx ? `<span class="ctx">${q.ctx}</span><br>` : ''}<b>${q.t}</b></div>` + optsH(q, G.ans, G.rev, 'oans') +
@@ -1060,13 +1133,15 @@ function mpJoinConn(c) {
     if (m.t === 'hello') { if (c.pid) return;
       if (S.phase !== 'lobby' || S.players.length >= MAXP) return c.send({ t: 'no', why: S.phase !== 'lobby' ? 'Bu odada maç sürüyor. Bitince tekrar dene.' : 'Oda dolu (en çok ' + MAXP + ' kişi).' });
       c.pid = String(m.id).slice(0, 12); CONNS.push(c); S.players.push({ id: c.pid, name: String(m.name || 'Oyuncu').slice(0, 16) }); mpSync(); }
-    else if (m.t === 'act' && c.pid) mpAct(S.players.findIndex(p => p.id === c.pid), m.a); };
+    else if (m.t === 'act' && c.pid) mpAct(S.players.findIndex(p => p.id === c.pid), m.a);
+    else if (m.t === 'rdy' && c.pid && S.phase === 'lobby') { const p = S.players.find(x => x.id === c.pid); if (p) { p.rdy = !p.rdy; mpSync(); } }
+    else if (m.t === 'react' && c.pid) mpReact(S.players.findIndex(p => p.id === c.pid), +m.i); };
   c.onclose = () => { if (!S || !c.pid) return; CONNS = CONNS.filter(x => x !== c); const p = S.players.find(x => x.id === c.pid); S.players = S.players.filter(x => x !== p); c.pid = null;
     if (S.phase !== 'lobby') { mpStopT(); S.phase = 'lobby'; S.g = null; S.note = (p ? p.name : 'Bir oyuncu') + ' ayrıldı, maç sonlandı.'; } mpSync(); };
 }
 function mpJoin() { const name = mpName(), code = ($('#mpcode')?.value || '').trim().toLocaleUpperCase('tr').replace(/[^A-Z0-9]/g, ''); if (code.length !== 5) return toast('Oda kodu 5 karakterdir');
   mpClean(); ME = myId(); mpWaitR('Odaya bağlanılıyor'); L.to = setTimeout(() => mpFail('Bağlanılamadı. Kodu kontrol et; olmazsa Wi-Fi ile dene.'), 15000);
-  NET = netJoin(code, { open(c) { NET.c = c; c.ondata = m => { if (!m) return; if (m.t === 'state') { clearTimeout(L.to); mpApply(m.s, m.rem); } else if (m.t === 'toast') toast(m.m); else if (m.t === 'no') mpFail(m.why); };
+  NET = netJoin(code, { open(c) { NET.c = c; c.ondata = m => { if (!m) return; if (m.t === 'state') { clearTimeout(L.to); mpApply(m.s, m.rem); } else if (m.t === 'toast') toast(m.m); else if (m.t === 'react') showReact(String(m.n).slice(0, 16), +m.i); else if (m.t === 'no') mpFail(m.why); };
       c.onclose = () => { if (NET) mpFail('Oda kapandı ya da bağlantı koptu.'); }; c.send({ t: 'hello', id: ME, name }); },
     err(t) { if (NET) mpFail(NETERR[t] || 'Bağlanılamadı (' + t + ').'); } }); }
 function mpSync() { if (!HOST || !S) return; const rem = mpUntil ? mpUntil - Date.now() : 0; CONNS.forEach(c => { try { c.send({ t: 'state', s: S, rem }); } catch (e) {} }); mpApply(S, rem); }
@@ -1082,12 +1157,17 @@ const mpTeams = () => !!S.team && S.players.length >= 4 && S.players.length % 2 
 const sideOf = i => mpTeams() ? i % 2 : i;
 const mpNames = side => mpTeams() && S.players.length > 4 ? (side ? 'B takımı' : 'A takımı') : S.players.filter((p, i) => sideOf(i) === side).map(p => esc(p.name)).join(' & ');
 function mpBoard(ss) { const m = sideOf(mpIdx()), o = ss.map((_, s) => s).sort((a, b) => ss[b] - ss[a]), rows = o.length > 4 ? o.filter((s, i) => i < 3 || s === m) : o;
-  return `<div class="lb">${rows.map(s => `<div class="${s === m ? 'me' : ''}"><span>${o.indexOf(s) + 1}</span><span>${mpNames(s)}</span><span class="num">${ss[s]}</span></div>`).join('')}</div>`; }
+  return `<div class="lb">${rows.map(s => `<div class="${s === m ? 'me' : ''}" data-flip="s${s}"><span>${o.indexOf(s) + 1}</span><span>${mpNames(s)}</span><span class="num" data-n="s${s}">${ss[s]}</span></div>`).join('')}</div>`; }
 const ent = (d, id) => d.ents.find(x => x.id === id);
 const mpQuitH = '<button class="quit" data-act="mpleave">Odadan çık</button>';
+const REACT = ['Maşallah', 'Tebrikler', 'Aferin', 'Hadi bakalım', 'Eyvah', 'İyi oyundu'];
+const mpFootH = `<div class="rxbar">${REACT.map((t, i) => `<button class="chip" data-act="mprx" data-i="${i}">${t}</button>`).join('')}</div>` + mpQuitH;
+const PCOL = i => `hsl(${(i * 47 + 172) % 360} 55% 62%)`;
+function showReact(name, ri) { if (!REACT[ri]) return; const el = document.createElement('div'), b = document.createElement('b'); el.className = 'rxb'; b.textContent = name; el.append(b, REACT[ri]); $('#rx').appendChild(el); buzz(8); setTimeout(() => el.remove(), 2600); }
+function mpReact(i, ri) { if (i < 0 || !REACT[ri]) return; const n = S.players[i].name; showReact(n, ri); CONNS.forEach(c => { try { c.send({ t: 'react', n, i: ri }); } catch (e) {} }); }
 function mpVs(sc) { const m = sideOf(mpIdx()), o = m ? 0 : 1, mn = S.players[mpIdx()].name, on = S.players.find((p, i) => sideOf(i) === o).name;
   return `<div class="vs"><div class="p"><span class="medal me"><i>${esc(mn[0].toLocaleUpperCase('tr'))}</i></span><div><b>${mpTeams() ? mpNames(m) : 'Sen'}</b><small>${mpTeams() ? 'takımın' : esc(mn)}</small></div></div>
-  <div class="sc num"><span class="a">${sc[m]}</span><em>vs</em><span class="b">${sc[o]}</span></div><div class="p r"><div><b>${mpNames(o)}</b><small>rakip</small></div><span class="medal bot"><i>${esc(on[0].toLocaleUpperCase('tr'))}</i></span></div></div>`; }
+  <div class="sc num"><span class="a" data-n="a">${sc[m]}</span><em>vs</em><span class="b" data-n="b">${sc[o]}</span></div><div class="p r"><div><b>${mpNames(o)}</b><small>rakip</small></div><span class="medal bot"><i>${esc(on[0].toLocaleUpperCase('tr'))}</i></span></div></div>`; }
 
 /* --- ekranlar --- */
 function mpHomeR(code = '') { stopAll(); G = null; app.classList.add('enter');
@@ -1099,28 +1179,31 @@ function mpHomeR(code = '') { stopAll(); G = null; app.classList.add('enter');
   ${code ? '<button class="btn ghost" data-act="mpcreate">Bunun yerine yeni oda kur</button>' : ''}
   <p class="note">Bağlantı doğrudan cihazlar arasında kurulur; oyunu odayı kuran kişinin cihazı yönetir. Oda sahibi sayfayı kapatırsa oda da kapanır. Bazı mobil ve kurumsal ağlarda bağlantı kurulamayabilir; o durumda Wi-Fi ile deneyin.</p>`; }
 function mpLobbyR() { const n = S.players.length, m = MPM[S.mode], ok = m.n.includes(n), canTeam = n >= 4 && n % 2 === 0 && (S.mode === 'quiz' || S.mode === 'ping');
-  const who = S.players.map((p, i) => `<div class="${p.id === ME ? 'me' : ''}"><span>${i + 1}</span><span>${esc(p.name)}${p.id === ME ? ' (sen)' : ''}${i === 0 ? ' · oda sahibi' : ''}</span><span>${mpTeams() ? (i % 2 ? 'B takımı' : 'A takımı') : ''}</span></div>`).join('');
+  const rdyN = S.players.filter((p, i) => i && p.rdy).length, meP = S.players[mpIdx()];
+  const who = S.players.map((p, i) => `<div class="pl ${p.rdy || !i ? 'rdy' : ''} ${p.id === ME ? 'self' : ''}"><span class="medal" style="color:${PCOL(i)}"><i>${esc(p.name[0].toLocaleUpperCase('tr'))}</i></span><b>${esc(p.name)}${p.id === ME ? ' (sen)' : ''}</b><small>${!i ? 'oda sahibi' : p.rdy ? 'hazır' : 'bekliyor'}${mpTeams() ? ' · ' + (i % 2 ? 'B' : 'A') + ' takımı' : ''}</small></div>`).join('');
   app.innerHTML = `<header class="top"><span class="brand">Oda</span>${mpQuitH}</header>
   <div class="qbox"><small>Oda kodu</small><b class="code num">${S.code}</b><p class="stmt">Arkadaşların bu kodu girerek ya da davet bağlantısıyla katılır.</p></div>
   <button class="btn ghost" data-act="mpcopy">Davet bağlantısını kopyala</button>
   ${S.note ? `<p class="turn bot">${esc(S.note)}</p>` : ''}
-  <div class="sec"><h2>Oyuncular</h2><span>${n}/${MAXP}</span></div><div class="lb">${who}</div>
+  <div class="sec"><h2>Oyuncular</h2><span>${n}/${MAXP}</span></div><div class="pls">${who}</div>
   ${HOST ? `<div class="sec"><h2>Oyun</h2><span>${m.d}</span></div><div class="chips">${Object.entries(MPM).map(([k, x]) => `<button class="chip ${k === S.mode ? 'on' : ''}" data-act="mpm" data-m="${k}">${x.name}</button>`).join('')}</div>
     <div class="sec"><h2>Konu</h2></div><div class="chips">${m.topics.map(t => `<button class="chip ${t === S.topic ? 'on' : ''}" data-act="mpt" data-t="${t}">${TOPIC[t]}</button>`).join('')}</div>
     ${canTeam ? `<div class="sec"><h2>Düzen</h2></div><div class="chips"><button class="chip ${S.team ? '' : 'on'}" data-act="mpteam" data-v="0">${S.mode === 'ping' ? 'Eleme' : 'Herkes tek'}</button><button class="chip ${S.team ? 'on' : ''}" data-act="mpteam" data-v="1">${n / 2}v${n / 2} takım</button></div>` : ''}
     ${mpTeams() ? '<button class="btn ghost" data-act="mpshuf">Takımları karıştır</button>' : ''}
     <button class="btn" data-act="mpstart" ${ok ? '' : 'disabled'}>Maçı başlat</button>
+    ${ok && n > 1 ? `<p class="hint" style="text-align:center">${rdyN}/${n - 1} oyuncu hazır</p>` : ''}
     ${ok ? '' : `<p class="hint" style="text-align:center">${m.name} ${m.n.length > 2 ? m.n[0] + '–' + m.n[m.n.length - 1] : m.n.join(' ya da ')} kişiyle oynanır; şu an ${n} kişisiniz.</p>`}`
-  : `<div class="qbox"><small>Seçilen oyun</small><b>${m.name}</b><p class="stmt">${TOPIC[S.topic]}${mpTeams() ? ' · takım' : S.mode === 'ping' && n > 2 ? ' · eleme' : ''}</p></div><p class="hint" style="text-align:center">Oda sahibi maçı başlatacak.</p>`}`; }
-function mpResultR() { const r = S.res, m = sideOf(mpIdx()), sides = mpTeams() ? 2 : S.players.length, rows = Array.from({ length: sides }, (_, s) => s).sort((a, b) => r.sc[b] - r.sc[a]);
+  : `<div class="qbox"><small>Seçilen oyun</small><b>${m.name}</b><p class="stmt">${TOPIC[S.topic]}${mpTeams() ? ' · takım' : S.mode === 'ping' && n > 2 ? ' · eleme' : ''}</p></div><button class="btn ${meP.rdy ? 'ghost' : ''}" data-act="mprdy">${meP.rdy ? 'Hazır değilim' : 'Hazırım'}</button><p class="hint" style="text-align:center">Oda sahibi maçı başlatacak.</p>`}`; }
+function mpResultR() { if (once('res') && S.res.win === sideOf(mpIdx())) burst();
+  const r = S.res, m = sideOf(mpIdx()), sides = mpTeams() ? 2 : S.players.length, rows = Array.from({ length: sides }, (_, s) => s).sort((a, b) => r.sc[b] - r.sc[a]);
   app.innerHTML = `<div class="center" style="padding:40px 0 10px">${patH()}<span class="eyebrow">${MPM[S.mode].name} · ${TOPIC[S.topic]}</span><h1 class="out ${r.win === m ? 'w' : r.win === -1 ? '' : 'l'}">${r.win === -1 ? 'Berabere' : r.win === m ? 'Galibiyet' : 'Mağlubiyet'}</h1></div>
   <div class="lb">${rows.map((s, i) => `<div class="${s === m ? 'me' : ''}"><span>${i + 1}</span><span>${mpNames(s)}</span><span class="num">${r.sc[s]}</span></div>`).join('')}</div>
-  ${HOST ? '<button class="btn" data-act="mpstart">Rövanş</button><button class="btn ghost" data-act="mpback">Odaya dön, oyun değiştir</button>' : '<p class="hint" style="text-align:center">Oda sahibi rövanşı başlatabilir ya da oyunu değiştirebilir.</p>'}` + mpQuitH; }
-function mpRender() { if (!S) return; app.classList.remove('enter');
+  ${HOST ? '<button class="btn" data-act="mpstart">Rövanş</button><button class="btn ghost" data-act="mpback">Odaya dön, oyun değiştir</button>' : '<p class="hint" style="text-align:center">Oda sahibi rövanşı başlatabilir ya da oyunu değiştirebilir.</p>'}` + mpFootH; }
+function mpRender() { if (!S) return; app.classList.remove('enter'); if (L.fxg !== S.gid) { L.fxg = S.gid; fxReset(); }
   if (!mpTickI) mpTickI = setInterval(() => { if (!S || S.phase !== 'game') return; tLeft = Math.max(0, (L.until - Date.now()) / 1000); tMax = S.g.dur || 1; paintTime(); }, 100);
   if (S.phase === 'lobby') return mpLobbyR(); if (S.phase === 'result') return mpResultR();
   MPG[S.mode].render(); tLeft = Math.max(0, (L.until - Date.now()) / 1000); tMax = S.g.dur || 1; paintTime(); }
-function mpStart() { if (!HOST || !MPM[S.mode].n.includes(S.players.length)) return; S.phase = 'game'; S.note = ''; S.gid = Math.random().toString(36).slice(2, 8); MPG[S.mode].init(); }
+function mpStart() { if (!HOST || !MPM[S.mode].n.includes(S.players.length)) return; S.phase = 'game'; S.note = ''; S.players.forEach(p => { p.rdy = false; }); S.gid = Math.random().toString(36).slice(2, 8); MPG[S.mode].init(); }
 
 /* --- oyunlar: durum düz veri, kuralları oda sahibi işletir --- */
 const MPG = {
@@ -1134,16 +1217,17 @@ const MPG = {
       app.innerHTML = mpVs(g.sc) + clockH() + `<p class="turn ${mine ? 'me' : 'bot'}">${mine ? 'Sıra sende' : esc(S.players[g.turn].name) + ' oynuyor'}</p>
       <div class="grid"><div class="corner"><span class="star"></span></div>${G.cols.map(c => `<div class="hd">${c.l}</div>`).join('')}
       ${G.rows.map((r, ri) => `<div class="hd">${r.l}</div>` + [0, 1, 2].map(ci => { const i = ri * 3 + ci, c = g.cells[i];
-        return `<button class="cell ${c ? (c.o === me ? 'me' : 'bot') : ''}" data-act="cell" data-i="${i}" ${mine && !c ? '' : 'disabled style="opacity:1"'} aria-label="${r.l}, ${G.cols[ci].l}">${c ? (c.o === me ? '<span class="star"></span>' : '<span class="dot"></span>') + ent(d, c.e).name : '<span class="plus">+</span>'}</button>`; }).join('')).join('')}</div>` + mpQuitH; }
+        return `<button class="cell ${c ? (c.o === me ? 'me' : 'bot') : ''}" data-act="cell" data-i="${i}" ${mine && !c ? '' : 'disabled style="opacity:1"'} aria-label="${r.l}, ${G.cols[ci].l}">${c ? (c.o === me ? '<span class="star"></span>' : '<span class="dot"></span>') + ent(d, c.e).name : '<span class="plus">+</span>'}</button>`; }).join('')).join('')}</div>` + mpFootH; }
   },
   quiz: {
     init() { const n = S.players.length; S.g = { qs: JSON.parse(JSON.stringify(buildQuiz(S.topic))), r: -1, sc: Array(n).fill(0), dur: 13 }; mqNext(); },
     act(i, a) { const g = S.g; if (g.rev || a.k !== 'ans' || g.ans[i] != null || !(a.i >= 0 && a.i < 4)) return; g.ans[i] = a.i; g.fr[i] = Math.max(0, 1 - (Date.now() - g.t0) / (g.dur * 1000)); if (g.ans.every(x => x != null)) return mqReveal(); mpSync(); },
     render() { const g = S.g, q = g.qs[g.r], me = mpIdx(), mine = g.ans[me], done = mine != null || g.rev, sides = mpTeams() ? 2 : S.players.length, ss = mqSides(), m = sideOf(me);
+      if (g.rev && once('q' + g.r)) fb(g.gain[me] > 0);
       app.innerHTML = mpBoard(ss) + `
       <h2 style="text-align:center">Tur ${g.r + 1}/8 · ${TOPIC[S.topic]}</h2>` + clockH() + `<div class="qbox">${q.ctx ? `<span class="ctx">${q.ctx}</span><br>` : ''}<b>${q.t}</b></div>
       <div class="opts">${q.opts.map((o, i) => `<button class="opt ${g.rev ? (i === q.c ? 'ok' : i === mine ? 'no' : '') : i === mine ? 'sel' : ''}" data-act="mpans" data-i="${i}" ${done ? 'disabled' : ''}>${o.l}${g.rev && o.n != null ? `<small class="num">${o.n}</small>` : ''}</button>`).join('')}</div>
-      <p class="turn ${g.rev && !g.gain[me] ? 'bot' : 'me'}">${g.rev ? (g.gain[me] ? '+' + g.gain[me] + ' puan' : mine == null ? 'Süre doldu' : 'Yanlış cevap') : g.ans.filter(x => x != null).length + '/' + S.players.length + ' oyuncu cevapladı'}</p>` + mpQuitH; }
+      <p class="turn ${g.rev && !g.gain[me] ? 'bot' : 'me'}">${g.rev ? (g.gain[me] ? '+' + g.gain[me] + ' puan' : mine == null ? 'Süre doldu' : 'Yanlış cevap') : g.ans.filter(x => x != null).length + '/' + S.players.length + ' oyuncu cevapladı'}</p>` + mpFootH; }
   },
   ping: {
     init() { const n = S.players.length, elim = n > 2 && !mpTeams(); S.g = { elim, sc: Array(elim ? n : 2).fill(0), alive: Array(n).fill(true), serve: rnd(n), dur: 12, crit: -1 }; mpServe(); },
@@ -1153,18 +1237,18 @@ const MPG = {
       G = { mode: 'mp', deck: d, used: new Set(g.used), onPick: e => mpSend({ k: 'pick', id: e.id }) };
       app.innerHTML = (g.elim ? `<div class="chips">${S.players.map((p, i) => chip(esc(p.name) + (i === me ? ' (sen)' : ''), g.alive[i] ? (i === g.turn ? 'on' : '') : 'out')).join('')}</div>` : mpVs(g.sc)) + clockH() +
       `<div class="qbox"><small>${g.elim ? 'Yanlış söyleyen ya da süresi dolan elenir · son kalan kazanır' : 'İlk 3 sayıyı alan kazanır · tekrar yok'}</small><b>${d.crit[g.crit].l}</b></div>
-      <div class="chips">${g.rally.slice(-8).map(([id, o]) => chip(ent(d, id).name, g.elim ? (o === me ? 'me' : '') : sideOf(o) === ms ? 'me' : 'bot')).join('') || '<span class="hint">Henüz isim söylenmedi.</span>'}</div>` +
-      (mine ? '<p class="turn me">Sıra sende: uyan bir isim söyle</p>' + searchH(d.ph) : `<p class="turn bot">${g.wait ? esc(g.msg) : esc(S.players[g.turn].name) + ' düşünüyor…'}</p>${g.alive[me] ? '' : '<p class="hint" style="text-align:center">Elendin; maçın kalanını izliyorsun.</p>'}`) + mpQuitH; bindSearch(); }
+      <div class="court">${g.rally.slice(-5).map(([id, o]) => ballH(ent(d, id).name, (g.elim ? o === me : sideOf(o) === ms) ? 'l' : 'r', o === me ? '' : esc(S.players[o].name))).join('') || '<span class="hint">Henüz isim söylenmedi.</span>'}</div>` +
+      (mine ? '<p class="turn me">Sıra sende: uyan bir isim söyle</p>' + searchH(d.ph) : `<p class="turn bot">${g.wait ? esc(g.msg) : esc(S.players[g.turn].name) + ' düşünüyor…'}</p>${g.alive[me] ? '' : '<p class="hint" style="text-align:center">Elendin; maçın kalanını izliyorsun.</p>'}`) + mpFootH; bindSearch(); }
   },
   num: {
     init() { S.g = { r: -1, sc: Array(S.players.length).fill(0), dur: 15, seen: [] }; mnNext(); },
     act(i, a) { const g = S.g; if (g.rev || a.k !== 'num' || g.ans[i] != null || !Number.isFinite(a.v)) return; g.ans[i] = Math.round(a.v); if (g.ans.every(x => x != null)) return mnReveal(); mpSync(); },
     render() { const g = S.g, d = DECKS[S.topic], me = mpIdx(), e = ent(d, g.id), q = d.guess[g.gi], mine = g.ans[me], cnt = g.ans.filter(x => x != null).length + '/' + S.players.length + ' oyuncu tahmin etti';
-      const same = L.mr === S.gid + g.r, keep = same ? $('#mg')?.value || '' : '', had = !same || document.activeElement?.id === 'mg'; L.mr = S.gid + g.r;
+      const same = L.mr === S.gid + g.r, keep = same ? $('#mg')?.value || '' : '', had = !same || document.activeElement?.id === 'mg'; L.mr = S.gid + g.r; if (g.rev && once('n' + g.r)) fb(g.gain[me] > 0);
       app.innerHTML = mpBoard(g.sc) + `<h2 style="text-align:center">Tur ${g.r + 1}/6 · ${TOPIC[S.topic]}</h2>` + clockH() + `<div class="qbox"><small>En yakın tahmin puanı alır</small><b>${q.t(e)}</b></div>` +
       (g.rev ? `<div class="qbox"><small>Doğru cevap</small><b class="num">${e[q.k]}</b></div><div class="lb">${g.order.map((i, k) => `<div class="${i === me ? 'me' : ''}"><span>${k + 1}</span><span>${esc(S.players[i].name)}${g.gain[i] ? ' · +' + g.gain[i] : ''}</span><span class="num">${g.ans[i] ?? '–'}</span></div>`).join('')}</div>`
         : mine != null ? `<p class="turn me">Tahminin: ${mine}</p><p class="hint" style="text-align:center">${cnt}</p>`
-        : `<div class="row"><input id="mg" class="inp num" type="number" inputmode="numeric" placeholder="Tahminin"><button class="btn" data-act="mnum">Tahmin et</button></div><p class="hint" style="text-align:center">${cnt}</p>`) + mpQuitH;
+        : `<div class="row"><input id="mg" class="inp num" type="number" inputmode="numeric" placeholder="Tahminin"><button class="btn" data-act="mnum">Tahmin et</button></div><p class="hint" style="text-align:center">${cnt}</p>`) + mpFootH;
       const inp = $('#mg'); if (inp) { inp.value = keep; if (had) inp.focus(); } }
   },
   kart: {
@@ -1178,13 +1262,13 @@ const MPG = {
       if (g.phase === 'draft') { const rdy = !!g.hands[me];
         app.innerHTML = `<h1 style="font-size:24px">Desteni kur</h1><p class="lede">${rdy ? 'Desten hazır. Rakibin seçmesi bekleniyor.' : 'Havuzdan 5 kart seç. ' + L.sel.length + '/5 seçildi.'}</p>` + clockH() +
         `<div class="pool">${g.pools[me].map(id => cardH(ent(d, id), (rdy ? g.hands[me] : L.sel).includes(id) ? 'sel' : '', '', `data-act="mkd" data-id="${id}" ${rdy ? 'disabled' : ''}`)).join('')}</div>
-        <button class="btn" data-act="mkready" ${!rdy && L.sel.length === 5 ? '' : 'disabled'}>Hazır</button>` + mpQuitH; return; }
-      const q = d.qs[g.q], res = me ? -g.res : g.res, played = g.played[me] != null;
+        <button class="btn" data-act="mkready" ${!rdy && L.sel.length === 5 ? '' : 'disabled'}>Hazır</button>` + mpFootH; return; }
+      const q = d.qs[g.q], res = me ? -g.res : g.res, played = g.played[me] != null; if (g.rev && res && once('k' + g.round)) fb(res > 0);
       app.innerHTML = mpVs(g.sc) + clockH() + `<div class="qbox"><small>${g.round}. tur</small><b>${q.t}</b></div>
       <div class="hand">${g.hands[op].filter(id => id !== g.played[op]).map(() => '<div class="card back"><span class="star"></span></div>').join('')}</div>
       <div class="arena">${g.rev ? [[me, 'Sen', res > 0], [op, esc(S.players[op].name), res < 0]].map(([p, n, w]) => { const e = ent(d, g.played[p]); return `<div class="slot">${cardH(e, w ? 'win' : res ? 'lose' : '', `<small>${q.f(e[q.k])}</small>`, 'disabled style="opacity:1"')}${n}</div>`; }).join('') : ''}</div>
       <p class="turn ${g.rev ? (res > 0 ? 'me' : 'bot') : 'me'}">${g.rev ? (res > 0 ? 'Turu aldın' : res < 0 ? 'Turu kaybettin' : 'Berabere') : played ? 'Kartını oynadın, rakip bekleniyor' : 'Kartını seç'}</p>
-      <div class="hand mine">${g.hands[me].filter(id => id !== g.played[me]).map(id => cardH(ent(d, id), '', '', `data-act="mkp" data-id="${id}" ${g.rev || played ? 'disabled' : ''}`)).join('')}</div>` + mpQuitH; }
+      <div class="hand mine">${g.hands[me].filter(id => id !== g.played[me]).map(id => cardH(ent(d, id), '', '', `data-act="mkp" data-id="${id}" ${g.rev || played ? 'disabled' : ''}`)).join('')}</div>` + mpFootH; }
   }
 };
 function mtTurn(sw) { const g = S.g; if (sw) g.turn = 1 - g.turn; g.turns++; g.sc = [0, 1].map(o => g.cells.filter(c => c && c.o === o).length);
@@ -1224,6 +1308,8 @@ const MPACT = {
   mpshuf: () => { if (HOST) { S.players = shuffle(S.players); mpSync(); } }, mpstart: mpStart, mpback: () => { if (HOST) { S.phase = 'lobby'; S.g = null; mpSync(); } },
   mpcopy: () => { const u = location.origin + location.pathname + '?oda=' + S.code + (LOCAL ? '&local=1' : ''), ok = () => toast('Davet bağlantısı kopyalandı'), no = () => toast('Kopyalanamadı. Kodu elle gönder: ' + S.code); try { navigator.clipboard.writeText(u).then(ok, no); } catch (e) { no(); } },
   mpans: d => mpSend({ k: 'ans', i: +d.i }),
+  mprdy: () => { if (!HOST && NET && NET.c) NET.c.send({ t: 'rdy' }); },
+  mprx: d => { if (!S || Date.now() - (L.rxt || 0) < 1500) return; L.rxt = Date.now(); if (HOST) mpReact(mpIdx(), +d.i); else if (NET && NET.c) NET.c.send({ t: 'react', i: +d.i }); },
   mkd: d => { L.sel = L.sel.includes(d.id) ? L.sel.filter(x => x !== d.id) : L.sel.length < 5 ? [...L.sel, d.id] : L.sel; mpRender(); },
   mnum: () => { const v = $('#mg')?.value; if (v == null || v === '') return toast('Bir sayı yaz'); mpSend({ k: 'num', v: +v }); },
   mkready: () => mpSend({ k: 'ready', ids: L.sel }), mkp: d => mpSend({ k: 'play', id: d.id })
@@ -1231,10 +1317,45 @@ const MPACT = {
 addEventListener('pagehide', () => { if (NET) mpClean(); });
 document.addEventListener('keydown', ev => { if (ev.key === 'Enter' && ev.target.id === 'mg') MPACT.mnum(); });
 
+/* ================= hareket, ses ve dokunsal geri bildirim ================= */
+const SEEN = new Set(), LASTN = {}; let LASTY = {};
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function fxReset() { SEEN.clear(); for (const k in LASTN) delete LASTN[k]; LASTY = {}; }
+const once = k => !SEEN.has(k) && (SEEN.add(k), true);
+// Ekran her durumda yeniden çizildiği için "yeni" olanı içerikten tanırız: aynı öge ikinci kez canlanmaz.
+const AUTO = '.opt.ok,.opt.no,.cell.me,.cell.bot,.chip.ok,.chip.no,.ball,.tile,.arena .card,.clues li,.card.sel,.out,.pl.rdy';
+function countUp(el, a, b) { const t0 = performance.now(); (function f(t) { if (!el.isConnected) return; const k = Math.min(1, (t - t0) / 520); el.textContent = Math.round(a + (b - a) * (1 - (1 - k) ** 3)); if (k < 1) requestAnimationFrame(f); })(t0); }
+function fxScan() {
+  const ctx = app.querySelector('.qbox b')?.textContent || '';
+  app.querySelectorAll(AUTO).forEach(el => { if (el.classList.contains('fx-in')) return; const idx = [...el.parentNode.children].indexOf(el);
+    const k = (el.matches('.opt') ? ctx : '') + '|' + el.className + '|' + el.textContent.slice(0, 40) + '|' + (el.matches('.tile,.cell,.opt,.card') ? idx : '');
+    if (SEEN.has(k)) return; SEEN.add(k); el.style.setProperty('--i', idx % 5); el.classList.add('fx-in'); });
+  app.querySelectorAll('[data-n]').forEach(el => { const k = el.dataset.n, v = +el.textContent; if (!Number.isFinite(v)) return; const o = LASTN[k]; LASTN[k] = v; if (o != null && o !== v && !RM) countUp(el, o, v); });
+  const ys = {}; app.querySelectorAll('[data-flip]').forEach(el => { const k = el.dataset.flip, y = el.offsetTop, o = LASTY[k]; ys[k] = y;
+    if (o != null && o !== y && !RM && el.animate) el.animate([{ transform: `translateY(${o - y}px)` }, { transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.2,.7,.2,1)' }); }); LASTY = ys;
+}
+new MutationObserver(fxScan).observe(app, { childList: true });
+let AC = null;
+function snd(k) { if (!P.snd) return; try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume(); const t = AC.currentTime;
+  ({ ok: [[660, 0, .09], [880, .09, .16]], no: [[196, 0, .2, 'triangle']], win: [[523, 0, .11], [659, .11, .11], [784, .22, .11], [1047, .33, .3]], tap: [[520, 0, .05]] })[k].forEach(([f, o, d, ty]) => {
+    const os = AC.createOscillator(), g = AC.createGain(); os.type = ty || 'sine'; os.frequency.value = f; g.gain.setValueAtTime(.0001, t + o); g.gain.exponentialRampToValueAtTime(.07, t + o + .015); g.gain.exponentialRampToValueAtTime(.0001, t + o + d);
+    os.connect(g).connect(AC.destination); os.start(t + o); os.stop(t + o + d + .02); }); } catch (e) {} }
+const buzz = p => { try { navigator.vibrate && navigator.vibrate(p); } catch (e) {} };
+function fb(ok) { buzz(ok ? 12 : [40, 50, 40]); snd(ok ? 'ok' : 'no'); }
+function burst() { snd('win'); buzz([20, 40, 20, 40, 70]); if (RM) return; const c = document.createElement('canvas'), d = devicePixelRatio || 1, W = innerWidth, H = innerHeight; c.width = W * d; c.height = H * d; c.className = 'burst'; document.body.appendChild(c);
+  const x = c.getContext('2d'), cs = getComputedStyle(document.documentElement), cols = ['--gold', '--gold', '--turq', '--ink'].map(v => cs.getPropertyValue(v).trim());
+  const ps = Array.from({ length: 48 }, () => { const a = Math.random() * 6.28, v = 3 + Math.random() * 8; return { x: W / 2, y: H * .3, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 3, r: 5 + Math.random() * 8, c: pick(cols), w: Math.random() * 6.28, vw: (Math.random() - .5) * .3 }; });
+  const t0 = performance.now(); (function f(t) { const k = (t - t0) / 1800; x.setTransform(d, 0, 0, d, 0, 0); x.clearRect(0, 0, W, H); if (k >= 1) return c.remove(); x.globalAlpha = 1 - k * k;
+    for (const p of ps) { p.x += p.vx; p.y += p.vy; p.vy += .22; p.vx *= .985; p.w += p.vw; x.fillStyle = p.c; for (const r of [0, Math.PI / 4]) { x.save(); x.translate(p.x, p.y); x.rotate(p.w + r); x.fillRect(-p.r / 2, -p.r / 2, p.r, p.r); x.restore(); } }
+    requestAnimationFrame(f); })(t0); }
+const sndB = () => `<button class="sndb ${P.snd ? 'on' : ''}" data-act="snd" aria-label="Ses" aria-pressed="${!!P.snd}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.5l4.5 4v-13l-4.5 4z"/>${P.snd ? '<path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>' : '<path d="M16 9.5l5 5M21 9.5l-5 5"/>'}</svg></button>`;
+const ballH = (name, side, who = '') => `<div class="ball ${side}">${name}${who ? `<small>${who}</small>` : ''}</div>`;
+const GRAT = [30, 35, 40, 45, 50].map(lo => `M${proj(lo, 38).join(',')}L${proj(lo, 10).join(',')}`).join('') + [15, 20, 25, 30, 35].map(la => `M${proj(28, la).join(',')}L${proj(52, la).join(',')}`).join('');
+
 /* ---------- olaylar ---------- */
 const ACT = {
   ...MPACT,
-  home, open: d => openMode(d.mode), start: d => start(d.mode, d.topic),
+  home, snd: () => { P.snd = !P.snd; save(); home(); if (P.snd) snd('ok'); }, open: d => openMode(d.mode), start: d => start(d.mode, d.topic),
   close: () => { $('.overlay')?.remove(); if (G) G.sel = null; },
   quit: () => finish('l', 'Maçtan çekildin', G.mode === 'quiz' ? -15 : -10),
   esl: d => { G.sel = +d.i; esmaRender(); }, esr: d => esmaPick(+d.i), dy1: () => dyAns(true), dy0: () => dyAns(false),
