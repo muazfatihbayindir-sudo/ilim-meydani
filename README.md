@@ -6,12 +6,13 @@ Sureler, siyer, peygamberler tarihi ve dinî genel kültür üzerine mini oyunla
 
 `index.html` tek başına çalışan bir sayfadır; GitHub Pages üzerinden yayınlanır. Sunucu ve hesap gerekmez.
 
-**Arkadaşınla oyna:** biri "Oda kur" der, çıkan 5 haneli kodu ya da davet bağlantısını gönderir. 2–4 kişi katılabilir.
+**Arkadaşınla oyna:** biri "Oda kur" der, çıkan 5 haneli kodu ya da davet bağlantısını gönderir. 2–10 kişi katılabilir.
 
 | Oyun | Kişi |
 |---|---|
-| Bilgi Yarışması | 2–4 (4 kişiyle 2v2 takım) |
-| Pingpong | 2 ya da 4 (2v2) |
+| Bilgi Yarışması | 2–10 (çift sayıda oyuncuyla takım da olur) |
+| Pingpong | 2 kişi düello; 3–10 kişi eleme ya da takım |
+| Numara Avı | 2–10 |
 | Izgara | 2 |
 | Kart Savaşı | 2 |
 

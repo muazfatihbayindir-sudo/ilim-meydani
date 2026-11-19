@@ -243,7 +243,7 @@ button.card:hover:not(:disabled){border-color:var(--hair)}
 .key.wide{max-width:54px;flex:1.5;font-size:12.5px}
 
 body{margin:0}[hidden]{display:none!important}
-button.chip{cursor:pointer}.chip.on{border-color:var(--gold);background:var(--gold-soft);color:var(--gold)}
+button.chip{cursor:pointer}.chip.on{border-color:var(--gold);background:var(--gold-soft);color:var(--gold)}.chip.out{opacity:.4;text-decoration:line-through}
 .fld{display:grid;gap:6px}.fld span{font:700 10.5px/1.3 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .qbox b.code{font:800 40px/1 var(--body);letter-spacing:.18em;padding-left:.18em}
 .code-in{text-transform:uppercase;letter-spacing:.2em;font-weight:800}.code-in::placeholder{letter-spacing:0;font-weight:500;text-transform:none}
@@ -488,7 +488,7 @@ function home() {
   <button class="hero" data-act="open" data-mode="gunluk">${patH()}<span class="eyebrow">Günün bulmacası · ${dateTR()}</span><h1>${gd ? 'Bugünkü ızgara tamam' : 'Bugünün ızgarası hazır'}</h1>
     <p>${gd ? 'Sonucunu görebilirsin. Yeni ızgara yarın gelir.' : 'Herkes aynı dokuz kareyi çözüyor. Süre yok, 12 tahmin hakkın var.'}</p><span class="cta">${gd ? 'Sonucu gör' : 'Çöz'}</span></button>
   <button class="word" data-act="open" data-mode="kelime"><span class="wt"><i class="ok"></i><i></i><i class="mid"></i><i></i><i class="ok"></i></span><span><b>Günün kelimesi</b><small>${kd ? 'Bugünkü kelimeyi tamamladın' : 'Beş harf, altı tahmin'}</small></span><span class="chev">›</span></button>
-  ${typeof MPOK !== 'undefined' && MPOK ? `<button class="word" data-act="mproom">${ico('mp')}<span><b>Arkadaşınla oyna</b><small>Oda koduyla 1v1 ya da 2v2</small></span><span class="chev">›</span></button>` : ''}
+  ${typeof MPOK !== 'undefined' && MPOK ? `<button class="word" data-act="mproom">${ico('mp')}<span><b>Arkadaşınla oyna</b><small>Oda koduyla 2–10 kişi</small></span><span class="chev">›</span></button>` : ''}
   <div class="sec"><h2>Rakibe karşı</h2><span>${vs.length} oyun</span></div>
   <div class="tiles">${vs.map(([k, m], i) => i ? `<button class="mt" data-act="open" data-mode="${k}">${ico(k)}<b>${m.name}</b></button>` : `<button class="mt lead" data-act="open" data-mode="${k}">${ico(k)}<span><b>${m.name}</b><small>${m.sub}</small></span><span class="chev">›</span></button>`).join('')}</div>
   <div class="sec"><h2>Tek başına</h2></div>
@@ -995,10 +995,12 @@ const QS = new URLSearchParams(location.search), LOCAL = QS.has('local'), MPOK =
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 let S = null, ME = null, NET = null, CONNS = [], HOST = false, mpUntil = 0, mpTimer = null, mpTickI = null, L = {};
 const myId = () => { try { let v = sessionStorage.getItem('im-id'); if (!v) { v = Math.random().toString(36).slice(2, 10); sessionStorage.setItem('im-id', v); } return v; } catch (e) { return L.id || (L.id = Math.random().toString(36).slice(2, 10)); } };
-const MPM = { quiz: { name: 'Bilgi Yarışması', n: [2, 3, 4], topics: ['karisik', 'sure', 'siyer', 'peygamber', 'genel'], d: '2–4 kişi; 4 kişiyle 2v2 de olur' },
-  ping: { name: 'Pingpong', n: [2, 4], topics: ['sure', 'peygamber', 'sahabe'], d: '1v1 ya da 2v2' },
+const MPM = { quiz: { name: 'Bilgi Yarışması', n: [2, 3, 4, 5, 6, 7, 8, 9, 10], topics: ['karisik', 'sure', 'siyer', 'peygamber', 'genel'], d: '2–10 kişi; çift sayıda takım da olur' },
+  ping: { name: 'Pingpong', n: [2, 3, 4, 5, 6, 7, 8, 9, 10], topics: ['sure', 'peygamber', 'sahabe'], d: '2 kişi düello; 3–10 kişi eleme ya da takım' },
+  num: { name: 'Numara Avı', n: [2, 3, 4, 5, 6, 7, 8, 9, 10], topics: ['sure', 'peygamber', 'siyer'], d: '2–10 kişi' },
   ttt: { name: 'Izgara', n: [2], topics: ['sure', 'peygamber', 'sahabe'], d: '1v1' },
   kart: { name: 'Kart Savaşı', n: [2], topics: ['sure', 'peygamber', 'siyer'], d: '1v1' } };
+const MAXP = 10;
 const NETERR = { 'peer-unavailable': 'Bu kodla açık bir oda bulunamadı.', 'network': 'Eşleştirme servisine ulaşılamadı. İnternet bağlantını kontrol et.', 'server-error': 'Eşleştirme servisi şu an yanıt vermiyor. Biraz sonra tekrar dene.',
   'socket-error': 'Eşleştirme servisiyle bağlantı koptu.', 'browser-incompatible': 'Bu tarayıcı doğrudan bağlantıyı desteklemiyor.' };
 
@@ -1038,7 +1040,7 @@ function mpCreate() { const name = mpName(), code = Array.from({ length: 5 }, ()
 function mpJoinConn(c) {
   c.ondata = m => { if (!S || !m) return;
     if (m.t === 'hello') { if (c.pid) return;
-      if (S.phase !== 'lobby' || S.players.length >= 4) return c.send({ t: 'no', why: S.phase !== 'lobby' ? 'Bu odada maç sürüyor. Bitince tekrar dene.' : 'Oda dolu (en çok 4 kişi).' });
+      if (S.phase !== 'lobby' || S.players.length >= MAXP) return c.send({ t: 'no', why: S.phase !== 'lobby' ? 'Bu odada maç sürüyor. Bitince tekrar dene.' : 'Oda dolu (en çok ' + MAXP + ' kişi).' });
       c.pid = String(m.id).slice(0, 12); CONNS.push(c); S.players.push({ id: c.pid, name: String(m.name || 'Oyuncu').slice(0, 16) }); mpSync(); }
     else if (m.t === 'act' && c.pid) mpAct(S.players.findIndex(p => p.id === c.pid), m.a); };
   c.onclose = () => { if (!S || !c.pid) return; CONNS = CONNS.filter(x => x !== c); const p = S.players.find(x => x.id === c.pid); S.players = S.players.filter(x => x !== p); c.pid = null;
@@ -1058,9 +1060,11 @@ function mpToast(m) { toast(m); CONNS.forEach(c => { try { c.send({ t: 'toast', 
 function mpAct(i, a) { if (!S || S.phase !== 'game' || i < 0 || !a) return; try { MPG[S.mode].act(i, a); } catch (e) { console.log('mp act', e); } }
 function mpEnd(res) { mpStopT(); S.phase = 'result'; S.res = res; mpSync(); }
 const mpIdx = () => S.players.findIndex(p => p.id === ME);
-const mpTeams = () => S.players.length === 4 && (S.mode === 'ping' || (S.mode === 'quiz' && S.team));
+const mpTeams = () => !!S.team && S.players.length >= 4 && S.players.length % 2 === 0 && (S.mode === 'ping' || S.mode === 'quiz');
 const sideOf = i => mpTeams() ? i % 2 : i;
-const mpNames = side => S.players.filter((p, i) => sideOf(i) === side).map(p => esc(p.name)).join(' & ');
+const mpNames = side => mpTeams() && S.players.length > 4 ? (side ? 'B takımı' : 'A takımı') : S.players.filter((p, i) => sideOf(i) === side).map(p => esc(p.name)).join(' & ');
+function mpBoard(ss) { const m = sideOf(mpIdx()), o = ss.map((_, s) => s).sort((a, b) => ss[b] - ss[a]), rows = o.length > 4 ? o.filter((s, i) => i < 3 || s === m) : o;
+  return `<div class="lb">${rows.map(s => `<div class="${s === m ? 'me' : ''}"><span>${o.indexOf(s) + 1}</span><span>${mpNames(s)}</span><span class="num">${ss[s]}</span></div>`).join('')}</div>`; }
 const ent = (d, id) => d.ents.find(x => x.id === id);
 const mpQuitH = '<button class="quit" data-act="mpleave">Odadan çık</button>';
 function mpVs(sc) { const m = sideOf(mpIdx()), o = m ? 0 : 1, mn = S.players[mpIdx()].name, on = S.players.find((p, i) => sideOf(i) === o).name;
@@ -1070,26 +1074,26 @@ function mpVs(sc) { const m = sideOf(mpIdx()), o = m ? 0 : 1, mn = S.players[mpI
 /* --- ekranlar --- */
 function mpHomeR(code = '') { stopAll(); G = null; app.classList.add('enter');
   app.innerHTML = `<header class="top"><span class="brand">Arkadaşınla oyna</span><button class="quit" data-act="home">Geri</button></header>
-  <p class="lede">Biriniz oda kurar ve çıkan kodu diğerlerine gönderir. 2 ile 4 kişi arasında oynanır; hesap açmak gerekmez.</p>
+  <p class="lede">Biriniz oda kurar ve çıkan kodu diğerlerine gönderir. 2 ile 10 kişi arasında oynanır; hesap açmak gerekmez.</p>
   <label class="fld"><span>Adın</span><input id="mpname" class="inp" maxlength="16" autocomplete="nickname" placeholder="Görünecek adın" value="${esc(P.name || '')}"></label>
   ${code ? '' : '<button class="btn" data-act="mpcreate">Oda kur</button><div class="sec"><h2>Kodun var mı?</h2></div>'}
   <div class="row"><input id="mpcode" class="inp code-in" maxlength="5" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Oda kodu" value="${esc(code)}"><button class="btn" data-act="mpjoin">Katıl</button></div>
   ${code ? '<button class="btn ghost" data-act="mpcreate">Bunun yerine yeni oda kur</button>' : ''}
   <p class="note">Bağlantı doğrudan cihazlar arasında kurulur; oyunu odayı kuran kişinin cihazı yönetir. Oda sahibi sayfayı kapatırsa oda da kapanır. Bazı mobil ve kurumsal ağlarda bağlantı kurulamayabilir; o durumda Wi-Fi ile deneyin.</p>`; }
-function mpLobbyR() { const n = S.players.length, m = MPM[S.mode], ok = m.n.includes(n), four = n === 4;
+function mpLobbyR() { const n = S.players.length, m = MPM[S.mode], ok = m.n.includes(n), canTeam = n >= 4 && n % 2 === 0 && (S.mode === 'quiz' || S.mode === 'ping');
   const who = S.players.map((p, i) => `<div class="${p.id === ME ? 'me' : ''}"><span>${i + 1}</span><span>${esc(p.name)}${p.id === ME ? ' (sen)' : ''}${i === 0 ? ' · oda sahibi' : ''}</span><span>${mpTeams() ? (i % 2 ? 'B takımı' : 'A takımı') : ''}</span></div>`).join('');
   app.innerHTML = `<header class="top"><span class="brand">Oda</span>${mpQuitH}</header>
   <div class="qbox"><small>Oda kodu</small><b class="code num">${S.code}</b><p class="stmt">Arkadaşların bu kodu girerek ya da davet bağlantısıyla katılır.</p></div>
   <button class="btn ghost" data-act="mpcopy">Davet bağlantısını kopyala</button>
   ${S.note ? `<p class="turn bot">${esc(S.note)}</p>` : ''}
-  <div class="sec"><h2>Oyuncular</h2><span>${n}/4</span></div><div class="lb">${who}</div>
+  <div class="sec"><h2>Oyuncular</h2><span>${n}/${MAXP}</span></div><div class="lb">${who}</div>
   ${HOST ? `<div class="sec"><h2>Oyun</h2><span>${m.d}</span></div><div class="chips">${Object.entries(MPM).map(([k, x]) => `<button class="chip ${k === S.mode ? 'on' : ''}" data-act="mpm" data-m="${k}">${x.name}</button>`).join('')}</div>
     <div class="sec"><h2>Konu</h2></div><div class="chips">${m.topics.map(t => `<button class="chip ${t === S.topic ? 'on' : ''}" data-act="mpt" data-t="${t}">${TOPIC[t]}</button>`).join('')}</div>
-    ${four && S.mode === 'quiz' ? `<div class="chips"><button class="chip ${S.team ? '' : 'on'}" data-act="mpteam" data-v="0">Herkes tek</button><button class="chip ${S.team ? 'on' : ''}" data-act="mpteam" data-v="1">2v2 takım</button></div>` : ''}
+    ${canTeam ? `<div class="sec"><h2>Düzen</h2></div><div class="chips"><button class="chip ${S.team ? '' : 'on'}" data-act="mpteam" data-v="0">${S.mode === 'ping' ? 'Eleme' : 'Herkes tek'}</button><button class="chip ${S.team ? 'on' : ''}" data-act="mpteam" data-v="1">${n / 2}v${n / 2} takım</button></div>` : ''}
     ${mpTeams() ? '<button class="btn ghost" data-act="mpshuf">Takımları karıştır</button>' : ''}
     <button class="btn" data-act="mpstart" ${ok ? '' : 'disabled'}>Maçı başlat</button>
-    ${ok ? '' : `<p class="hint" style="text-align:center">${m.name} ${m.n.join(' ya da ')} kişiyle oynanır; şu an ${n} kişisiniz.</p>`}`
-  : `<div class="qbox"><small>Seçilen oyun</small><b>${m.name}</b><p class="stmt">${TOPIC[S.topic]}${mpTeams() ? ' · 2v2 takım' : ''}</p></div><p class="hint" style="text-align:center">Oda sahibi maçı başlatacak.</p>`}`; }
+    ${ok ? '' : `<p class="hint" style="text-align:center">${m.name} ${m.n.length > 2 ? m.n[0] + '–' + m.n[m.n.length - 1] : m.n.join(' ya da ')} kişiyle oynanır; şu an ${n} kişisiniz.</p>`}`
+  : `<div class="qbox"><small>Seçilen oyun</small><b>${m.name}</b><p class="stmt">${TOPIC[S.topic]}${mpTeams() ? ' · takım' : S.mode === 'ping' && n > 2 ? ' · eleme' : ''}</p></div><p class="hint" style="text-align:center">Oda sahibi maçı başlatacak.</p>`}`; }
 function mpResultR() { const r = S.res, m = sideOf(mpIdx()), sides = mpTeams() ? 2 : S.players.length, rows = Array.from({ length: sides }, (_, s) => s).sort((a, b) => r.sc[b] - r.sc[a]);
   app.innerHTML = `<div class="center" style="padding:40px 0 10px">${patH()}<span class="eyebrow">${MPM[S.mode].name} · ${TOPIC[S.topic]}</span><h1 class="out ${r.win === m ? 'w' : r.win === -1 ? '' : 'l'}">${r.win === -1 ? 'Berabere' : r.win === m ? 'Galibiyet' : 'Mağlubiyet'}</h1></div>
   <div class="lb">${rows.map((s, i) => `<div class="${s === m ? 'me' : ''}"><span>${i + 1}</span><span>${mpNames(s)}</span><span class="num">${r.sc[s]}</span></div>`).join('')}</div>
@@ -1118,20 +1122,32 @@ const MPG = {
     init() { const n = S.players.length; S.g = { qs: JSON.parse(JSON.stringify(buildQuiz(S.topic))), r: -1, sc: Array(n).fill(0), dur: 13 }; mqNext(); },
     act(i, a) { const g = S.g; if (g.rev || a.k !== 'ans' || g.ans[i] != null || !(a.i >= 0 && a.i < 4)) return; g.ans[i] = a.i; g.fr[i] = Math.max(0, 1 - (Date.now() - g.t0) / (g.dur * 1000)); if (g.ans.every(x => x != null)) return mqReveal(); mpSync(); },
     render() { const g = S.g, q = g.qs[g.r], me = mpIdx(), mine = g.ans[me], done = mine != null || g.rev, sides = mpTeams() ? 2 : S.players.length, ss = mqSides(), m = sideOf(me);
-      app.innerHTML = `<div class="lb">${Array.from({ length: sides }, (_, s) => s).sort((a, b) => ss[b] - ss[a]).map((s, i) => `<div class="${s === m ? 'me' : ''}"><span>${i + 1}</span><span>${mpNames(s)}</span><span class="num">${ss[s]}</span></div>`).join('')}</div>
+      app.innerHTML = mpBoard(ss) + `
       <h2 style="text-align:center">Tur ${g.r + 1}/8 · ${TOPIC[S.topic]}</h2>` + clockH() + `<div class="qbox">${q.ctx ? `<span class="ctx">${q.ctx}</span><br>` : ''}<b>${q.t}</b></div>
       <div class="opts">${q.opts.map((o, i) => `<button class="opt ${g.rev ? (i === q.c ? 'ok' : i === mine ? 'no' : '') : i === mine ? 'sel' : ''}" data-act="mpans" data-i="${i}" ${done ? 'disabled' : ''}>${o.l}${g.rev && o.n != null ? `<small class="num">${o.n}</small>` : ''}</button>`).join('')}</div>
       <p class="turn ${g.rev && !g.gain[me] ? 'bot' : 'me'}">${g.rev ? (g.gain[me] ? '+' + g.gain[me] + ' puan' : mine == null ? 'Süre doldu' : 'Yanlış cevap') : g.ans.filter(x => x != null).length + '/' + S.players.length + ' oyuncu cevapladı'}</p>` + mpQuitH; }
   },
   ping: {
-    init() { S.g = { sc: [0, 0], serve: rnd(S.players.length), dur: 12, crit: -1 }; mpServe(); },
+    init() { const n = S.players.length, elim = n > 2 && !mpTeams(); S.g = { elim, sc: Array(elim ? n : 2).fill(0), alive: Array(n).fill(true), serve: rnd(n), dur: 12, crit: -1 }; mpServe(); },
     act(i, a) { const g = S.g, d = DECKS[S.topic]; if (i !== g.turn || a.k !== 'pick') return; const e = ent(d, a.id); if (!e) return;
-      if (d.crit[g.crit].t(e) && !g.used.includes(e.id)) { g.used.push(e.id); g.rally.push([e.id, i]); g.turn = (g.turn + 1) % S.players.length; mpTurnP(); } else mpPoint(1 - sideOf(i), S.players[i].name + ': ' + e.name + (g.used.includes(e.id) ? ' zaten söylendi' : ' uymuyor')); },
+      if (d.crit[g.crit].t(e) && !g.used.includes(e.id)) { g.used.push(e.id); g.rally.push([e.id, i]); g.turn = mpNextP(g.turn); mpTurnP(); } else mpFault(i, S.players[i].name + ': ' + e.name + (g.used.includes(e.id) ? ' zaten söylendi' : ' uymuyor')); },
     render() { const g = S.g, d = DECKS[S.topic], me = mpIdx(), mine = g.turn === me, ms = sideOf(me);
       G = { mode: 'mp', deck: d, used: new Set(g.used), onPick: e => mpSend({ k: 'pick', id: e.id }) };
-      app.innerHTML = mpVs(g.sc) + clockH() + `<div class="qbox"><small>İlk 3 sayıyı alan kazanır · tekrar yok</small><b>${d.crit[g.crit].l}</b></div>
-      <div class="chips">${g.rally.slice(-8).map(([id, o]) => chip(ent(d, id).name, sideOf(o) === ms ? 'me' : 'bot')).join('') || '<span class="hint">Henüz isim söylenmedi.</span>'}</div>` +
-      (mine ? '<p class="turn me">Sıra sende: uyan bir isim söyle</p>' + searchH(d.ph) : `<p class="turn bot">${g.wait ? esc(g.msg) : esc(S.players[g.turn].name) + ' düşünüyor…'}</p>`) + mpQuitH; bindSearch(); }
+      app.innerHTML = (g.elim ? `<div class="chips">${S.players.map((p, i) => chip(esc(p.name) + (i === me ? ' (sen)' : ''), g.alive[i] ? (i === g.turn ? 'on' : '') : 'out')).join('')}</div>` : mpVs(g.sc)) + clockH() +
+      `<div class="qbox"><small>${g.elim ? 'Yanlış söyleyen ya da süresi dolan elenir · son kalan kazanır' : 'İlk 3 sayıyı alan kazanır · tekrar yok'}</small><b>${d.crit[g.crit].l}</b></div>
+      <div class="chips">${g.rally.slice(-8).map(([id, o]) => chip(ent(d, id).name, g.elim ? (o === me ? 'me' : '') : sideOf(o) === ms ? 'me' : 'bot')).join('') || '<span class="hint">Henüz isim söylenmedi.</span>'}</div>` +
+      (mine ? '<p class="turn me">Sıra sende: uyan bir isim söyle</p>' + searchH(d.ph) : `<p class="turn bot">${g.wait ? esc(g.msg) : esc(S.players[g.turn].name) + ' düşünüyor…'}</p>${g.alive[me] ? '' : '<p class="hint" style="text-align:center">Elendin; maçın kalanını izliyorsun.</p>'}`) + mpQuitH; bindSearch(); }
+  },
+  num: {
+    init() { S.g = { r: -1, sc: Array(S.players.length).fill(0), dur: 15, seen: [] }; mnNext(); },
+    act(i, a) { const g = S.g; if (g.rev || a.k !== 'num' || g.ans[i] != null || !Number.isFinite(a.v)) return; g.ans[i] = Math.round(a.v); if (g.ans.every(x => x != null)) return mnReveal(); mpSync(); },
+    render() { const g = S.g, d = DECKS[S.topic], me = mpIdx(), e = ent(d, g.id), q = d.guess[g.gi], mine = g.ans[me], cnt = g.ans.filter(x => x != null).length + '/' + S.players.length + ' oyuncu tahmin etti';
+      const same = L.mr === S.gid + g.r, keep = same ? $('#mg')?.value || '' : '', had = !same || document.activeElement?.id === 'mg'; L.mr = S.gid + g.r;
+      app.innerHTML = mpBoard(g.sc) + `<h2 style="text-align:center">Tur ${g.r + 1}/6 · ${TOPIC[S.topic]}</h2>` + clockH() + `<div class="qbox"><small>En yakın tahmin puanı alır</small><b>${q.t(e)}</b></div>` +
+      (g.rev ? `<div class="qbox"><small>Doğru cevap</small><b class="num">${e[q.k]}</b></div><div class="lb">${g.order.map((i, k) => `<div class="${i === me ? 'me' : ''}"><span>${k + 1}</span><span>${esc(S.players[i].name)}${g.gain[i] ? ' · +' + g.gain[i] : ''}</span><span class="num">${g.ans[i] ?? '–'}</span></div>`).join('')}</div>`
+        : mine != null ? `<p class="turn me">Tahminin: ${mine}</p><p class="hint" style="text-align:center">${cnt}</p>`
+        : `<div class="row"><input id="mg" class="inp num" type="number" inputmode="numeric" placeholder="Tahminin"><button class="btn" data-act="mnum">Tahmin et</button></div><p class="hint" style="text-align:center">${cnt}</p>`) + mpQuitH;
+      const inp = $('#mg'); if (inp) { inp.value = keep; if (had) inp.focus(); } }
   },
   kart: {
     init() { const d = DECKS[S.topic]; S.g = { phase: 'draft', pools: [0, 1].map(() => shuffle(d.ents).slice(0, 12).map(e => e.id)), hands: [null, null], sc: [0, 0], round: 0, dur: 40, q: -1 };
@@ -1161,11 +1177,23 @@ const mqSides = () => { const sides = mpTeams() ? 2 : S.players.length, r = Arra
 function mqNext() { const g = S.g, n = S.players.length; if (g.r === 7) { const ss = mqSides(), mx = Math.max(...ss), w = ss.filter(v => v === mx).length > 1 ? -1 : ss.indexOf(mx); return mpEnd({ win: w, sc: ss }); }
   g.r++; g.ans = Array(n).fill(null); g.fr = Array(n).fill(0); g.gain = Array(n).fill(0); g.rev = false; g.t0 = Date.now(); mpAfter(g.dur * 1000, mqReveal); mpSync(); }
 function mqReveal() { const g = S.g; if (g.rev) return; mpStopT(); g.rev = true; const c = g.qs[g.r].c; g.gain = g.ans.map((x, i) => x === c ? Math.round(500 + 500 * g.fr[i]) : 0); g.gain.forEach((v, i) => g.sc[i] += v); mpAfter(2800, mqNext, false); mpSync(); }
-function mpServe() { const g = S.g, d = DECKS[S.topic]; if (g.sc[0] === 3 || g.sc[1] === 3) return mpEnd({ win: +(g.sc[1] === 3), sc: g.sc });
+function mpNextP(i) { const g = S.g, n = S.players.length; do { i = (i + 1) % n; } while (!g.alive[i]); return i; }
+function mpServe() { const g = S.g, d = DECKS[S.topic], n = S.players.length;
+  if (g.elim && g.alive.filter(Boolean).length === 1) { const w = g.alive.indexOf(true); g.sc[w] = n - 1; return mpEnd({ win: w, sc: g.sc }); }
+  if (!g.elim && (g.sc[0] === 3 || g.sc[1] === 3)) return mpEnd({ win: +(g.sc[1] === 3), sc: g.sc });
   let c; do { c = rnd(d.crit.length); } while (c === g.crit || d.ents.filter(e => d.crit[c].t(e)).length < d.min * 4);
-  g.crit = c; g.used = []; g.rally = []; g.msg = ''; g.serve = (g.serve + 1) % S.players.length; g.turn = g.serve; mpTurnP(); }
-function mpTurnP() { const g = S.g; g.wait = false; mpAfter(g.dur * 1000, () => mpPoint(1 - sideOf(S.g.turn), S.players[S.g.turn].name + ' süreyi doldurdu')); mpSync(); }
-function mpPoint(side, msg) { const g = S.g; mpStopT(); g.sc[side]++; g.msg = msg + ' · sayı ' + mpNames(side).replace(/&amp;/g, '&'); g.wait = true; g.turn = -1; mpAfter(2200, mpServe, false); mpSync(); }
+  g.crit = c; g.used = []; g.rally = []; g.msg = ''; g.serve = mpNextP(g.serve); g.turn = g.serve; mpTurnP(); }
+function mpTurnP() { const g = S.g; g.wait = false; mpAfter(g.dur * 1000, () => mpFault(S.g.turn, S.players[S.g.turn].name + ' süreyi doldurdu')); mpSync(); }
+function mpFault(i, msg) { const g = S.g; mpStopT();
+  if (g.elim) { g.sc[i] = S.players.length - g.alive.filter(Boolean).length; g.alive[i] = false; g.serve = i; g.msg = msg + ' · elendi'; }
+  else { const s = 1 - sideOf(i); g.sc[s]++; g.msg = msg + ' · sayı ' + mpNames(s).replace(/&amp;/g, '&'); }
+  g.wait = true; g.turn = -1; mpAfter(2200, mpServe, false); mpSync(); }
+function mnNext() { const g = S.g, d = DECKS[S.topic], n = S.players.length;
+  if (g.r === 5) { const mx = Math.max(...g.sc); return mpEnd({ win: g.sc.filter(v => v === mx).length > 1 ? -1 : g.sc.indexOf(mx), sc: g.sc }); }
+  g.r++; g.gi = rnd(d.guess.length); g.id = pick(d.ents.filter(e => !g.seen.includes(e.id))).id; g.seen.push(g.id); g.ans = Array(n).fill(null); g.gain = Array(n).fill(0); g.rev = false; mpAfter(g.dur * 1000, mnReveal); mpSync(); }
+function mnReveal() { const g = S.g, d = DECKS[S.topic], n = S.players.length; if (g.rev) return; mpStopT(); g.rev = true;
+  const t = ent(d, g.id)[d.guess[g.gi].k], dist = g.ans.map(v => v == null ? Infinity : Math.abs(v - t)), lv = [...new Set(dist.filter(Number.isFinite))].sort((a, b) => a - b), pts = n <= 3 ? [1] : [3, 2, 1];
+  g.gain = dist.map(x => pts[lv.indexOf(x)] || 0); g.gain.forEach((v, i) => g.sc[i] += v); g.order = dist.map((_, i) => i).sort((a, b) => dist[a] - dist[b]); mpAfter(4000, mnNext, false); mpSync(); }
 function mkRound() { const g = S.g, d = DECKS[S.topic]; if (g.round === 5) return mpEnd({ win: g.sc[0] === g.sc[1] ? -1 : +(g.sc[1] > g.sc[0]), sc: g.sc });
   g.phase = 'play'; g.round++; let q; do { q = rnd(d.qs.length); } while (d.qs.length > 1 && q === g.q); g.q = q; g.played = [null, null]; g.rev = false; g.dur = 20; mpAfter(20000, mkReveal); mpSync(); }
 function mkReveal() { const g = S.g, d = DECKS[S.topic], q = d.qs[g.q]; if (g.rev) return; mpStopT(); g.played = g.played.map((p, i) => p ?? pick(g.hands[i]));
@@ -1179,9 +1207,11 @@ const MPACT = {
   mpcopy: () => { const u = location.origin + location.pathname + '?oda=' + S.code + (LOCAL ? '&local=1' : ''), ok = () => toast('Davet bağlantısı kopyalandı'), no = () => toast('Kopyalanamadı. Kodu elle gönder: ' + S.code); try { navigator.clipboard.writeText(u).then(ok, no); } catch (e) { no(); } },
   mpans: d => mpSend({ k: 'ans', i: +d.i }),
   mkd: d => { L.sel = L.sel.includes(d.id) ? L.sel.filter(x => x !== d.id) : L.sel.length < 5 ? [...L.sel, d.id] : L.sel; mpRender(); },
+  mnum: () => { const v = $('#mg')?.value; if (v == null || v === '') return toast('Bir sayı yaz'); mpSend({ k: 'num', v: +v }); },
   mkready: () => mpSend({ k: 'ready', ids: L.sel }), mkp: d => mpSend({ k: 'play', id: d.id })
 };
 addEventListener('pagehide', () => { if (NET) mpClean(); });
+document.addEventListener('keydown', ev => { if (ev.key === 'Enter' && ev.target.id === 'mg') MPACT.mnum(); });
 
 /* ---------- olaylar ---------- */
 const ACT = {
