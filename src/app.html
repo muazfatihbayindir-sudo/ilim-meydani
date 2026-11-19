@@ -1,0 +1,1214 @@
+<title>İlim Meydanı</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Manrope:wght@500;600;700;800&display=swap">
+<style>
+/* Layout: tek sütunlu oyun kabuğu. Tezhip paleti: lacivert zemin, altın varak ince çizgiler, fildişi yazı; turkuaz oyuncu, mercan rakip. */
+:root{
+  --bg:#0a1230; --bg2:#111c42; --surface:#141f48; --surface2:#1d2b5c; --line:#2a396c; --hair:rgba(217,181,106,.32);
+  --ink:#f4efe2; --muted:#a3adc9; --gold:#d9b56a; --gold-soft:#332c22;
+  --turq:#58cfc6; --turq-soft:#123a47; --coral:#f08268; --coral-soft:#45232f; --ok:#62d29c; --ok-soft:#133d38;
+  --cta:#d9b56a; --on-cta:#17120a; --on-fill:#0a1230; --shade:rgba(4,8,22,.74); --shadow:0 22px 44px -22px rgba(0,0,0,.7);
+  --display:"Gilda Display","Palatino Linotype","Book Antiqua",Georgia,serif;
+  --body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){
+  --bg:#f2f3f8; --bg2:#ffffff; --surface:#ffffff; --surface2:#e9ecf5; --line:#d7dcea; --hair:rgba(150,113,31,.4);
+  --ink:#131c40; --muted:#5a6486; --gold:#8f6b1c; --gold-soft:#f4ecd6;
+  --turq:#0b8482; --turq-soft:#daf0ee; --coral:#c2412b; --coral-soft:#fae1da; --ok:#1b8553; --ok-soft:#dcf2e6;
+  --cta:#18286a; --on-cta:#ffffff; --on-fill:#ffffff; --shade:rgba(19,28,64,.5); --shadow:0 18px 36px -22px rgba(19,28,64,.45);
+  color-scheme:light}}
+:root[data-theme="light"]{
+  --bg:#f2f3f8; --bg2:#ffffff; --surface:#ffffff; --surface2:#e9ecf5; --line:#d7dcea; --hair:rgba(150,113,31,.4);
+  --ink:#131c40; --muted:#5a6486; --gold:#8f6b1c; --gold-soft:#f4ecd6;
+  --turq:#0b8482; --turq-soft:#daf0ee; --coral:#c2412b; --coral-soft:#fae1da; --ok:#1b8553; --ok-soft:#dcf2e6;
+  --cta:#18286a; --on-cta:#ffffff; --on-fill:#ffffff; --shade:rgba(19,28,64,.5); --shadow:0 18px 36px -22px rgba(19,28,64,.45);
+  color-scheme:light}
+*{box-sizing:border-box}
+body{background:var(--bg);background-image:radial-gradient(130% 55% at 50% -12%,var(--bg2),transparent 70%);background-repeat:no-repeat;color:var(--ink);font:500 15px/1.5 var(--body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:18px 40px;-webkit-font-smoothing:antialiased}
+#app{max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;transition:transform .12s ease,border-color .15s ease,background-color .15s ease}
+button:active:not(:disabled){transform:scale(.975)}
+button:disabled{cursor:default;opacity:.38}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+h1,h2,h3{margin:0;text-wrap:balance}
+h1{font:400 28px/1.12 var(--display);letter-spacing:.005em}
+h2{font:700 11px/1.3 var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+p{margin:0}
+.num{font-variant-numeric:tabular-nums}
+.lede{color:var(--muted);max-width:42ch}
+.eyebrow{font:700 10.5px/1.3 var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+
+/* sekiz köşeli yıldız */
+.star{position:relative;width:1em;height:1em;display:inline-block;flex:none}
+.star::before,.star::after{content:"";position:absolute;inset:15%;background:currentColor}
+.star::after{transform:rotate(45deg)}
+.medal{position:relative;width:38px;height:38px;display:grid;place-items:center;flex:none;color:var(--gold)}
+.medal::before,.medal::after{content:"";position:absolute;inset:6px;border:1.5px solid currentColor;background:var(--surface)}
+.medal::after{transform:rotate(45deg)}
+.medal i{position:relative;z-index:1;font:800 12.5px/1 var(--body);font-style:normal;color:var(--ink)}
+.medal.me{color:var(--turq)}.medal.bot{color:var(--coral)}
+.medal.big{width:92px;height:92px}.medal.big::before,.medal.big::after{inset:15px;border-width:2px}.medal.big i{font:400 30px/1 var(--display)}
+
+/* ana ekran */
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.brand{font:400 23px/1 var(--display);letter-spacing:.01em}
+.lp{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--hair);border-radius:999px;padding:7px 13px 7px 10px;font-size:13px;font-weight:700;color:var(--muted)}
+.lp .star{color:var(--gold);font-size:14px}.lp b{color:var(--ink);font-weight:800}
+.rankbar{display:grid;gap:7px}
+.rankbar>div:first-child{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;color:var(--muted)}
+.rankbar>div:first-child span:first-child{color:var(--ink);font-weight:700}
+.rankbar .bar{height:3px;flex:none}.rankbar .bar i{background:var(--gold);min-width:3px}
+.hero{position:relative;overflow:hidden;display:grid;gap:10px;justify-items:start;text-align:left;width:100%;padding:24px 20px 20px;border-radius:26px;
+  background:linear-gradient(155deg,var(--surface2),var(--surface) 70%);border:1px solid var(--hair);box-shadow:var(--shadow)}
+.pat{position:absolute;inset:0;width:100%;height:100%;color:var(--gold);opacity:.22;pointer-events:none;
+  -webkit-mask-image:linear-gradient(105deg,transparent 38%,#000);mask-image:linear-gradient(105deg,transparent 38%,#000)}
+.hero>*:not(.pat){position:relative}
+.hero h1{font-size:31px;max-width:13ch}
+.hero p{color:var(--muted);max-width:27ch;font-size:14px}
+.cta{background:var(--cta);color:var(--on-cta);border-radius:999px;padding:10px 20px;font-weight:800;font-size:14px;margin-top:6px}
+.word{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;text-align:left;width:100%;padding:14px 16px;border-radius:20px;background:var(--surface);border:1px solid var(--line)}
+.word .wt{display:flex;gap:3px}.word .wt i{width:15px;height:19px;border-radius:4px;border:1.5px solid var(--line)}
+.word .wt i.ok{background:var(--ok);border-color:var(--ok)}.word .wt i.mid{background:var(--gold);border-color:var(--gold)}
+.word b,.rowcard b{display:block;font-weight:700;line-height:1.25}
+.word small,.rowcard small{color:var(--muted);font-size:12.5px}
+.chev{color:var(--muted);font-size:20px;line-height:1}
+.sec{display:flex;justify-content:space-between;align-items:baseline;margin-top:10px}
+.sec span{font-size:12px;color:var(--muted)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mt{display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;gap:16px;min-height:104px;min-width:0;padding:14px 12px 12px;border-radius:18px;text-align:left;
+  background:var(--surface);border:1px solid var(--line)}
+.mt:hover,.word:hover,.rowcard:hover{border-color:var(--hair)}
+.mt svg,.rowcard svg,.mi svg,.word>svg{width:26px;height:26px;color:var(--gold);flex:none}
+.mt b{font:700 13px/1.2 var(--body);overflow-wrap:anywhere}
+.mt.lead{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:flex-start;gap:14px;min-height:0;padding:16px;border-color:var(--hair)}
+.mt.lead b{font:400 20px/1.15 var(--display)}.mt.lead small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}.mt.lead .chev{margin-left:auto}
+.rowcard{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;text-align:left;width:100%;padding:14px 16px;border-radius:20px;background:var(--surface);border:1px solid var(--line)}
+.rowcard .stat{display:flex;flex-direction:column;align-items:flex-end;gap:2px}.rowcard .stat b{font:400 26px/1 var(--display)}
+.note{color:var(--muted);font-size:12px;line-height:1.5;border-top:1px solid var(--line);padding-top:14px;margin-top:8px}
+.enter>*{animation:rise .5s cubic-bezier(.2,.7,.2,1) both}
+.enter>*:nth-child(2){animation-delay:.04s}.enter>*:nth-child(3){animation-delay:.08s}.enter>*:nth-child(4){animation-delay:.12s}.enter>*:nth-child(n+5){animation-delay:.16s}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}}
+
+/* maç üstü */
+.vs{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding:10px 12px;border-radius:20px;background:var(--surface);border:1px solid var(--line)}
+.vs .p{display:flex;align-items:center;gap:8px;min-width:0}
+.vs .p.r{justify-content:flex-end;text-align:right}
+.vs .p b{display:block;font-weight:700;line-height:1.2;overflow-wrap:anywhere}
+.vs .p small{color:var(--muted);font-size:11.5px}
+.vs .sc{display:flex;align-items:center;gap:12px;font:400 34px/1 var(--display)}
+.vs .sc .a{color:var(--turq)}.vs .sc .b{color:var(--coral)}
+.vs .sc em{width:1px;height:24px;background:var(--hair);font-size:0}
+.clock{display:flex;align-items:center;gap:12px}
+.clock span{font-weight:800;font-size:13px;min-width:44px;color:var(--muted)}
+.bar{flex:1;height:4px;border-radius:2px;background:var(--surface2);overflow:hidden}
+.bar i{display:block;height:100%;width:100%;border-radius:2px;background:var(--ok);transition:width .1s linear}
+.bar i[data-low="1"]{background:var(--coral)}
+.turn{text-align:center;font-weight:700;font-size:14px}
+.turn.me{color:var(--turq)}.turn.bot{color:var(--coral)}
+
+/* soru kutusu */
+.qbox{position:relative;padding:22px 16px 18px;border-radius:20px;background:var(--surface);border:1px solid var(--line);text-align:center}
+.qbox::before{content:"";position:absolute;top:-4.5px;left:50%;width:8px;height:8px;background:var(--gold);transform:translateX(-50%) rotate(45deg)}
+.qbox small{display:block;font:700 10.5px/1.45 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.qbox b{font:400 21px/1.28 var(--display)}
+.qbox .ctx{display:inline-block;margin-bottom:10px;border:1px solid var(--hair);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:700}
+.stmt{margin-top:10px;font-weight:600;color:var(--muted)}
+
+/* ızgara */
+.grid{display:grid;grid-template-columns:.95fr repeat(3,1fr);gap:6px;padding:8px;border-radius:22px;background:var(--surface);border:1px solid var(--line)}
+.hd{display:grid;place-items:center;text-align:center;font-size:10.5px;font-weight:700;line-height:1.25;padding:6px 2px;min-height:58px;color:var(--muted);overflow-wrap:anywhere}
+.corner{display:grid;place-items:center;color:var(--gold);font-size:22px;opacity:.7}
+.cell{aspect-ratio:1;border-radius:14px;border:1px solid var(--line);background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:4px;
+  font-size:12px;font-weight:700;text-align:center;line-height:1.15;overflow-wrap:anywhere;min-width:0}
+.cell:hover:not(:disabled){border-color:var(--hair)}
+.cell .plus{font-size:20px;color:var(--muted);font-weight:300}
+.cell.me{border-color:var(--turq);background:var(--turq-soft)}
+.cell.bot{border-color:var(--coral);background:var(--coral-soft)}
+.cell.me .star{color:var(--turq);font-size:15px}
+.cell.bot .dot{width:11px;height:11px;border-radius:50%;background:var(--coral)}
+.cell.target{outline:2px dashed var(--gold);outline-offset:1px}
+.bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.bgrid .cell{aspect-ratio:auto;min-height:84px;background:var(--surface)}
+.bgrid .cell.me{background:var(--turq-soft)}
+.bgrid .cell small{color:var(--turq);font-size:11.5px}
+
+/* jokerler ve düğmeler */
+.jok{display:flex;gap:8px}
+.jk{flex:1;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:10px 6px;font-weight:700;font-size:14px;display:flex;flex-direction:column;align-items:center;line-height:1.25}
+.jk small{font-weight:600;color:var(--muted);font-size:11px}
+.jk.on{border-color:var(--gold);color:var(--gold);background:var(--gold-soft)}
+.quit{align-self:center;color:var(--muted);font-size:12.5px;font-weight:600;text-decoration:underline;text-underline-offset:3px;padding:8px}
+.btn{background:var(--cta);color:var(--on-cta);border-radius:14px;padding:13px 16px;font-weight:800;text-align:center}
+.btn.ghost{background:none;color:var(--ink);border:1px solid var(--line)}
+.btn.dy{flex:1;padding:20px;font-size:17px}.btn.yes{background:var(--ok);color:var(--on-fill)}.btn.nay{background:var(--coral);color:var(--on-fill)}
+.row{display:flex;gap:8px}.row .inp{flex:1;min-width:0}.row .btn{flex:none}
+
+/* katmanlar */
+.overlay{position:fixed;inset:0;background:var(--shade);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);display:flex;align-items:flex-start;justify-content:center;z-index:20;
+  padding:calc(28px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 28px max(16px,env(safe-area-inset-left,0px));overflow:auto;animation:fade .2s both}
+.sheet{background:var(--surface);border:1px solid var(--hair);border-radius:26px;padding:20px;width:100%;max-width:408px;display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow);animation:rise .32s cubic-bezier(.2,.7,.2,1) both}
+@keyframes fade{from{opacity:0}}
+.sheet-h{display:flex;align-items:center;gap:12px}
+.sheet-h b{flex:1;font:400 22px/1.15 var(--display)}
+.mi{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;border:1px solid var(--hair);flex:none}
+.x{font-size:22px;line-height:1;color:var(--muted);padding:4px 8px}
+.sheet input,.inp{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.sheet input::placeholder,.inp::placeholder{color:var(--muted)}
+#res{display:flex;flex-direction:column;gap:6px;min-height:120px}
+.hint{color:var(--muted);font-size:13px}
+#res .hint{padding:10px 2px}
+.opt{display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:13px 14px;font-weight:600}
+.sheet .opt{background:var(--bg)}
+.opt:hover:not(:disabled){border-color:var(--hair)}
+.opt.sel{border-color:var(--gold);background:var(--gold-soft)}
+.opt.ok{border-color:var(--ok);background:var(--ok-soft);opacity:1}
+.opt.no{border-color:var(--coral);background:var(--coral-soft);opacity:1}
+.opt.gone{visibility:hidden}
+.opt:disabled{opacity:.6}.opt.ok:disabled,.opt.no:disabled{opacity:1}
+.opt small{color:var(--muted);font-weight:700}
+.opts{display:flex;flex-direction:column;gap:8px}
+.rules{display:flex;flex-direction:column;margin:0;padding:0;list-style:none}
+.rules li{display:grid;grid-template-columns:76px 1fr;gap:12px;font-size:13.5px;padding:10px 0;border-top:1px solid var(--line)}
+.rules li b{font:700 10.5px/1.6 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.topics{display:grid;grid-template-columns:1fr 1fr;gap:8px}.topics.one{grid-template-columns:1fr}
+.topics .btn:last-child:nth-child(odd){grid-column:1/-1}
+.center{position:relative;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px;padding:90px 0 60px}
+.center .pat{-webkit-mask-image:radial-gradient(closest-side,#000,transparent);mask-image:radial-gradient(closest-side,#000,transparent);opacity:.3}
+.center>*:not(.pat){position:relative}
+.center .medal{animation:turnmedal 6s linear infinite}.center .medal i{animation:turnmedal 6s linear infinite reverse}
+@keyframes turnmedal{to{transform:rotate(360deg)}}
+.out{font:400 32px/1.1 var(--display)}
+.out.w{color:var(--ok)}.out.l{color:var(--coral)}
+.delta{font-weight:800;font-size:13.5px;border:1px solid var(--hair);border-radius:12px;padding:10px;text-align:center}
+.share{margin:0;background:var(--bg);border-radius:14px;padding:12px;font:14px/1.35 var(--body);white-space:pre-wrap;user-select:all;text-align:center}
+
+/* kartlar */
+.hand{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.pool,.hand.mine{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.card{aspect-ratio:3/4;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:5px;
+  font-size:11.5px;font-weight:700;text-align:center;line-height:1.18;overflow-wrap:break-word;min-width:0}
+.pool .card,.hand.mine .card{aspect-ratio:auto;min-height:76px;font-size:13px}
+button.card:hover:not(:disabled){border-color:var(--hair)}
+.card .star{font-size:13px;color:var(--gold)}
+.card small{color:var(--gold);font-size:11px}
+.card.sel{border-color:var(--turq);background:var(--turq-soft)}
+.card.back{background:var(--surface2);border-color:var(--hair)}
+.card.back .star{font-size:18px}
+.card.used{visibility:hidden}
+.arena{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:250px;margin:0 auto;width:100%;min-height:150px}
+.arena .slot{display:flex;flex-direction:column;gap:6px;text-align:center;font-size:12px;color:var(--muted)}
+.arena .card{font-size:13.5px;border-color:var(--hair)}
+.arena .card.win{border-color:var(--ok);background:var(--ok-soft)}
+.arena .card.lose{opacity:.5}
+.arena .card small{font-size:12px}
+
+/* sıralama, etiketler, sütunlar */
+.lb{display:flex;flex-direction:column;border-radius:16px;border:1px solid var(--line);background:var(--surface);overflow:hidden}
+.lb div{display:grid;grid-template-columns:18px 1fr auto;gap:8px;padding:7px 12px;font-size:13px;font-weight:600;border-top:1px solid var(--line)}
+.lb div:first-child{border-top:0}.lb div span:first-child{color:var(--muted)}
+.lb div.me{color:var(--turq);background:var(--turq-soft);font-weight:800}
+.clues{margin:0;padding:0 0 0 24px;display:flex;flex-direction:column;gap:8px;font-weight:600}
+.clues li::marker{color:var(--gold);font-weight:800}
+.chips,.ring{display:flex;flex-wrap:wrap;gap:6px;min-height:32px;align-items:center}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:700}
+.chip.me,.chip.ok{border-color:var(--turq);background:var(--turq-soft)}
+.chip.bot,.chip.no{border-color:var(--coral);background:var(--coral-soft)}
+.ring{justify-content:center}.ring .chip{width:32px;height:32px;padding:0;display:grid;place-items:center}
+.ring .chip.cur{border-color:var(--gold);background:var(--gold-soft);color:var(--gold)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}.cols.three{grid-template-columns:repeat(3,1fr);gap:8px}
+.cols>div{min-width:0}.cols .ln{display:flex;justify-content:space-between;gap:6px;font-size:12.5px;padding:4px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
+.cols h2{margin-bottom:6px}
+.cols.three .qbox b{font-size:24px}
+.cols.three .qbox{padding:14px 6px 12px}.cols.three .qbox::before{display:none}
+.pairs{display:grid;grid-template-columns:.8fr 1.2fr;gap:8px}.pairs>div{display:flex;flex-direction:column;gap:6px;min-width:0}
+.pairs .opt{min-height:60px;font-size:13px;line-height:1.3}
+.pairs>div:first-child .opt{font:400 17px/1.2 var(--display)}
+
+/* harita */
+#map{width:100%;max-width:330px;margin:0 auto;display:block;cursor:crosshair;touch-action:manipulation;border-radius:16px;border:1px solid var(--line)}
+#map .sea{fill:var(--bg)}#map .land{fill:var(--surface2);stroke:var(--hair);stroke-width:1}
+#map .lbl{fill:var(--muted);font:600 11px var(--body);pointer-events:none}#map .lbl.on{fill:var(--ink);font-size:13px;font-weight:800;paint-order:stroke;stroke:var(--surface2);stroke-width:4px}
+#map .pme{fill:var(--turq);stroke:var(--bg);stroke-width:2}#map .pbot{fill:var(--coral);stroke:var(--bg);stroke-width:2}#map .ptrue{fill:var(--gold);stroke:var(--ink);stroke-width:2}
+
+/* kelime */
+.wgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;max-width:264px;width:100%;margin:0 auto}
+.tile{aspect-ratio:1;display:grid;place-items:center;border:1px solid var(--line);border-radius:12px;font:800 23px/1 var(--body);background:var(--surface)}
+.tile.ok,.key.ok{background:var(--ok);border-color:var(--ok);color:var(--on-fill)}
+.tile.mid,.key.mid{background:var(--gold);border-color:var(--gold);color:var(--on-fill)}
+.tile.x,.key.x{background:var(--surface2);border-color:var(--surface2);color:var(--muted)}
+.kb{display:flex;flex-direction:column;gap:6px}.kb>div{display:flex;gap:4px;justify-content:center}
+.key{flex:1;max-width:38px;min-width:0;height:48px;border-radius:9px;background:var(--surface);border:1px solid var(--line);font-weight:800;font-size:15px;padding:0}
+.key.wide{max-width:54px;flex:1.5;font-size:12.5px}
+
+body{margin:0}[hidden]{display:none!important}
+button.chip{cursor:pointer}.chip.on{border-color:var(--gold);background:var(--gold-soft);color:var(--gold)}
+.fld{display:grid;gap:6px}.fld span{font:700 10.5px/1.3 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.qbox b.code{font:800 40px/1 var(--body);letter-spacing:.18em;padding-left:.18em}
+.code-in{text-transform:uppercase;letter-spacing:.2em;font-weight:800}.code-in::placeholder{letter-spacing:0;font-weight:500;text-transform:none}
+.lb div span:last-child{color:var(--muted)}.lb div.me span:last-child{color:inherit}
+#toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);border-radius:999px;padding:10px 18px;font-weight:700;font-size:13.5px;z-index:30;max-width:calc(100% - 32px);text-align:center;box-shadow:var(--shadow)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div id="app"></div>
+<div id="toast" hidden></div>
+
+<script>
+const DATA = /*DATA*/null;
+
+/* ---------- yardımcılar ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+let RNG = Math.random;
+const rnd = n => Math.floor(RNG() * n);
+const pick = a => a[rnd(a.length)];
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = rnd(i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const norm = s => s.toLocaleLowerCase('tr').replace(/[âá]/g, 'a').replace(/[îı]/g, 'i').replace(/û/g, 'u').replace(/ş/g, 's')
+  .replace(/ğ/g, 'g').replace(/ç/g, 'c').replace(/ö/g, 'o').replace(/ü/g, 'u').replace(/[^a-z0-9]/g, '');
+const app = $('#app');
+
+/* ---------- veri: desteler ---------- */
+const SURAHS = DATA.s.map(([n, name, ay, mk, ord, juz]) => ({ id: 's' + n, n, name, ay, mk, ord, juz }));
+const MUK = new Set([2,3,7,10,11,12,13,14,15,19,20,26,27,28,29,30,31,32,36,38,40,41,42,43,44,45,46,50,68]);
+const SEC = new Set(DATA.sajda), PEY = new Set([10,11,12,14,47,71]);
+// [ad, Kur'an'da adının geçme sayısı (yaygın sayım), etiketler]
+const PROPHETS = [
+  ['Âdem',25,''],['İdrîs',2,''],['Nûh',43,'u s h'],['Hûd',7,'s h'],['Sâlih',9,'h'],['İbrâhîm',69,'u s b'],['Lût',27,'h'],
+  ['İsmâil',12,'b'],['İshâk',17,'b'],['Ya‘kûb',16,'b'],['Yûsuf',27,'s b'],['Eyyûb',4,''],['Şuayb',11,'h'],['Mûsâ',136,'u k i'],
+  ['Hârûn',20,'i'],['Dâvûd',16,'k i b'],['Süleymân',17,'i b'],['İlyâs',2,'i'],['Elyesa‘',2,'i'],['Zülkifl',2,''],['Yûnus',4,'s'],
+  ['Zekeriyyâ',7,'i b'],['Yahyâ',5,'i b'],['Îsâ',25,'u k i'],['Muhammed',4,'u s k']
+].map(([name, cnt, tags], i) => ({ id: 'p' + i, name: 'Hz. ' + name, cnt, tags: tags.split(' ') }));
+const EVENTS = [
+  ['Hz. Peygamber’in doğumu',571],['Hz. Hatice ile evlilik',595],['Kâbe hakemliği',605],['İlk vahiy',610],
+  ['Habeşistan’a ilk hicret',615],['Birinci Akabe Biatı',621],['Medine’ye hicret',622],['Bedir Savaşı',624],['Uhud Savaşı',625],
+  ['Hendek Savaşı',627],['Hudeybiye Antlaşması',628],['Mûte Savaşı',629],['Mekke’nin fethi',630],['Vedâ Haccı',632]
+].map(([name, yil], i) => ({ id: 'e' + i, name, yil }));
+const tag = t => e => e.tags.includes(t);
+const DECKS = {
+  sure: { label: 'Sureler', ph: 'Sure adı yaz…', ents: SURAHS, min: 2,
+    crit: [
+      { l: 'Mekkî', t: e => e.mk }, { l: 'Medenî', t: e => !e.mk },
+      { l: '100 ve üzeri ayet', t: e => e.ay >= 100 }, { l: '50–99 ayet', t: e => e.ay >= 50 && e.ay < 100 },
+      { l: '20–49 ayet', t: e => e.ay >= 20 && e.ay < 50 }, { l: '20’den az ayet', t: e => e.ay < 20 },
+      { l: '30. cüzde', t: e => e.n >= 78 }, { l: 'İlk 15 cüzde başlar', t: e => e.juz <= 15 },
+      { l: 'Mukattaa harfleriyle başlar', t: e => MUK.has(e.n) }, { l: 'Secde ayeti içerir', t: e => SEC.has(e.n) },
+      { l: 'Peygamber adı taşır', t: e => PEY.has(e.n) },
+      { l: 'Mushaf’ta ilk 57 sure', t: e => e.n <= 57 }, { l: 'Mushaf’ta son 57 sure', t: e => e.n > 57 }
+    ],
+    qs: [
+      { t: 'Hangi surenin ayet sayısı daha fazla?', k: 'ay', d: 1, f: v => v + ' ayet' },
+      { t: 'Hangi surenin ayet sayısı daha az?', k: 'ay', d: -1, f: v => v + ' ayet' },
+      { t: 'Hangi sure Mushaf’ta daha sonra yer alır?', k: 'n', d: 1, f: v => v + '. sure' },
+      { t: 'Hangi sure daha önce nâzil olmuştur?', k: 'ord', d: -1, f: v => 'nüzul sırası ' + v }
+    ] },
+  peygamber: { label: 'Peygamberler', ph: 'Peygamber adı yaz…', ents: PROPHETS, min: 1,
+    crit: [
+      { l: 'Ülü’l-azm peygamber', t: tag('u') }, { l: 'Adını taşıyan sure var', t: tag('s') },
+      { l: 'Dört büyük kitaptan biri verildi', t: tag('k') }, { l: 'Kavmi helâk edildi', t: tag('h') },
+      { l: 'Benî İsrâil’e gönderildi', t: tag('i') }, { l: 'Babası veya oğlu da peygamber', t: tag('b') },
+      { l: 'Kur’an’da adı 10+ kez geçer', t: e => e.cnt >= 10 }, { l: 'Kur’an’da adı 10’dan az geçer', t: e => e.cnt < 10 }
+    ],
+    qs: [
+      { t: 'Hangi peygamberin adı Kur’an’da daha çok geçer?', k: 'cnt', d: 1, f: v => v + ' kez' },
+      { t: 'Hangi peygamberin adı Kur’an’da daha az geçer?', k: 'cnt', d: -1, f: v => v + ' kez' }
+    ] },
+  siyer: { label: 'Siyer', ents: EVENTS,
+    qs: [
+      { t: 'Hangi olay daha önce gerçekleşti?', k: 'yil', d: -1, f: v => 'M. ' + v },
+      { t: 'Hangi olay daha sonra gerçekleşti?', k: 'yil', d: 1, f: v => 'M. ' + v }
+    ] }
+};
+
+/* ---------- soru bankası: [soru, doğru, yanlış×3] ---------- */
+const BANK = {
+  siyer: [
+    ['Hz. Muhammed (s.a.v.) hangi yıl dünyaya gelmiştir?','571','610','622','632'],
+    ['İlk vahiy nerede gelmiştir?','Hira Mağarası','Sevr Mağarası','Uhud Dağı','Arafat'],
+    ['Mekke’den Medine’ye hicret hangi yıl gerçekleşmiştir?','622','610','624','630'],
+    ['Hicret sırasında Hz. Peygamber’in sığındığı mağara hangisidir?','Sevr','Hira','Uhud','Safâ'],
+    ['Hicrette Hz. Peygamber’in yol arkadaşı kimdir?','Hz. Ebû Bekir','Hz. Ömer','Hz. Ali','Hz. Osman'],
+    ['Müslümanların Mekkeli müşriklerle yaptığı ilk büyük savaş hangisidir?','Bedir','Uhud','Hendek','Huneyn'],
+    ['Hendek kazılmasını öneren sahâbî kimdir?','Selmân-ı Fârisî','Bilâl-i Habeşî','Hâlid b. Velîd','Mus‘ab b. Umeyr'],
+    ['Mekke hangi yıl fethedilmiştir?','630','622','628','632'],
+    ['Hz. Peygamber’in sütannesi kimdir?','Halîme','Âmine','Fâtıma','Sümeyye'],
+    ['Hz. Peygamber’in ilk eşi kimdir?','Hz. Hatice','Hz. Âişe','Hz. Hafsa','Hz. Sevde'],
+    ['Hz. Peygamber’i himaye eden amcası kimdir?','Ebû Tâlib','Ebû Leheb','Abbas','Abdülmuttalib'],
+    ['İslam’ın ilk müezzini kimdir?','Bilâl-i Habeşî','Zeyd b. Hârise','Ammâr b. Yâsir','Enes b. Mâlik'],
+    ['Hudeybiye Antlaşması hangi yıl yapılmıştır?','628','624','630','622'],
+    ['“Seyyidü’ş-şühedâ” (şehitlerin efendisi) olarak anılan sahâbî kimdir?','Hz. Hamza','Hz. Ca‘fer','Hz. Zübeyr','Hz. Talha'],
+    ['Medine’nin hicretten önceki adı nedir?','Yesrib','Tâif','Hayber','Bekke'],
+    ['Hicret sırasında inşa edilen ilk mescid hangisidir?','Kubâ Mescidi','Mescid-i Nebevî','Mescid-i Kıbleteyn','Mescid-i Aksâ'],
+    ['Müslümanların ilk hicret ettiği ülke hangisidir?','Habeşistan','Yemen','Mısır','Şam'],
+    ['Hz. Peygamber hangi şehirde vefat etmiştir?','Medine','Mekke','Tâif','Kudüs']
+  ],
+  peygamber: [
+    ['Kur’an’da adı geçen peygamber sayısı kaçtır?','25','12','40','99'],
+    ['İlk insan ve ilk peygamber kimdir?','Hz. Âdem','Hz. Nûh','Hz. İdrîs','Hz. İbrâhîm'],
+    ['Tufan öncesinde gemi yapan peygamber kimdir?','Hz. Nûh','Hz. Hûd','Hz. Lût','Hz. Sâlih'],
+    ['Balığın karnında kalan peygamber kimdir?','Hz. Yûnus','Hz. Eyyûb','Hz. İlyâs','Hz. Yahyâ'],
+    ['Ateşe atılan ama ateşin yakmadığı peygamber kimdir?','Hz. İbrâhîm','Hz. Mûsâ','Hz. Îsâ','Hz. İsmâil'],
+    ['Kardeşleri tarafından kuyuya atılan peygamber kimdir?','Hz. Yûsuf','Hz. Ya‘kûb','Hz. İshâk','Hz. Hârûn'],
+    ['Zebûr hangi peygambere verilmiştir?','Hz. Dâvûd','Hz. Mûsâ','Hz. Îsâ','Hz. Süleymân'],
+    ['Tevrat hangi peygambere verilmiştir?','Hz. Mûsâ','Hz. Dâvûd','Hz. İbrâhîm','Hz. Îsâ'],
+    ['Hz. İbrâhîm, Kâbe’yi hangi oğluyla birlikte inşa etmiştir?','Hz. İsmâil','Hz. İshâk','Hz. Ya‘kûb','Hz. Yûsuf'],
+    ['Sabrıyla anılan, ağır bir hastalıkla imtihan edilen peygamber kimdir?','Hz. Eyyûb','Hz. Yûnus','Hz. Zekeriyyâ','Hz. Şuayb'],
+    ['Hz. Mûsâ’nın peygamber olan kardeşi kimdir?','Hz. Hârûn','Hz. Yûşa','Hz. Dâvûd','Hz. İlyâs'],
+    ['Hz. Yûsuf’un babası olan peygamber kimdir?','Hz. Ya‘kûb','Hz. İshâk','Hz. İbrâhîm','Hz. İsmâil'],
+    ['Semûd kavmine gönderilen peygamber kimdir?','Hz. Sâlih','Hz. Hûd','Hz. Şuayb','Hz. Lût'],
+    ['Âd kavmine gönderilen peygamber kimdir?','Hz. Hûd','Hz. Sâlih','Hz. Nûh','Hz. Şuayb'],
+    ['Aşağıdakilerden hangisi ülü’l-azm peygamberlerden biri değildir?','Hz. Yûsuf','Hz. Nûh','Hz. İbrâhîm','Hz. Mûsâ'],
+    ['Hz. Yahyâ’nın babası olan peygamber kimdir?','Hz. Zekeriyyâ','Hz. Îsâ','Hz. Dâvûd','Hz. İlyâs']
+  ],
+  genel: [
+    ['İslam’ın şartı kaçtır?','5','4','6','7'],
+    ['İmanın şartı kaçtır?','6','5','7','4'],
+    ['Günde kaç vakit farz namaz vardır?','5','3','4','6'],
+    ['Kur’an-ı Kerim kaç cüzdür?','30','20','40','60'],
+    ['Kur’an-ı Kerim’in en kısa suresi hangisidir?','Kevser','İhlâs','Asr','Nasr'],
+    ['Müslümanların ilk kıblesi neresidir?','Mescid-i Aksâ','Kâbe','Mescid-i Nebevî','Kubâ Mescidi'],
+    ['Kur’an’ın indirilmeye başlandığı gece hangisidir?','Kadir Gecesi','Berat Gecesi','Mi‘rac Gecesi','Regaib Gecesi'],
+    ['Hicrî takvimin ilk ayı hangisidir?','Muharrem','Ramazan','Receb','Zilhicce'],
+    ['Hac ibadeti hangi ayda yapılır?','Zilhicce','Ramazan','Şevval','Muharrem'],
+    ['Başında besmele bulunmayan sure hangisidir?','Tevbe','Enfâl','Neml','Fâtiha'],
+    ['Besmelenin iki kez geçtiği sure hangisidir?','Neml','Tevbe','Bakara','Yâsîn'],
+    ['Vahiy getirmekle görevli melek hangisidir?','Cebrâil','Mîkâil','İsrâfil','Azrâil'],
+    ['Kıyamet günü sûra üfleyecek melek hangisidir?','İsrâfil','Cebrâil','Mîkâil','Azrâil'],
+    ['Cuma namazı hangi vaktin namazı yerine kılınır?','Öğle','Sabah','İkindi','Akşam'],
+    ['Kur’an’ın çoğaltılıp şehirlere gönderilmesi hangi halife döneminde olmuştur?','Hz. Osman','Hz. Ebû Bekir','Hz. Ömer','Hz. Ali'],
+    ['Dört halifenin ilki kimdir?','Hz. Ebû Bekir','Hz. Ömer','Hz. Osman','Hz. Ali']
+  ]
+};
+const staticQ = ([t, c, ...w]) => { const o = shuffle([c, ...w]); return { t, opts: o.map(l => ({ l })), c: o.indexOf(c) }; };
+function distinct4(key) { const out = [], seen = new Set(); for (const e of shuffle(SURAHS)) { if (!seen.has(e[key])) { seen.add(e[key]); out.push(e); } if (out.length === 4) break; } return out; }
+function sureQ() {
+  const k = rnd(6);
+  if (k === 0) { const o = distinct4('ay'); return { t: 'Hangi surenin ayet sayısı daha fazladır?', opts: o.map(e => ({ l: e.name, n: e.ay })), c: o.indexOf(o.reduce((a, b) => a.ay > b.ay ? a : b)) }; }
+  if (k === 1) { const o = distinct4('n'); return { t: 'Hangi sure Mushaf’ta daha önce yer alır?', opts: o.map(e => ({ l: e.name, n: e.n + '.' })), c: o.indexOf(o.reduce((a, b) => a.n < b.n ? a : b)) }; }
+  if (k === 2) { const o = distinct4('ay'); return { t: o[0].name + ' suresi kaç ayettir?', opts: shuffle(o).map(e => ({ l: String(e.ay), ok: e === o[0] })), get c() { return this.opts.findIndex(x => x.ok); } }; }
+  if (k === 3) { const e = pick(SURAHS), w = shuffle(SURAHS.filter(x => x !== e)).slice(0, 3), o = shuffle([e, ...w]); return { t: 'Mushaf’ta ' + e.n + '. sırada yer alan sure hangisidir?', opts: o.map(x => ({ l: x.name, n: x.n + '.' })), c: o.indexOf(e) }; }
+  if (k === 4) { const e = pick(SURAHS.filter(x => !x.mk)), w = shuffle(SURAHS.filter(x => x.mk)).slice(0, 3), o = shuffle([e, ...w]); return { t: 'Aşağıdakilerden hangisi Medenî suredir?', opts: o.map(x => ({ l: x.name, n: x.mk ? 'Mekkî' : 'Medenî' })), c: o.indexOf(e) }; }
+  const cr = DECKS.sure.crit;
+  for (;;) { const [a, b] = shuffle(cr); const both = SURAHS.filter(e => a.t(e) && b.t(e)), not = SURAHS.filter(e => !(a.t(e) && b.t(e)));
+    if (both.length && both.length < 40) { const e = pick(both), o = shuffle([e, ...shuffle(not).slice(0, 3)]); return { ctx: a.l + ' + ' + b.l, t: 'Bu iki özelliğe sahip sure hangisidir?', opts: o.map(x => ({ l: x.name })), c: o.indexOf(e) }; } }
+}
+function buildQuiz(topic) {
+  const st = k => shuffle(BANK[k]).map(staticQ);
+  if (topic === 'karisik') return shuffle([sureQ(), sureQ(), ...st('siyer').slice(0, 2), ...st('peygamber').slice(0, 2), ...st('genel').slice(0, 2)]);
+  if (topic === 'sure') return Array.from({ length: 8 }, sureQ);
+  return st(topic).slice(0, 8);
+}
+
+/* ---------- kabuk ---------- */
+let P = { lp: 0, seen: {}, miss: [], done: {}, best: 0 };
+try { P = Object.assign(P, JSON.parse(localStorage.getItem('ilim-meydani') || '{}')); } catch (e) {}
+const save = () => { try { localStorage.setItem('ilim-meydani', JSON.stringify(P)); } catch (e) {} };
+const rank = () => P.lp < 100 ? 'Talebe' : P.lp < 300 ? 'Kalfa' : P.lp < 600 ? 'Usta' : 'Üstat';
+const MODES = {
+  ttt: { name: 'Izgara', sub: 'Satır ve sütunun kesiştiği ismi bul, üçlüyü tamamla.', topics: ['sure', 'peygamber', 'sahabe'], ico: '<span class="mini"><i class="on"></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i class="on"></i></span>',
+    rules: [['Amaç', 'Her kare iki ölçütün kesişimi. İkisini de sağlayan ismi yaz.'], ['Kazanma', 'Yatay, dikey ya da çapraz üçlüyü ilk tamamlayan kazanır. Yanlış cevapta sıra geçer.'], ['Jokerler', 'İpucu üç aday gösterir, Süre 15 saniye ekler, Çal rakibin karesini almayı dener.']] },
+  kart: { name: 'Kart Savaşı', sub: 'Beş kart seç, her turda soruya en uygun kartı oyna.', topics: ['sure', 'peygamber', 'siyer'], ico: '<span class="fan"><i></i><i></i><i></i></span>',
+    rules: [['Deste', 'Havuzdan 5 kart seç. Kartların değerleri kapalıdır; bilgi sende.'], ['Düello', 'Her tur bir soru gelir. Değeri soruya daha uygun olan kart turu alır. 5 tur oynanır.'], ['Jokerler', 'İpucu o turda kartlarının değerini açar, 2X turun puanını ikiye katlar.']] },
+  quiz: { name: 'Bilgi Yarışması', sub: 'Dört kişi, sekiz soru. Doğru ve hızlı olan öne geçer.', topics: ['karisik', 'sure', 'siyer', 'peygamber', 'genel'], ico: '<span class="qm">?</span>',
+    rules: [['Amaç', '4 oyuncu aynı anda yarışır, 8 soru sorulur.'], ['Puan', 'Her soru 13 saniye. Doğru cevabı ne kadar hızlı verirsen o kadar çok puan.'], ['Jokerler', 'Yarı Yarıya iki yanlış şıkkı eler, 2X o sorunun puanını ikiye katlar.']] },
+  secki: { name: 'Seçki Kur', sub: 'Altı turda hedefe en uygun altılıyı topla.', topics: ['sure', 'peygamber'], ico: '<span class="qm">Σ</span>',
+    rules: [['Amaç', 'Maçın bir hedefi var (örneğin en yüksek toplam ayet). Her tur bir ölçüt gelir, ona uyan bir isim seçersin.'], ['Kazanma', 'Altı tur sonunda toplamı hedefe daha uygun olan kazanır. Ölçüte uymayan seçim yeri boş bırakır.'], ['Jokerler', 'İpucu üç aday gösterir, Pas ölçütü değiştirir.']] },
+  kim: { name: 'Ben Kimim', sub: 'İpuçları açıldıkça kimi anlattığını bul.', topics: ['sure', 'peygamber', 'sahabe'], ico: '<span class="qm qs">kim?</span>',
+    rules: [['Amaç', 'Beş ipucu sırayla açılır. Kimden söz edildiğini bul.'], ['Puan', 'İlk ipucunda bilirsen 5, sonuncusunda 1 puan. Her ipucunda tek tahmin hakkın var.'], ['Kazanma', 'Üç tur sonunda puanı yüksek olan kazanır.']] },
+  ping: { name: 'Pingpong', sub: 'Ölçüte uyan isimleri sırayla söyleyin, takılan sayı verir.', topics: ['sure', 'peygamber', 'sahabe'], ico: '<span class="qm">⇄</span>',
+    rules: [['Amaç', 'Bir ölçüt gelir. Sen ve rakibin sırayla ona uyan bir isim söylersiniz.'], ['Sayı', 'Yanlış söyleyen, tekrar eden ya da 12 saniyede cevap veremeyen sayıyı rakibe verir.'], ['Kazanma', 'İlk 3 sayıyı alan kazanır.']] },
+  bingo: { name: 'Bingo', sub: 'Gelen sureyi uyduğu kareye yerleştir, kartı doldur.', topics: ['sure'], ico: '<span class="mini"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span>',
+    rules: [['Amaç', 'Kartında 9 ölçüt var. Her tur bir sure gelir, uyduğu boş kareye yerleştirirsin.'], ['Dikkat', 'Uymayan kareye koyarsan o kartı kaybedersin. Uygun kare yoksa pas geç.'], ['Kazanma', 'Kartını ilk dolduran ya da 22 kart sonunda daha çok kare dolduran kazanır.']] },
+  numara: { name: 'Numara Avı', sub: 'Sayıyı tahmin et, doğruya yakın olan turu alır.', topics: ['sure', 'peygamber', 'siyer'], ico: '<span class="qm qs">№</span>',
+    rules: [['Amaç', 'Cevabı sayı olan bir soru gelir: ayet sayısı, sıra ya da yıl.'], ['Tur', '15 saniyede tahminini yaz. Doğru sayıya daha yakın olan turu alır.'], ['Kazanma', 'Beş tur sonunda daha çok tur alan kazanır.']] },
+  uc: { name: '3-2-1', sub: 'Önce üç, sonra iki, sonra tek isim: ölçüt giderek daralır.', topics: ['sure', 'peygamber', 'sahabe'], ico: '<span class="qm qs">321</span>',
+    rules: [['Amaç', 'Üç aşama var: 3 isim, sonra 2 isim, sonra 1 isim söylersin.'], ['Puan', 'Aşamalar zorlaşır; doğrular sırasıyla 1, 2 ve 3 puan. Her aşamada söyleyeceğin isim sayısı kadar hakkın var.'], ['Kazanma', 'Toplam puanı yüksek olan kazanır.']] },
+  az: { name: 'A–Z', sub: 'Her harf için bir soru. 120 saniyede kaç harf?', topics: ['karisik'], ico: '<span class="qm qs">A–Z</span>',
+    rules: [['Amaç', 'Her harf için, cevabı o harfle başlayan bir soru gelir. Cevabı yazarsın.'], ['Pas', 'Bilemediğin harfi pas geçebilirsin, tur sonunda tekrar gelir. Yanlış cevap harfi kapatır.'], ['Kazanma', '120 saniye sonunda daha çok doğrusu olan kazanır.']] },
+  esma: { name: 'Esmâ-i Hüsnâ', sub: 'İsimleri anlamlarıyla eşleştir.', topics: ['hepsi'], ico: '<span class="qm qs">99</span>',
+    rules: [['Amaç', 'Solda beş isim, sağda karışık hâlde anlamları var. İsmi seç, sonra anlamına dokun.'], ['Süre', 'Üç tablo için toplam 90 saniye. Yanlış eşleştirme 3 saniye götürür.'], ['Kazanma', 'Daha çok doğru eşleştiren kazanır.']] },
+  harita: { name: 'Harita', sub: 'Olayın ya da kıssanın geçtiği yeri haritada işaretle.', topics: ['hepsi'], ico: '<span class="qm">⌖</span>',
+    rules: [['Amaç', 'Bir yer adı ve kısa tanıtımı gelir. Haritada bulunduğu noktaya dokunursun.'], ['Tur', '12 saniyen var. Gerçek konuma daha yakın işaretleyen turu alır.'], ['Kazanma', 'Beş tur sonunda daha çok tur alan kazanır.']] },
+  dy: { name: 'Doğru mu Yanlış mı', sub: '60 saniyede olabildiğince çok ifadeyi değerlendir.', topics: ['hepsi'], ico: '<span class="qm qs">D/Y</span>',
+    rules: [['Amaç', 'Bir ifade gelir; doğru mu yanlış mı karar verirsin.'], ['Süre', 'Toplam 60 saniye. Yanlış cevapta doğrusu kısa süre gösterilir, bu da vakit alır.'], ['Kazanma', 'Daha çok doğru cevap veren kazanır.']] },
+  gunluk: { name: 'Günün Bulmacası', sub: 'Herkes için aynı ızgara. Günde bir kez.', topics: ['bugun'], solo: 1, grp: 'gun', ico: '<span class="star" style="font-size:26px"></span>',
+    rules: [['Amaç', 'Dokuz kareyi doldur. Her kare iki ölçütün kesişimi.'], ['Hak', 'Süre yok; toplam 12 tahmin hakkın var. Yanlış cevap da hak götürür.'], ['Paylaş', 'Bitince sonucunu kopyalayıp paylaşabilirsin. Yeni bulmaca ertesi gün gelir.']] },
+  kelime: { name: 'Kelime', sub: 'Beş harfli kelimeyi altı tahminde bul.', topics: ['gunluk', 'serbest'], solo: 1, grp: 'gun', ico: '<span class="qm qs">A·B·C</span>',
+    rules: [['Amaç', 'Beş harfli dinî bir kelimeyi bul: bir ibadet, kavram, sure, peygamber adı ya da siyer terimi.'], ['Renkler', 'Yeşil: harf doğru yerde. Sarı: harf kelimede var ama yeri yanlış. Koyu: harf kelimede yok.'], ['Yazım', 'Kelimeler şapkasız yazılır (KURAN, YASİN). I ve İ ayrı harflerdir.']] },
+  seri: { name: 'Seri', sub: 'Tek yanlışta biter. Rekorunu geç.', topics: ['karisik', 'sure', 'siyer', 'peygamber', 'genel'], solo: 1, grp: 'solo', ico: '<span class="qm">∞</span>',
+    rules: [['Amaç', 'Sorular arka arkaya gelir; her soru için 15 saniyen var.'], ['Bitiş', 'İlk yanlışta ya da süre dolunca seri biter.'], ['Rekor', 'En uzun serin kaydedilir. Yanlış yaptığın soru Öğren’e eklenir.']] },
+  ogren: { name: 'Öğren', sub: 'Yanlış yaptığın sorular tekrar önüne gelir.', topics: ['hepsi'], solo: 1, grp: 'solo', ico: '<span class="qm">↻</span>',
+    rules: [['Amaç', 'Bilgi Yarışması ve Seri’de yanlış yaptığın sorular burada birikir.'], ['Tekrar', 'Süre ve puan yok. Doğru bildiğin soru listeden çıkar, bilemediğin kalır.'], ['Liste', 'En son 40 yanlış tutulur.']] }
+};
+const TOPIC = { sure: 'Sureler', peygamber: 'Peygamberler', siyer: 'Siyer', sahabe: 'Sahâbîler', hepsi: 'Başla', bugun: 'Bugünün ızgarası', gunluk: 'Günün kelimesi', serbest: 'Serbest oyun', genel: 'Dinî genel kültür', karisik: 'Karışık' };
+const BOTS = ['Çınar', 'Vefa', 'Nida', 'Selim', 'Erva', 'Yahya', 'Sare', 'Tuna'];
+
+let G = null, sheet = null;
+const timers = new Set(); let tick = null, tLeft = 0, tMax = 1;
+function later(fn, ms) { const id = setTimeout(() => { timers.delete(id); fn(); }, ms); timers.add(id); }
+function stopClock() { clearInterval(tick); tick = null; }
+function stopAll() { timers.forEach(clearTimeout); timers.clear(); stopClock(); }
+function countdown(sec, onEnd) { stopClock(); tMax = sec; tLeft = sec; paintTime();
+  tick = setInterval(() => { tLeft -= .1; if (tLeft <= 0) { tLeft = 0; stopClock(); paintTime(); onEnd && onEnd(); } else paintTime(); }, 100); }
+function paintTime() { const a = $('#tm'), b = $('#tb'); if (a) a.textContent = Math.ceil(tLeft) + ' sn'; if (b) { b.style.width = (tLeft / tMax * 100) + '%'; b.dataset.low = tLeft < 6 ? 1 : 0; } }
+let toastT; function toast(m) { const t = $('#toast'); t.textContent = m; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 2200); }
+const clockH = () => '<div class="clock"><span id="tm" class="num"></span><div class="bar"><i id="tb"></i></div></div>';
+const vsH = (a, b) => `<div class="vs"><div class="p"><span class="medal me"><i>S</i></span><div><b>Sen</b><small>${rank()}</small></div></div><div class="sc num"><span class="a">${a}</span><em>vs</em><span class="b">${b}</span></div><div class="p r"><div><b>${G.opp}</b><small>bot</small></div><span class="medal bot"><i>${G.opp[0]}</i></span></div></div>`;
+
+const ICON = {
+  mp: '<circle cx="8.5" cy="8.5" r="3.2"/><path d="M2.5 19.5c0-3.3 2.7-5.3 6-5.3s6 2 6 5.3"/><circle cx="17" cy="9.5" r="2.6"/><path d="M16.5 14.4c2.9 0 5 1.7 5 4.6"/>',
+  ttt: '<path d="M9 3v18M15 3v18M3 9h18M3 15h18"/>',
+  kart: '<rect x="3.5" y="6.5" width="10" height="14" rx="2" transform="rotate(-8 8.5 13.5)"/><rect x="10.5" y="3.5" width="10" height="14" rx="2" transform="rotate(8 15.5 10.5)"/>',
+  quiz: '<circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1.1 1-1.1 1.9M12 16.7v.1"/>',
+  secki: '<path d="M12 3.5l8.5 4.2L12 12 3.5 7.7zM3.5 12L12 16.3 20.5 12M3.5 16.2L12 20.5l8.5-4.3"/>',
+  kim: '<circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c0-4 3.3-6.5 7.5-6.5s7.5 2.5 7.5 6.5"/>',
+  ping: '<path d="M4 8h14l-3.5-3.5M20 16H6l3.5 3.5"/>',
+  bingo: '<rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M6.5 8.5l1.3 1.3 2.4-2.6M13.8 14.2l1.3 1.3 2.4-2.6M3.5 12h17M12 3.5v17"/>',
+  numara: '<path d="M9.5 3.5l-2 17M16.5 3.5l-2 17M4.5 9h16M3.5 15h16"/>',
+  uc: '<path d="M5.5 20V5M12 20v-9.5M18.5 20v-4.5"/>',
+  az: '<path d="M3 18.5L7 6.5l4 12M4.6 14.5h4.8M14 6.5h7l-7 12h7"/>',
+  esma: '<rect x="6" y="6" width="12" height="12"/><rect x="6" y="6" width="12" height="12" transform="rotate(45 12 12)"/>',
+  harita: '<path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 1 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.2"/>',
+  dy: '<path d="M3 13l3 3 5.5-6.5M14.5 8l6 6M20.5 8l-6 6"/>',
+  gunluk: '<rect x="4" y="5" width="16" height="15.5" rx="2.5"/><path d="M4 10h16M8.5 3v4M15.5 3v4"/>',
+  kelime: '<rect x="2.5" y="8" width="5.4" height="8" rx="1.2"/><rect x="9.3" y="8" width="5.4" height="8" rx="1.2"/><rect x="16.1" y="8" width="5.4" height="8" rx="1.2"/>',
+  seri: '<path d="M13 3L5 13.5h6.2L10 21l9-11h-6.3z"/>',
+  ogren: '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5zM4 20.5V5.5M8.5 7.5h7M8.5 11h5"/>'
+};
+const ico = k => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]}</svg>`;
+const patH = () => '<svg class="pat" aria-hidden="true"><defs><pattern id="girih" width="44" height="44" patternUnits="userSpaceOnUse"><path d="M11 11h22v22H11zM22 6.4L37.6 22 22 37.6 6.4 22zM22 0v6.4M22 37.6V44M0 22h6.4M37.6 22H44M0 0l11 11M44 0L33 11M0 44l11-11M44 44L33 33" fill="none" stroke="currentColor" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(#girih)"/></svg>';
+const RANKS = [[0, 'Talebe'], [100, 'Kalfa'], [300, 'Usta'], [600, 'Üstat']];
+function rankBar() { let i = 0; RANKS.forEach((r, j) => { if (P.lp >= r[0]) i = j; }); const nx = RANKS[i + 1];
+  return `<div class="rankbar"><div><span>${RANKS[i][1]}</span><span class="num">${nx ? `${nx[1]} rütbesine ${nx[0] - P.lp} LP` : 'En yüksek rütbe'}</span></div><div class="bar"><i style="width:${nx ? (P.lp - RANKS[i][0]) / (nx[0] - RANKS[i][0]) * 100 : 100}%"></i></div></div>`; }
+function home() {
+  stopAll(); G = null; sheet = null; app.classList.add('enter');
+  const gd = P.done['g' + today()], kd = P.done['k' + today()], vs = Object.entries(MODES).filter(([, m]) => !m.grp);
+  app.innerHTML = `<header class="top"><span class="brand">İlim Meydanı</span><span class="lp"><span class="star"></span><b class="num">${P.lp}</b> LP</span></header>
+  ${rankBar()}
+  <button class="hero" data-act="open" data-mode="gunluk">${patH()}<span class="eyebrow">Günün bulmacası · ${dateTR()}</span><h1>${gd ? 'Bugünkü ızgara tamam' : 'Bugünün ızgarası hazır'}</h1>
+    <p>${gd ? 'Sonucunu görebilirsin. Yeni ızgara yarın gelir.' : 'Herkes aynı dokuz kareyi çözüyor. Süre yok, 12 tahmin hakkın var.'}</p><span class="cta">${gd ? 'Sonucu gör' : 'Çöz'}</span></button>
+  <button class="word" data-act="open" data-mode="kelime"><span class="wt"><i class="ok"></i><i></i><i class="mid"></i><i></i><i class="ok"></i></span><span><b>Günün kelimesi</b><small>${kd ? 'Bugünkü kelimeyi tamamladın' : 'Beş harf, altı tahmin'}</small></span><span class="chev">›</span></button>
+  ${typeof MPOK !== 'undefined' && MPOK ? `<button class="word" data-act="mproom">${ico('mp')}<span><b>Arkadaşınla oyna</b><small>Oda koduyla 1v1 ya da 2v2</small></span><span class="chev">›</span></button>` : ''}
+  <div class="sec"><h2>Rakibe karşı</h2><span>${vs.length} oyun</span></div>
+  <div class="tiles">${vs.map(([k, m], i) => i ? `<button class="mt" data-act="open" data-mode="${k}">${ico(k)}<b>${m.name}</b></button>` : `<button class="mt lead" data-act="open" data-mode="${k}">${ico(k)}<span><b>${m.name}</b><small>${m.sub}</small></span><span class="chev">›</span></button>`).join('')}</div>
+  <div class="sec"><h2>Tek başına</h2></div>
+  <button class="rowcard" data-act="open" data-mode="seri">${ico('seri')}<span><b>Seri</b><small>Tek yanlışta biter</small></span><span class="stat"><b class="num">${P.best}</b><small>rekor</small></span></button>
+  <button class="rowcard" data-act="open" data-mode="ogren">${ico('ogren')}<span><b>Öğren</b><small>Yanlış yaptığın sorular</small></span><span class="stat"><b class="num">${P.miss.length}</b><small>bekliyor</small></span></button>
+  <p class="note">Rakipler şimdilik bot. İçerik notu: Mekkî/Medenî ayrımı ve nüzul sırası yaygın Mushaf tasnifine, secde ayetleri 14 sureye, peygamber adı sayıları yaygın sayıma göredir. Sahâbî destesi, Esmâ-i Hüsnâ anlamları ve sorular yaygın kabul gören bilgilerle yazılmıştır; yayından önce bir ilahiyatçı ve Diyanet kaynaklarıyla doğrulanmalıdır.</p>`;
+}
+function openMode(k) { const m = MODES[k];
+  app.insertAdjacentHTML('beforeend', `<div class="overlay"><div class="sheet"><div class="sheet-h"><span class="mi">${ico(k)}</span><b>${m.name}</b><button class="x" data-act="close" aria-label="Kapat">×</button></div>
+  <p class="lede">${m.sub}</p><ul class="rules">${m.rules.map(r => `<li><b>${r[0]}</b><span>${r[1]}</span></li>`).join('')}</ul>
+  <div class="topics ${m.topics.length === 1 ? 'one' : ''}">${m.topics.map(t => `<button class="btn" data-act="start" data-mode="${k}" data-topic="${t}">${TOPIC[t]}</button>`).join('')}</div></div></div>`); }
+function start(mode, topic) {
+  stopAll(); sheet = null; app.classList.remove('enter');
+  if (MODES[mode].solo) { $('.overlay')?.remove(); G = { mode, topic, opp: '' }; return window[mode + 'Start'](); }
+  const opp = pick(BOTS);
+  app.innerHTML = `<div class="center">${patH()}<span class="medal big"><i>?</i></span><span class="eyebrow">${MODES[mode].name} · ${TOPIC[topic]}</span><h1>Rakip aranıyor</h1><button class="btn ghost" data-act="home">İptal</button></div>`;
+  later(() => { G = { mode, topic, opp }; window[mode + 'Start'](); }, 1300);
+}
+function finish(kind, title, delta, extra = '', again = true) {
+  stopAll(); P.lp = Math.max(0, P.lp + delta); save();
+  app.insertAdjacentHTML('beforeend', `<div class="overlay"><div class="sheet"><div class="out ${kind}">${title}</div>${extra}
+  <div class="delta num">${delta > 0 ? '+' : ''}${delta} LP · toplam ${P.lp}</div>
+  ${again ? `<button class="btn" data-act="start" data-mode="${G.mode}" data-topic="${G.topic}">Tekrar oyna</button>` : ''}<button class="btn ghost" data-act="home">Ana sayfa</button></div></div>`);
+}
+const duel = (a, b, x = '') => a > b ? finish('w', 'Galibiyet', 25, x) : a < b ? finish('l', 'Mağlubiyet', -10, x) : finish('', 'Berabere', 0, x);
+
+/* ---------- Izgara ---------- */
+function makeBoard(deck) {
+  for (let n = 0; n < 5000; n++) {
+    const c = shuffle(deck.crit).slice(0, 6), rows = c.slice(0, 3), cols = c.slice(3);
+    const sets = []; for (const r of rows) for (const k of cols) sets.push(deck.ents.filter(e => r.t(e) && k.t(e)));
+    if (sets.some(s => s.length < deck.min || s.length > deck.ents.length * .45)) continue;
+    const used = new Set(); const go = i => i === 9 || sets[i].some(e => !used.has(e.id) && (used.add(e.id), go(i + 1) || (used.delete(e.id), false)));
+    if (go(0)) return { rows, cols };
+  }
+}
+const LINES = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+function tttStart() { const deck = DECKS[G.topic]; Object.assign(G, makeBoard(deck), { deck, cells: Array.from({ length: 9 }, () => ({})), used: new Set(), turns: 0, jk: { hint: 3, time: 3, steal: 3 }, steal: false, sel: null }); tttTurn('me'); }
+const tttCount = w => G.cells.filter(c => c.o === w).length;
+const tttValid = i => { const r = G.rows[Math.floor(i / 3)], c = G.cols[i % 3]; return G.deck.ents.filter(e => r.t(e) && c.t(e) && !G.used.has(e.id)); };
+function tttRender() {
+  const me = G.turn === 'me';
+  app.innerHTML = vsH(tttCount('me'), tttCount('bot')) + clockH() + `<p class="turn ${G.turn}">${me ? (G.steal ? 'Almak istediğin rakip karesine dokun' : 'Sıra sende') : 'Sıra rakipte'}</p>
+  <div class="grid"><div class="corner"><span class="star"></span></div>${G.cols.map(c => `<div class="hd">${c.l}</div>`).join('')}
+  ${G.rows.map((r, ri) => `<div class="hd">${r.l}</div>` + [0, 1, 2].map(ci => { const i = ri * 3 + ci, c = G.cells[i];
+    const can = me && (G.steal ? c.o === 'bot' : !c.o);
+    return `<button class="cell ${c.o || ''} ${G.steal && c.o === 'bot' ? 'target' : ''}" data-act="cell" data-i="${i}" ${can ? '' : 'disabled style="opacity:1"'} aria-label="${r.l}, ${G.cols[ci].l}">${c.o ? (c.o === 'me' ? '<span class="star"></span>' : '<span class="dot"></span>') + c.e.name : '<span class="plus">+</span>'}</button>`; }).join('')).join('')}</div>
+  <div class="jok"><button class="jk" data-act="jtime" ${me && G.jk.time ? '' : 'disabled'}>Süre<small>+15 sn · ${G.jk.time} hak</small></button>
+  <button class="jk ${G.steal ? 'on' : ''}" data-act="jsteal" ${me && G.jk.steal && tttCount('bot') ? '' : 'disabled'}>Çal<small>rakip karesi · ${G.jk.steal} hak</small></button></div>
+  <button class="quit" data-act="quit">Maçtan çekil</button>`;
+  paintTime();
+}
+function tttTurn(who) {
+  G.turn = who; G.steal = false; G.sel = null; G.turns++;
+  const w = ['me', 'bot'].find(o => LINES.some(l => l.every(i => G.cells[i].o === o)));
+  if (w || G.cells.every(c => c.o) || G.turns > 30) { tttRender(); stopClock(); return w ? duel(w === 'me' ? 1 : 0, w === 'me' ? 0 : 1) : duel(tttCount('me'), tttCount('bot')); }
+  tttRender();
+  if (who === 'me') countdown(25, () => { toast('Süre doldu, sıra geçti'); tttTurn('bot'); });
+  else { countdown(25); later(tttBot, 1600 + rnd(2400)); }
+}
+function tttBot() {
+  const free = [...G.cells.keys()].filter(i => !G.cells[i].o);
+  const want = o => free.find(i => LINES.some(l => l.includes(i) && l.every(j => j === i || G.cells[j].o === o)));
+  const i = want('bot') ?? want('me') ?? pick(free), v = tttValid(i);
+  if (v.length && Math.random() < .7) { const e = pick(v); G.cells[i] = { o: 'bot', e }; G.used.add(e.id); } else toast(G.opp + ' yanlış cevap verdi');
+  tttTurn('me');
+}
+function tttOpen(i) { G.sel = i; const r = G.rows[Math.floor(i / 3)], c = G.cols[i % 3];
+  app.insertAdjacentHTML('beforeend', `<div class="overlay"><div class="sheet"><div class="sheet-h"><b>${r.l} × ${c.l}</b><button class="x" data-act="close" aria-label="Kapat">×</button></div>
+  <input id="q" type="search" placeholder="${G.deck.ph}" autocomplete="off" autocapitalize="off" spellcheck="false"><div id="res"><p class="hint">Aramak için yazmaya başla.</p></div>
+  <button class="jk" data-act="jhint" ${G.jk.hint ? '' : 'disabled'}>İpucu<small>üç aday göster · ${G.jk.hint} hak</small></button></div></div>`);
+  const q = $('#q'); q.focus(); q.addEventListener('input', () => { const s = norm(q.value);
+    const m = s ? G.deck.ents.filter(e => hit(e, q.value)).slice(0, 7) : [];
+    $('#res').innerHTML = !s ? '<p class="hint">Aramak için yazmaya başla.</p>' : m.length ? resH(m) : '<p class="hint">Sonuç yok.</p>'; }); }
+const resH = m => m.map(e => `<button class="opt" data-act="pick" data-id="${e.id}" ${G.used.has(e.id) ? 'disabled' : ''}>${e.name}${G.used.has(e.id) ? '<small>kullanıldı</small>' : ''}</button>`).join('');
+function tttPick(id) { const i = G.sel, e = G.deck.ents.find(x => x.id === id), ok = tttValid(i).includes(e), steal = G.steal;
+  if (steal) G.jk.steal--;
+  if (ok) { G.cells[i] = { o: 'me', e }; G.used.add(e.id); if (steal) toast('Kare artık senin'); } else toast('Yanlış cevap: ' + e.name);
+  tttTurn('bot'); }
+
+/* ---------- Kart Savaşı ---------- */
+function kartStart() { const deck = DECKS[G.topic]; Object.assign(G, { deck, phase: 'draft', pool: shuffle(deck.ents).slice(0, 12), pickd: [], sc: [0, 0], round: 0, jk: { hint: 3, dbl: 3 } }); kartRender(); }
+const cardH = (e, cls = '', extra = '', attr = '') => `<button class="card ${cls}" ${attr}><span class="star"></span>${e.name}${extra}</button>`;
+function kartRender() {
+  if (G.phase === 'draft') { app.innerHTML = `<h1 style="font-size:24px">Desteni kur</h1><p class="lede">Havuzdan 5 kart seç. ${G.pickd.length}/5 seçildi.</p>
+    <div class="pool">${G.pool.map(e => cardH(e, G.pickd.includes(e) ? 'sel' : '', '', `data-act="draft" data-id="${e.id}"`)).join('')}</div>
+    <button class="btn" data-act="ready" ${G.pickd.length === 5 ? '' : 'disabled'}>Hazır</button><button class="quit" data-act="home">Vazgeç</button>`; return; }
+  const q = G.q, rev = G.rev;
+  app.innerHTML = vsH(G.sc[0], G.sc[1]) + clockH() + `<div class="qbox"><small>${G.round}. TUR${G.dbl ? ' · 2X' : ''}</small><b>${q.t}</b></div>
+  <div class="hand">${G.bot.map(() => '<div class="card back"><span class="star"></span></div>').join('')}</div>
+  <div class="arena">${rev ? [[G.my, 'Sen', G.res > 0], [G.their, G.opp, G.res < 0]].map(([e, n, w]) => `<div class="slot">${cardH(e, w ? 'win' : G.res ? 'lose' : '', `<small>${q.f(e[q.k])}</small>`, 'disabled style="opacity:1"')}${n}</div>`).join('') : ''}</div>
+  <p class="turn ${rev ? (G.res > 0 ? 'me' : 'bot') : 'me'}">${rev ? (G.res > 0 ? 'Turu aldın' : G.res < 0 ? 'Turu kaybettin' : 'Berabere') : 'Kartını seç'}</p>
+  <div class="hand mine">${G.hand.map(e => cardH(e, '', G.hint ? `<small>${q.f(e[q.k])}</small>` : '', `data-act="play" data-id="${e.id}" ${rev ? 'disabled' : ''}`)).join('')}</div>
+  <div class="jok"><button class="jk ${G.hint ? 'on' : ''}" data-act="khint" ${!rev && !G.hint && G.jk.hint ? '' : 'disabled'}>İpucu<small>değerleri aç · ${G.jk.hint} hak</small></button>
+  <button class="jk ${G.dbl ? 'on' : ''}" data-act="kdbl" ${!rev && !G.dbl && G.jk.dbl ? '' : 'disabled'}>2X<small>çift puan · ${G.jk.dbl} hak</small></button></div>
+  <button class="quit" data-act="quit">Maçtan çekil</button>`;
+  paintTime();
+}
+function kartRound() { if (G.round === 5) return duel(G.sc[0], G.sc[1]);
+  G.round++; G.q = pick(G.deck.qs.filter(x => x !== G.q)); G.rev = G.hint = G.dbl = false; kartRender(); countdown(20, () => kartPlay(pick(G.hand).id)); }
+function kartPlay(id) { if (G.rev) return; stopClock(); const q = G.q;
+  G.my = G.hand.find(e => e.id === id); G.hand = G.hand.filter(e => e !== G.my);
+  G.their = Math.random() < .6 ? G.bot.reduce((a, b) => a[q.k] * q.d >= b[q.k] * q.d ? a : b) : pick(G.bot); G.bot = G.bot.filter(e => e !== G.their);
+  G.res = Math.sign((G.my[q.k] - G.their[q.k]) * q.d); if (G.res > 0) G.sc[0] += G.dbl ? 2 : 1; if (G.res < 0) G.sc[1]++;
+  G.rev = true; kartRender(); later(kartRound, 2600); }
+
+/* ---------- Bilgi Yarışması ---------- */
+function quizStart() { const names = shuffle(BOTS.filter(b => b !== G.opp)).slice(0, 2);
+  Object.assign(G, { qs: buildQuiz(G.topic), round: 0, pl: [{ n: 'Sen', me: 1, s: 0 }, { n: G.opp, s: 0 }, ...names.map(n => ({ n, s: 0 }))], jk: { half: 3, dbl: 3 } }); quizRound(); }
+function quizRender() { const q = G.q, rev = G.rev, done = G.ans != null || rev;
+  app.innerHTML = `<div class="lb">${G.pl.slice().sort((a, b) => b.s - a.s).map((p, i) => `<div class="${p.me ? 'me' : ''}"><span>${i + 1}</span><span>${p.n}</span><span class="num">${p.s}</span></div>`).join('')}</div>
+  <h2 style="text-align:center">Tur ${G.round}/8 · ${TOPIC[G.topic]}${G.dbl ? ' · 2X' : ''}</h2>` + clockH() + `<div class="qbox">${q.ctx ? `<span class="ctx">${q.ctx}</span><br>` : ''}<b>${q.t}</b></div>
+  <div class="opts">${q.opts.map((o, i) => `<button class="opt ${G.gone.includes(i) ? 'gone' : ''} ${rev ? (i === q.c ? 'ok' : i === G.ans ? 'no' : '') : i === G.ans ? 'sel' : ''}" data-act="ans" data-i="${i}" ${done ? 'disabled' : ''}>${o.l}${rev && o.n != null ? `<small class="num">${o.n}</small>` : ''}</button>`).join('')}</div>
+  <div class="jok"><button class="jk" data-act="qhalf" ${!done && !G.gone.length && G.jk.half ? '' : 'disabled'}>Yarı Yarıya<small>iki şıkkı ele · ${G.jk.half} hak</small></button>
+  <button class="jk ${G.dbl ? 'on' : ''}" data-act="qdbl" ${!done && !G.dbl && G.jk.dbl ? '' : 'disabled'}>2X<small>çift puan · ${G.jk.dbl} hak</small></button></div>
+  <button class="quit" data-act="quit">Maçtan çekil</button>`; paintTime(); }
+function quizRound() { if (G.round === 8) { const o = G.pl.slice().sort((a, b) => b.s - a.s), r = o.findIndex(p => p.me);
+    return finish(r ? (r === 3 ? 'l' : '') : 'w', r ? (r + 1) + '. oldun' : 'Kazandın', [25, 10, 0, -15][r], `<div class="lb">${o.map((p, i) => `<div class="${p.me ? 'me' : ''}"><span>${i + 1}</span><span>${p.n}</span><span class="num">${p.s}</span></div>`).join('')}</div>`); }
+  G.q = G.qs[G.round++]; G.ans = null; G.rev = G.dbl = false; G.gone = []; quizRender(); countdown(13, quizReveal); }
+function quizReveal() { if (G.rev) return; stopClock(); G.rev = true; if (G.ans !== G.q.c) miss(G.q);
+  for (const p of G.pl) { if (p.me) { if (G.ans === G.q.c) p.s += Math.round((500 + 500 * G.left / 13) * (G.dbl ? 2 : 1)); } else if (Math.random() < .6) p.s += Math.round(500 + 500 * Math.random() * .85); }
+  quizRender(); later(quizRound, 2400); }
+
+/* ---------- yeni modlar için deste ekleri ---------- */
+DECKS.sure.goals = [{ k: 'ay', d: 1, g: 'Toplam ayet sayısı en yüksek seçkiyi kur', f: v => v + ' ayet' }, { k: 'ay', d: -1, g: 'Toplam ayet sayısı en düşük seçkiyi kur', f: v => v + ' ayet' }];
+DECKS.peygamber.goals = [{ k: 'cnt', d: 1, g: 'Adı Kur’an’da toplamda en çok geçen seçkiyi kur', f: v => v + ' kez' }, { k: 'cnt', d: -1, g: 'Adı Kur’an’da toplamda en az geçen seçkiyi kur', f: v => v + ' kez' }];
+DECKS.sure.clues = e => [(e.mk ? 'Mekkî' : 'Medenî') + ' bir sureyim.', e.juz + '. cüzde başlarım.', e.ay + ' ayetim var.',
+  'Adım “' + e.name[0] + '” harfiyle başlar.', e.n === 1 ? 'Mushaf’ın ilk suresiyim.' : 'Mushaf’ta ' + SURAHS[e.n - 2].name + ' suresinden hemen sonra gelirim.'];
+DECKS.sure.guess = [{ t: e => e.name + ' suresi kaç ayettir?', k: 'ay' }, { t: e => e.name + ' suresi Mushaf’ta kaçıncı sıradadır?', k: 'n' }];
+DECKS.peygamber.guess = [{ t: e => e.name + ' adı Kur’an’da kaç kez geçer?', k: 'cnt' }];
+DECKS.siyer.guess = [{ t: e => e.name + ' hangi yıl gerçekleşti? (milâdî)', k: 'yil' }];
+const AZ1 = [
+  ['A','İlk insan ve ilk peygamber',['Âdem']],['B','Müslümanların Mekkeli müşriklerle ilk büyük savaşı',['Bedir']],['C','Vahiy getirmekle görevli melek',['Cebrâil','Cibrîl']],
+  ['D','Kendisine Zebûr verilen peygamber',['Dâvûd','Davut']],['E','Sabrıyla anılan peygamber',['Eyyûb','Eyüp']],['F','Kur’an-ı Kerim’in ilk suresi',['Fâtiha']],
+  ['H','İlk vahyin geldiği mağara',['Hira']],['İ','“Kul hüvallâhü ehad” diye başlayan sure',['İhlâs']],['K','Kur’an-ı Kerim’in en kısa suresi',['Kevser']],
+  ['L','Hz. İbrâhîm’in yeğeni olan, kavmi helâk edilen peygamber',['Lût']],['M','Hz. Peygamber’in hicret ettiği şehir',['Medine']],['N','Tufandan önce gemi yapan peygamber',['Nûh']],
+  ['O','Ramazan ayında tutulan farz ibadet',['Oruç']],['R','Orucun farz olduğu ay',['Ramazan']],['S','Hicrette sığınılan mağara',['Sevr']],
+  ['Ş','Medyen halkına gönderilen peygamber',['Şuayb','Şuayip']],['T','Başında besmele bulunmayan sure',['Tevbe','Tövbe']],['U','Hz. Hamza’nın şehit düştüğü savaş',['Uhud','Uhut']],
+  ['V','Hz. Peygamber’in 632’deki haccına verilen ad: … Haccı',['Vedâ']],['Y','Balığın karnında kalan peygamber',['Yûnus']],['Z','Hz. Dâvûd’a verilen kitap',['Zebûr']]
+];
+
+/* ---------- sahâbî destesi: [ad, etiketler, tanıtıcı ipucu] ----------
+   e: Ensar · a: aşere-i mübeşşere · h: dört halife · r: müksirûn · k: kadın · n: müminlerin annesi · v: vahiy kâtibi · s: Hz. Peygamber'den önce vefat · y: Hâşimoğulları */
+const SAHABE = [
+  ['Hz. Ebû Bekir','a h','Hicrette Hz. Peygamber’in yol arkadaşıydım.'],['Hz. Ömer','a h','Adaletimle anılırım; lakabım Fârûk’tur.'],
+  ['Hz. Osman','a h v','Lakabım Zinnûreyn’dir; Kur’an benim halifeliğimde çoğaltıldı.'],['Hz. Ali','a h v y','Hicret gecesi Hz. Peygamber’in yatağında ben yattım.'],
+  ['Talha b. Ubeydullah','a','Uhud’da Hz. Peygamber’i vücudumu siper ederek korudum.'],['Zübeyr b. Avvâm','a','Hz. Peygamber’in “havârisi” olarak anılırım.'],
+  ['Abdurrahman b. Avf','a','Tüccardım; Medine’ye gelince “Bana çarşının yolunu gösterin” dedim.'],['Sa‘d b. Ebû Vakkâs','a','Kādisiye Savaşı’nda İslam ordusunun komutanıydım.'],
+  ['Saîd b. Zeyd','a','Hz. Ömer’in eniştesiyim; Müslüman olmadan önce öfkeyle evime gelmişti.'],['Ebû Ubeyde b. Cerrâh','a','“Bu ümmetin emini” olarak anılırım.'],
+  ['Bilâl-i Habeşî','','İslam’ın ilk müezziniyim.'],['Mus‘ab b. Umeyr','s','Medine’ye gönderilen ilk öğretmenim; Uhud’da sancağı ben taşıdım.'],
+  ['Hz. Hamza','s y','“Seyyidü’ş-şühedâ” (şehitlerin efendisi) olarak anılırım.'],['Zeyd b. Hârise','s','Kur’an’da adı açıkça geçen tek sahâbîyim.'],
+  ['Ca‘fer b. Ebû Tâlib','s y','Habeşistan’da Necâşî’nin huzurunda Müslümanlar adına ben konuştum.'],['Ebû Hüreyre','r','En çok hadis rivayet eden sahâbîyim; künyem “kedicik babası” anlamına gelir.'],
+  ['Abdullah b. Ömer','r','Bir halifenin oğluyum; çok hadis rivayet ettim.'],['Enes b. Mâlik','e r','Çocuk yaşta Hz. Peygamber’in hizmetine girdim ve yıllarca hizmet ettim.'],
+  ['Hz. Âişe','r k n','Hz. Ebû Bekir’in kızıyım.'],['Abdullah b. Abbas','r y','“Tercümânü’l-Kur’ân” olarak anılırım; Hz. Peygamber’in amcasının oğluyum.'],
+  ['Câbir b. Abdullah','e r','Babam Uhud’da şehit oldu; ben uzun yaşadım ve çok hadis rivayet ettim.'],['Ebû Saîd el-Hudrî','e r','Yaşım küçük olduğu için Uhud’a alınmadım; sonra çok hadis rivayet ettim.'],
+  ['Sa‘d b. Muâz','e s','Evs kabilesinin reisiydim; Hendek’te aldığım yara yüzünden şehit oldum.'],['Ebû Eyyûb el-Ensârî','e','Hicrette Hz. Peygamber evimde misafir kaldı; kabrim İstanbul’dadır.'],
+  ['Muâz b. Cebel','e','Hz. Peygamber beni Yemen’e vali ve öğretmen olarak gönderdi.'],['Übey b. Kâ‘b','e v','“Seyyidü’l-kurrâ” (Kur’an okuyanların efendisi) olarak anılırım.'],
+  ['Zeyd b. Sâbit','e v','Kur’an’ın Mushaf hâlinde toplanması görevi bana verildi.'],['Es‘ad b. Zürâre','e s','Akabe biatlarına katıldım; hicretten kısa süre sonra Medine’de vefat ettim.'],
+  ['Hz. Hatice','k n s','Hz. Peygamber’in ilk eşiyim ve ona ilk iman edenim.'],['Hz. Hafsa','k n','Hz. Ömer’in kızıyım; ilk Mushaf bana emanet edildi.'],
+  ['Ümmü Seleme','k n','Hudeybiye’de verdiğim görüşle Hz. Peygamber’e yol gösterdim.'],['Hz. Fâtıma','k y','Hz. Peygamber’in kızıyım; Hz. Ali ile evlendim.'],
+  ['Sümeyye bint Hayyât','k s','İslam’ın ilk şehidiyim; oğlum Ammâr’dır.'],['Esmâ bint Ebû Bekir','k','Lakabım “Zâtü’n-nitâkayn” (iki kuşak sahibi)dir.']
+].map(([name, tags, c], i) => ({ id: 'h' + i, name, tags: tags.split(' '), c }));
+[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,18,19,29,30,31,33].forEach(i => SAHABE[i].tags.push('m'));   // Mekke'den Medine'ye hicret edenler
+[2,5,6,11,14,30].forEach(i => SAHABE[i].tags.push('g'));                                                // Habeşistan'a hicret edenler
+const first = e => e.name.replace(/^Hz\. /, '')[0];
+DECKS.sahabe = { label: 'Sahâbîler', ph: 'Sahâbî adı yaz…', ents: SAHABE, min: 1,
+  crit: [{ l: 'Ensardan (Medineli)', t: tag('e') }, { l: 'Aşere-i mübeşşere', t: tag('a') }, { l: 'Dört halifeden', t: tag('h') },
+    { l: 'Çok hadis rivayet eden yedi sahâbîden', t: tag('r') }, { l: 'Kadın sahâbî', t: tag('k') }, { l: 'Müminlerin annelerinden', t: tag('n') },
+    { l: 'Vahiy kâtibi', t: tag('v') }, { l: 'Hz. Peygamber hayattayken vefat etti', t: tag('s') }, { l: 'Hâşimoğlu soyundan', t: tag('y') },
+    { l: 'Mekke’den Medine’ye hicret etti', t: tag('m') }, { l: 'Habeşistan’a hicret etti', t: tag('g') }, { l: 'Adında “Ebû” geçer', t: e => e.name.includes('Ebû') }],
+  clues: e => { const has = t => e.tags.includes(t); return [
+    has('e') ? 'Ensardanım, Medineliyim.' : 'Ensardan değilim.',
+    has('s') ? 'Hz. Peygamber hayattayken vefat ettim.' : 'Hz. Peygamber’den sonra da yaşadım.',
+    has('a') ? 'Cennetle müjdelenen on sahâbîden biriyim.' : has('r') ? 'Çok hadis rivayet eden yedi sahâbîden biriyim.' : has('k') ? 'Kadın sahâbîyim.' : 'Aşere-i mübeşşereden değilim.',
+    e.c, 'Adım “' + first(e) + '” harfiyle başlar.']; } };
+const PSTORY = ['İlk insanım.','Kur’an’da “sıddîk bir peygamber” olarak anılırım; yüce bir mekâna yükseltildiğim bildirilir.','Tufandan önce bir gemi yaptım.','Âd kavmine gönderildim.',
+  'Semûd kavmine gönderildim; mucizem bir dişi devedir.','Ateşe atıldım ama ateş beni yakmadı.','Hz. İbrâhîm’in yeğeniyim.','Babam İbrâhîm ile birlikte Kâbe’yi inşa ettim.',
+  'Hz. İbrâhîm’in oğlu, Hz. Ya‘kûb’un babasıyım.','On iki oğlum vardı; biri Yûsuf’tur.','Kardeşlerim beni kuyuya attı; sonra Mısır’da yönetici oldum.','Ağır bir hastalıkla imtihan edildim; sabrımla anılırım.',
+  'Medyen halkına gönderildim; onları ölçü ve tartıda hile yapmamaya çağırdım.','Asâmla deniz yarıldı; Firavun’a karşı gönderildim.','Hz. Mûsâ’nın kardeşi ve yardımcısıyım.','Bana Zebûr verildi; Câlût’u ben yendim.',
+  'Kuşların dili bana öğretildi; rüzgâr emrime verildi.','Kavmimi Ba‘l adlı puta tapmaktan sakındırdım.','Hz. İlyâs’tan sonra İsrâiloğulları’na gönderildim.','Kur’an’da sabredenler ve hayırlılar arasında anılırım.',
+  'Balığın karnında kaldım.','Hz. Meryem’in bakımını üstlendim; ileri yaşımda oğlum Yahyâ doğdu.','Babam Zekeriyyâ’dır; bana daha çocukken hikmet verildi.','Annem Hz. Meryem’dir; bana İncil verildi.','Son peygamberim.'];
+DECKS.peygamber.clues = e => { const has = t => e.tags.includes(t); return [
+  has('i') ? 'İsrâiloğulları’na gönderildim.' : 'İsrâiloğulları’na gönderilen peygamberlerden değilim.',
+  has('u') ? 'Ülü’l-azm peygamberlerdenim.' : has('s') ? 'Kur’an’da adımı taşıyan bir sure var.' : 'Ülü’l-azm peygamberlerden değilim; adımı taşıyan bir sure de yok.',
+  'Adım Kur’an’da ' + e.cnt + ' kez geçer.', PSTORY[+e.id.slice(1)], 'Adım “' + first(e) + '” harfiyle başlar.']; };
+const AZ2 = [
+  ['A','Hac sırasında vakfe yapılan yer',['Arafat']],['B','Kur’an-ı Kerim’in en uzun suresi',['Bakara']],['C','Müminlerin âhirette gireceği nimet yurdu',['Cennet']],
+  ['D','Hz. Süleymân’ın babası olan peygamber',['Dâvûd','Davut']],['E','Namaz vaktini bildiren çağrı',['Ezan']],['F','Yapılması kesin olarak emredilen dinî yükümlülük',['Farz']],
+  ['H','Kâbe’nin ziyaret edildiği, İslam’ın beş şartından biri olan ibadet',['Hac']],['İ','Hz. Îsâ’ya verilen kitap',['İncil']],['K','Müslümanların namazda yöneldiği yapı',['Kâbe']],
+  ['L','Adını taşıyan surede oğluna verdiği öğütler anlatılan hikmet sahibi kişi',['Lokmân']],['M','Hz. Peygamber’in doğduğu şehir',['Mekke']],['N','Günde beş vakit kılınan ibadet',['Namaz']],
+  ['O','Dört halifenin üçüncüsü',['Osman','Hz. Osman']],['R','Namazda eğilerek yapılan rükün',['Rükû']],['S','Namazda alnın yere konduğu rükün',['Secde']],
+  ['Ş','İslam’a girerken söylenen söz: Kelime-i …',['Şehâdet','Şahadet']],['T','Hz. Mûsâ’ya verilen kitap',['Tevrat']],['U','Hz. Peygamber’in dişinin kırıldığı savaş',['Uhud','Uhut']],
+  ['V','Allah’ın peygamberlerine bildirdiği ilahî mesaj',['Vahiy']],['Y','“Kur’an’ın kalbi” olarak anılan sure',['Yâsîn','Yasin']],['Z','Malın belli bir kısmının ihtiyaç sahiplerine verildiği ibadet',['Zekât']]
+];
+const hit = (e, v) => { const n = norm(e.name); return v.split(/\s+/).map(norm).filter(Boolean).every(t => n.includes(t)); };
+
+/* ---------- ortak: satır içi arama ---------- */
+const searchH = ph => `<input id="q" class="inp" type="search" placeholder="${ph}" autocomplete="off" autocapitalize="off" spellcheck="false"><div id="res"></div>`;
+function bindSearch() { const q = $('#q'); if (!q) return; q.focus(); q.addEventListener('input', () => { const s = norm(q.value);
+  const m = s ? G.deck.ents.filter(e => hit(e, q.value)).slice(0, 6) : [];
+  $('#res').innerHTML = !s ? '' : m.length ? resH(m) : '<p class="hint">Sonuç yok.</p>'; }); }
+function hint3(valid, btn) { const w = shuffle(G.deck.ents.filter(e => !valid.includes(e) && !G.used.has(e.id))).slice(0, 2);
+  $('#res').innerHTML = '<p class="hint">Bu üç adaydan biri doğru.</p>' + resH(shuffle([...(valid.length ? [pick(valid)] : []), ...w])); $(btn).disabled = true; }
+const quitH = '<button class="quit" data-act="quit">Maçtan çekil</button>';
+const chip = (t, c = '') => `<span class="chip ${c}">${t}</span>`;
+
+/* ---------- Seçki Kur ---------- */
+function seckiStart() { const deck = DECKS[G.topic]; Object.assign(G, { deck, goal: pick(deck.goals), used: new Set(), mine: [], theirs: [], round: 0, jk: { hint: 3, pas: 2 }, onPick: seckiPick }); seckiRound(); }
+const seckiValid = () => G.deck.ents.filter(e => G.crit.t(e) && !G.used.has(e.id));
+const seckiCrit = () => pick(G.deck.crit.filter(c => c !== G.crit && G.deck.ents.filter(e => c.t(e) && !G.used.has(e.id)).length >= 3));
+function seckiRound() { if (G.round === 6) return seckiEnd(); G.round++; G.crit = seckiCrit(); seckiRender(); countdown(25, () => { toast('Süre doldu, rastgele atandı'); seckiPick(pick(seckiValid())); }); }
+function seckiPick(e) { stopClock(); const g = G.goal;
+  if (G.crit.t(e) && !G.used.has(e.id)) { G.used.add(e.id); G.mine.push(e); } else { G.mine.push(null); toast(e.name + ' bu ölçüte uymuyor, yer boş kaldı'); }
+  G.theirs.push(shuffle(G.deck.ents.filter(x => G.crit.t(x))).slice(0, 2).reduce((a, b) => a[g.k] * g.d >= b[g.k] * g.d ? a : b)); seckiRound(); }
+function seckiRender() { const g = G.goal;
+  app.innerHTML = `<div class="qbox"><span class="ctx">${g.g}</span><br><small>TUR ${G.round}/6 · BU ÖLÇÜTE UYAN BİR İSİM SEÇ</small><b>${G.crit.l}</b></div>` + clockH() +
+  `<div class="pool">${[0,1,2,3,4,5].map(i => `<div class="card ${G.mine[i] ? 'sel' : ''}">${i < G.mine.length ? (G.mine[i] ? '<span class="star"></span>' + G.mine[i].name : 'boş') : i + 1}</div>`).join('')}</div>` + searchH(G.deck.ph) +
+  `<div class="jok"><button class="jk" data-act="shint" ${G.jk.hint ? '' : 'disabled'}>İpucu<small>üç aday göster · ${G.jk.hint} hak</small></button>
+  <button class="jk" data-act="spas" ${G.jk.pas ? '' : 'disabled'}>Pas<small>ölçütü değiştir · ${G.jk.pas} hak</small></button></div>` + quitH; paintTime(); bindSearch(); }
+function seckiEnd() { const g = G.goal, mx = Math.max(...G.deck.ents.map(e => e[g.k])), val = e => e ? e[g.k] : g.d > 0 ? 0 : mx, sum = a => a.reduce((s, e) => s + val(e), 0);
+  const col = (n, a) => `<div><h2>${n} · ${g.f(sum(a))}</h2>${a.map(e => `<div class="ln"><span>${e ? e.name : 'boş'}</span><span class="num">${val(e)}</span></div>`).join('')}</div>`;
+  seckiRender(); stopClock(); duel(sum(G.mine) * g.d, sum(G.theirs) * g.d, `<p class="hint">${g.g}.</p><div class="cols">${col('Sen', G.mine)}${col(G.opp, G.theirs)}</div>`); }
+
+/* ---------- Ben Kimim ---------- */
+function kimStart() { const deck = DECKS[G.topic]; Object.assign(G, { deck, used: new Set(), sc: [0, 0], round: 0, onPick: kimPick }); kimRound(); }
+function kimRound() { if (G.round === 3) return duel(G.sc[0], G.sc[1]); G.round++; G.e = pick(G.deck.ents.filter(e => e !== G.e)); G.clues = G.deck.clues(G.e); G.i = -1; G.done = null; G.botAt = Math.random() < .15 ? 9 : 1 + rnd(4); kimNext(); }
+function kimNext() { if (G.i === 4) return kimEnd(false); G.i++; G.tried = false; kimRender(); countdown(10, kimNext); }
+function kimPick(e) { if (e === G.e) return kimEnd(true); G.tried = true; toast('Yanlış tahmin: ' + e.name); kimRender(); }
+function kimEnd(ok) { stopClock(); const mp = ok ? 5 - G.i : 0, bp = G.botAt < 5 ? 5 - G.botAt : 0; G.sc[0] += mp; G.sc[1] += bp; G.done = { mp, bp }; kimRender(); later(kimRound, 3400); }
+function kimRender() { const d = G.done, keep = !d && !G.tried && $('#q') ? $('#q').value : '';
+  app.innerHTML = vsH(G.sc[0], G.sc[1]) + clockH() + `<div class="qbox"><small>${G.round}. TUR · ŞİMDİ BİLİRSEN ${5 - G.i} PUAN</small><b>Ben kimim?</b></div>
+  <ol class="clues">${G.clues.slice(0, G.i + 1).map(c => `<li>${c}</li>`).join('')}</ol>` +
+  (d ? `<div class="qbox"><small>CEVAP</small><b>${G.e.name}</b></div><p class="turn ${d.mp >= d.bp ? 'me' : 'bot'}">Sen +${d.mp} · ${G.opp} +${d.bp}${G.botAt < 5 ? ` (${G.botAt + 1}. ipucunda bildi)` : ' (bilemedi)'}</p>`
+    : G.tried ? '<p class="hint">Bu ipucunda tahmin hakkın bitti, sonrakini bekle.</p>' : searchH(G.deck.ph)) + quitH;
+  paintTime(); bindSearch(); if (keep) { $('#q').value = keep; $('#q').dispatchEvent(new Event('input')); } }
+
+/* ---------- Pingpong ---------- */
+function pingStart() { const deck = DECKS[G.topic]; Object.assign(G, { deck, sc: [0, 0], server: 'bot', onPick: pingPick }); pingServe(); }
+function pingServe() { if (G.sc[0] === 3 || G.sc[1] === 3) return duel(G.sc[0], G.sc[1]); G.server = G.server === 'me' ? 'bot' : 'me';
+  G.crit = pick(G.deck.crit.filter(c => c !== G.crit && G.deck.ents.filter(e => c.t(e)).length >= G.deck.min * 4)); G.used = new Set(); G.rally = []; pingTurn(G.server); }
+function pingTurn(w) { G.turn = w; pingRender();
+  if (w === 'me') countdown(12, () => pingPoint('bot', 'Süre doldu'));
+  else { countdown(12); later(() => { const v = G.deck.ents.filter(e => G.crit.t(e) && !G.used.has(e.id));
+    if (v.length && Math.random() < Math.max(.4, .92 - G.rally.length * .06)) { const e = pick(v); G.used.add(e.id); G.rally.push([e, 'bot']); pingTurn('me'); } else pingPoint('me', G.opp + ' bilemedi'); }, 1100 + rnd(1700)); } }
+function pingPick(e) { if (G.crit.t(e) && !G.used.has(e.id)) { G.used.add(e.id); G.rally.push([e, 'me']); pingTurn('bot'); } else pingPoint('bot', e.name + ' uymuyor'); }
+function pingPoint(w, msg) { stopClock(); G.sc[w === 'me' ? 0 : 1]++; toast(msg + (w === 'me' ? ' · sayı senin' : ' · sayı rakibin')); G.turn = null; pingRender(); later(pingServe, 1600); }
+function pingRender() {
+  app.innerHTML = vsH(G.sc[0], G.sc[1]) + clockH() + `<div class="qbox"><small>İLK 3 SAYIYI ALAN KAZANIR · TEKRAR YOK</small><b>${G.crit.l}</b></div>
+  <div class="chips">${G.rally.slice(-8).map(([e, o]) => chip(e.name, o)).join('') || '<span class="hint">Henüz isim söylenmedi.</span>'}</div>` +
+  (G.turn === 'me' ? '<p class="turn me">Sıra sende: uyan bir isim söyle</p>' + searchH(G.deck.ph) : `<p class="turn bot">${G.turn ? G.opp + ' düşünüyor…' : 'Yeni servis geliyor'}</p>`) + quitH; paintTime(); bindSearch(); }
+
+/* ---------- Bingo ---------- */
+function bingoStart() { const deck = DECKS[G.topic]; Object.assign(G, { deck, board: shuffle(deck.crit).slice(0, 9), mine: Array(9).fill(null), bot: new Set(), seq: shuffle(deck.ents), i: -1 }); bingoNext(); }
+function bingoNext() { const m = G.mine.filter(Boolean).length, b = G.bot.size; if (m === 9 || b === 9 || G.i === 21) return duel(m, b); G.i++; G.e = G.seq[G.i]; bingoRender(); countdown(10, () => bingoPlace(-1)); }
+function bingoPlace(i) { stopClock(); if (i >= 0) { if (!G.mine[i] && G.board[i].t(G.e)) G.mine[i] = G.e; else toast(G.e.name + ' bu kareye uymuyor'); }
+  const f = [...G.board.keys()].filter(j => !G.bot.has(j) && G.board[j].t(G.e)); if (f.length && Math.random() < .6) G.bot.add(pick(f)); bingoNext(); }
+function bingoRender() {
+  app.innerHTML = vsH(G.mine.filter(Boolean).length, G.bot.size) + clockH() + `<div class="qbox"><small>KART ${G.i + 1}/22 · UYDUĞU BOŞ KAREYE YERLEŞTİR</small><b>${G.e.name}</b></div>
+  <div class="bgrid">${G.board.map((c, i) => `<button class="cell ${G.mine[i] ? 'me' : ''}" data-act="bcell" data-i="${i}" ${G.mine[i] ? 'disabled style="opacity:1"' : ''}>${c.l}${G.mine[i] ? `<small>${G.mine[i].name}</small>` : ''}</button>`).join('')}</div>
+  <div class="jok"><button class="jk" data-act="bpas">Pas<small>bu kartı geç</small></button></div>` + quitH; paintTime(); }
+
+/* ---------- Numara Avı ---------- */
+function numaraStart() { Object.assign(G, { deck: DECKS[G.topic], sc: [0, 0], round: 0, seen: new Set() }); numaraRound(); }
+function numaraRound() { if (G.round === 5) return duel(G.sc[0], G.sc[1]); G.round++; G.g = pick(G.deck.guess); G.e = pick(G.deck.ents.filter(e => !G.seen.has(e))); G.seen.add(G.e); G.rev = null; numaraRender(); countdown(15, () => numaraGuess(null)); }
+function numaraGuess(v) { if (G.rev) return; stopClock(); const t = G.e[G.g.k], vals = G.deck.ents.map(e => e[G.g.k]), lo = Math.min(...vals), span = Math.max(...vals) - lo;
+  const b = Math.random() < .3 ? t : Math.max(lo, t + Math.round((Math.random() - .5) * span * .3)), dm = v == null ? Infinity : Math.abs(v - t), db = Math.abs(b - t);
+  if (dm <= db) G.sc[0]++; if (db <= dm) G.sc[1]++; G.rev = { v, b, t, w: dm < db ? 'me' : db < dm ? 'bot' : '' }; numaraRender(); later(numaraRound, 3200); }
+function numaraRender() { const r = G.rev;
+  app.innerHTML = vsH(G.sc[0], G.sc[1]) + clockH() + `<div class="qbox"><small>TUR ${G.round}/5 · EN YAKIN TAHMİN TURU ALIR</small><b>${G.g.t(G.e)}</b></div>` +
+  (r ? `<div class="cols three"><div class="qbox"><small>SEN</small><b class="num">${r.v ?? '–'}</b></div><div class="qbox"><small>DOĞRU</small><b class="num">${r.t}</b></div><div class="qbox"><small>${G.opp.toLocaleUpperCase('tr')}</small><b class="num">${r.b}</b></div></div>
+    <p class="turn ${r.w || 'me'}">${r.w === 'me' ? 'Turu aldın' : r.w === 'bot' ? 'Turu kaybettin' : 'Berabere, ikiniz de puan aldınız'}</p>`
+    : '<div class="row"><input id="g" class="inp num" type="number" inputmode="numeric" placeholder="Tahminin"><button class="btn" data-act="guess">Tahmin et</button></div>') + quitH;
+  paintTime(); $('#g')?.focus(); }
+
+/* ---------- 3-2-1 ---------- */
+function ucStart() { Object.assign(G, { deck: DECKS[G.topic], stages: [], st: -1, sc: [0, 0], used: new Set(), onPick: ucPick }); ucStage(); }
+function ucSpec(st) { const d = G.deck, C = d.crit, n = (...cs) => d.ents.filter(e => !G.used.has(e.id) && cs.every(c => c.t(e))).length, pairs = [];
+  C.forEach((a, i) => C.slice(i + 1).forEach(b => pairs.push([a, b])));
+  return st === 0 ? [3, [pick(C.filter(c => n(c) >= d.min * 5))], 1] : st === 1 ? [2, pick(pairs.filter(p => n(...p) >= 3 && n(...p) <= 30)), 2] : [1, pick(pairs.filter(p => n(...p) >= 1 && n(...p) <= 6)), 3]; }
+function ucStage() { if (G.st === 2) return duel(G.sc[0], G.sc[1]); G.st++; G.stages[G.st] = ucSpec(G.st); G.tries = []; G.closed = false; ucRender(); countdown(25, ucClose); }
+function ucPick(e) { const [need, cs, pt] = G.stages[G.st], ok = cs.every(c => c.t(e)) && !G.used.has(e.id); G.used.add(e.id); G.tries.push([e, ok]); if (ok) G.sc[0] += pt; if (G.tries.length === need) ucClose(); else ucRender(); }
+function ucClose() { stopClock(); const [need, , pt] = G.stages[G.st]; let b = 0; for (let i = 0; i < need; i++) if (Math.random() < [.8, .6, .45][G.st]) b++;
+  G.sc[1] += b * pt; toast(`${G.opp} bu turda ${b}/${need} bildi`); G.closed = true; ucRender(); later(ucStage, 2400); }
+function ucRender() { const [need, cs, pt] = G.stages[G.st];
+  app.innerHTML = vsH(G.sc[0], G.sc[1]) + clockH() + `<div class="qbox"><small>${need} TANE SAY · HER DOĞRU ${pt} PUAN · ${need} HAKKIN VAR</small><b>${cs.map(c => c.l).join(' + ')}</b></div>
+  <div class="chips">${Array.from({ length: need }, (_, i) => G.tries[i] ? chip(G.tries[i][0].name, G.tries[i][1] ? 'ok' : 'no') : chip(i + 1 + '. cevap')).join('')}</div>` + (G.closed ? '' : searchH(G.deck.ph)) + quitH; paintTime(); bindSearch(); }
+
+/* ---------- A–Z ---------- */
+function azStart() { Object.assign(G, { list: pick([AZ1, AZ2]).map(([h, c, a]) => ({ h, c, a, s: 0 })), cur: 0, botN: 10 + rnd(8) }); azRender(); countdown(120, azEnd); }
+function azNext() { const n = G.list.length; for (let k = 1; k <= n; k++) { const j = (G.cur + k) % n; if (!G.list[j].s) { G.cur = j; return azRender(); } } azEnd(); }
+function azAns() { const v = norm($('#az').value).replace(/^hz/, ''); if (!v) return; const it = G.list[G.cur]; it.s = it.a.some(x => norm(x) === v) ? 1 : 2; if (it.s === 2) toast('Doğrusu: ' + it.a[0]); azNext(); }
+function azEnd() { stopClock(); const m = G.list.filter(x => x.s === 1).length; duel(m, G.botN, `<p class="hint">Sen ${m}, ${G.opp} ${G.botN} doğru cevap verdi.</p>`); }
+function azRender() { const it = G.list[G.cur];
+  app.innerHTML = clockH() + `<div class="ring">${G.list.map((x, i) => chip(x.h, (x.s === 1 ? 'ok' : x.s === 2 ? 'no' : '') + (i === G.cur ? ' cur' : ''))).join('')}</div>
+  <div class="qbox"><small>“${it.h}” HARFİYLE BAŞLAR</small><b>${it.c}</b></div>
+  <div class="row"><input id="az" class="inp" type="text" placeholder="Cevabın" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="btn" data-act="azans">Cevapla</button></div>
+  <div class="jok"><button class="jk" data-act="azpas">Pas<small>sonra tekrar gelir</small></button></div>` + quitH; paintTime(); $('#az').focus(); }
+document.addEventListener('keydown', ev => { if (ev.key !== 'Enter') return; if (ev.target.id === 'g') ACT.guess(); if (ev.target.id === 'az') azAns(); });
+
+/* ================= dördüncü tur: yeni modlar ================= */
+const today = () => { const d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); };
+const dateTR = () => new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' });
+const seedOf = s => { let h = 2166136261; for (const c of s) h = Math.imul(h ^ c.charCodeAt(0), 16777619); return h >>> 0; };
+function seeded(seed, fn) { let a = seed; RNG = () => { a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; try { return fn(); } finally { RNG = Math.random; } }
+function miss(q) { P.miss = [{ t: q.t, ctx: q.ctx, o: q.opts.map(x => x.l), c: q.c }, ...P.miss.filter(m => m.t !== q.t)].slice(0, 40); save(); }
+function shareH(text) { G.share = text; return `<pre class="share">${text}</pre><button class="btn ghost" data-act="copy">Sonucu kopyala</button>`; }
+const optsH = (q, ans, rev, act) => `<div class="opts">${q.opts.map((o, i) => `<button class="opt ${rev ? (i === q.c ? 'ok' : i === ans ? 'no' : '') : ''}" data-act="${act}" data-i="${i}" ${rev ? 'disabled' : ''}>${o.l}${rev && o.n != null ? `<small class="num">${o.n}</small>` : ''}</button>`).join('')}</div>`;
+const exitH = '<button class="quit" data-act="home">Çık</button>';
+
+/* ---------- Esmâ-i hüsnâ ---------- */
+const ESMA = `Rahmân|Dünyada bütün yaratılmışlara merhamet eden
+Rahîm|Âhirette müminlere merhamet eden
+Melik|Mülkün gerçek sahibi, hükümdar
+Kuddûs|Her türlü eksiklikten uzak
+Selâm|Esenlik veren, selâmete çıkaran
+Mü’min|Güven veren, emin kılan
+Müheymin|Her şeyi gözetip koruyan
+Azîz|İzzet sahibi, mağlup edilemeyen
+Cebbâr|Dilediğini yapmaya gücü yeten
+Mütekebbir|Büyüklükte eşi olmayan
+Hâlık|Yaratan, yoktan var eden
+Musavvir|Varlıklara şekil ve suret veren
+Gaffâr|Günahları çokça bağışlayan
+Kahhâr|Her şeye üstün gelen, mutlak galip
+Vehhâb|Karşılıksız bolca veren
+Rezzâk|Rızık veren
+Fettâh|Hayır kapılarını açan
+Alîm|Her şeyi hakkıyla bilen
+Kâbız|Daraltan, sıkan
+Bâsıt|Genişleten, bolluk veren
+Hâfıd|Alçaltan
+Râfi‘|Yükselten
+Muiz|İzzet veren, şereflendiren
+Müzil|Zillete düşüren
+Semî‘|Her şeyi işiten
+Basîr|Her şeyi gören
+Hakem|Hükmeden, hakkı yerine getiren
+Adl|Mutlak adalet sahibi
+Latîf|En ince şeyleri bilen, lütufta bulunan
+Habîr|Her şeyden haberdar olan
+Halîm|Hilim sahibi, yumuşak davranan
+Şekûr|Az amele çok sevap veren
+Hafîz|Koruyup gözeten
+Mukît|Her canlının gıdasını veren
+Hasîb|Hesaba çeken
+Kerîm|Çok cömert, ikramı bol
+Rakîb|Her an gözetleyen
+Mücîb|Dualara karşılık veren
+Vâsi‘|İlmi ve rahmeti her şeyi kuşatan
+Hakîm|Her işi hikmetli olan
+Vedûd|Çok seven ve sevilen
+Bâis|Ölüleri dirilten
+Şehîd|Her şeye şahit olan
+Vekîl|Kendisine güvenilip dayanılan
+Veliyy|Dost ve yardımcı olan
+Hamîd|Övgüye lâyık olan
+Muhsî|Her şeyi tek tek sayıp bilen
+Muhyî|Hayat veren
+Mümît|Öldüren
+Hayy|Daima diri olan
+Kayyûm|Varlığı kendinden olan, her şeyi ayakta tutan
+Vâhid|Tek, bir olan
+Samed|Herkesin muhtaç olduğu, kendisi kimseye muhtaç olmayan
+Mukaddim|Dilediğini öne alan
+Muahhir|Dilediğini sona bırakan
+Evvel|Varlığının başlangıcı olmayan
+Âhir|Varlığının sonu olmayan
+Zâhir|Varlığı apaçık olan
+Bâtın|Zâtı gizli olan
+Tevvâb|Tövbeleri kabul eden
+Müntakım|Suçluları hak ettikleri cezaya çarptıran
+Afüvv|Affı çok olan
+Raûf|Çok şefkatli
+Câmi‘|Dilediğini dilediği zaman bir araya getiren
+Muğnî|Dilediğini zengin kılan
+Mâni‘|Dilediği şeye engel olan
+Nâfi‘|Fayda veren şeyleri yaratan
+Nûr|Âlemleri nurlandıran
+Hâdî|Hidayet veren, doğru yolu gösteren
+Bedî‘|Eşsiz ve örneksiz yaratan
+Vâris|Her şey yok olduktan sonra da bâki kalan gerçek sahip
+Sabûr|Çok sabırlı`.split('\n').map(l => l.split('|'));
+function esmaStart() { Object.assign(G, { sc: 0, round: 0, botN: 7 + rnd(7), pool: shuffle(ESMA) }); countdown(90, esmaEnd); esmaRound(); }
+function esmaRound() { if (G.round === 3) return esmaEnd(); G.round++; G.set = G.pool.splice(0, 5); G.right = shuffle(G.set); G.okk = new Set(); G.sel = null; esmaRender(); }
+function esmaEnd() { stopClock(); duel(G.sc, G.botN, `<p class="hint">15 eşleştirmeden sen ${G.sc}, ${G.opp} ${G.botN} yaptı.</p>`); }
+function esmaPick(i) { if (G.sel == null) return toast('Önce soldan bir isim seç'); const a = G.set[G.sel];
+  if (G.right[i] === a) { G.okk.add(a); G.sc++; G.sel = null; if (G.okk.size === 5) return esmaRound(); } else { toast('Eşleşmedi, 3 saniye ceza'); tLeft = Math.max(.1, tLeft - 3); G.sel = null; } esmaRender(); }
+function esmaRender() {
+  app.innerHTML = vsH(G.sc, '?') + clockH() + `<h2 style="text-align:center">Tablo ${G.round}/3 · ismi seç, sonra anlamına dokun</h2>
+  <div class="pairs"><div>${G.set.map((x, i) => `<button class="opt ${G.okk.has(x) ? 'ok' : G.sel === i ? 'sel' : ''}" data-act="esl" data-i="${i}" ${G.okk.has(x) ? 'disabled' : ''}>${x[0]}</button>`).join('')}</div>
+  <div>${G.right.map((x, i) => `<button class="opt ${G.okk.has(x) ? 'ok' : ''}" data-act="esr" data-i="${i}" ${G.okk.has(x) ? 'disabled' : ''}>${x[1]}</button>`).join('')}</div></div>` + quitH; paintTime(); }
+
+/* ---------- Doğru mu Yanlış mı ---------- */
+function dyGen() { const want = Math.random() < .5, k = rnd(5);
+  if (k < 3) { const d = DECKS[['sure', 'peygamber', 'sahabe'][k]]; for (;;) { const e = pick(d.ents), c = pick(d.crit); if (!!c.t(e) === want) return { a: e.name + (k ? '' : ' suresi'), b: c.l, v: want }; } }
+  if (k === 3) { const e = pick(EVENTS); return { a: e.name, b: 'Milâdî ' + (want ? e.yil : e.yil + pick([-3, -2, -1, 1, 2, 3])) + ' yılında gerçekleşti', v: want, fix: 'M. ' + e.yil }; }
+  const [t, c, ...w] = pick(Object.values(BANK).flat()); return { a: t, b: want ? c : pick(w), v: want, fix: c }; }
+function dyStart() { Object.assign(G, { sc: 0, botN: 9 + rnd(8) }); countdown(60, () => duel(G.sc, G.botN, `<p class="hint">Sen ${G.sc}, ${G.opp} ${G.botN} doğru.</p>`)); dyNext(); }
+function dyNext() { G.s = dyGen(); G.fb = null; dyRender(); }
+function dyAns(v) { if (G.fb) return; const ok = v === G.s.v; if (ok) G.sc++; G.fb = ok ? 'ok' : 'no'; dyRender(); later(dyNext, ok ? 350 : 1400); }
+function dyRender() { const s = G.s;
+  app.innerHTML = vsH(G.sc, '?') + clockH() + `<div class="qbox"><small>60 SANİYE · DOĞRU MU, YANLIŞ MI?</small><b>${s.a}</b><p class="stmt">${s.b}</p></div>
+  <p class="turn ${G.fb === 'ok' ? 'me' : 'bot'}">${G.fb === 'ok' ? 'Doğru bildin' : G.fb ? 'Bilemedin.' + (!s.v && s.fix ? ' Doğrusu: ' + s.fix : s.v ? ' İfade doğruydu.' : ' İfade yanlıştı.') : '&nbsp;'}</p>
+  <div class="row"><button class="btn dy yes" data-act="dy1" ${G.fb ? 'disabled' : ''}>Doğru</button><button class="btn dy nay" data-act="dy0" ${G.fb ? 'disabled' : ''}>Yanlış</button></div>` + quitH; paintTime(); }
+
+/* ---------- Harita ---------- */
+const PLACES = [['Mekke',39.83,21.42,'Kâbe’nin bulunduğu şehir'],['Medine',39.61,24.47,'Hicret yurdu; Mescid-i Nebevî buradadır'],['Tâif',40.42,21.27,'Hz. Peygamber’in İslam’a davet için gidip taşlandığı şehir'],
+  ['Bedir',38.77,23.78,'İlk büyük savaşın yapıldığı yer'],['Hayber',39.29,25.70,'Hicretin 7. yılında fethedilen kaleler bölgesi'],['Tebük',36.57,28.38,'Hz. Peygamber’in son seferinin yapıldığı yer'],
+  ['Kudüs',35.23,31.78,'Mescid-i Aksâ’nın bulunduğu şehir'],['Şam',36.29,33.51,'Emevî Camii’nin bulunduğu şehir'],['San‘a',44.20,15.35,'Yemen’in merkezi; Muâz b. Cebel bu bölgeye gönderildi'],
+  ['Aksum',38.72,14.13,'Habeşistan’da Necâşî’nin başkenti; ilk hicretin yapıldığı ülke'],['Mısır (Nil deltası)',31.24,30.05,'Hz. Yûsuf’un yönetici olduğu, Hz. Mûsâ’nın doğduğu ülke'],['Mûte',35.70,31.09,'Zeyd, Ca‘fer ve Abdullah b. Revâha’nın şehit düştüğü savaşın yeri'],
+  ['Medyen',35.00,28.48,'Hz. Şuayb’ın gönderildiği halkın yurdu'],['Sînâ Dağı',33.97,28.54,'Hz. Mûsâ’ya vahyin geldiği dağ'],['Ninova',43.15,36.36,'Hz. Yûnus’un gönderildiği şehir'],
+  ['Bâbil',44.42,32.54,'Hz. İbrâhîm’in kıssasının geçtiği Mezopotamya şehri'],['Harran',39.03,36.87,'Hz. İbrâhîm’in bir süre yaşadığı şehir'],['Hicr (Medâin-i Sâlih)',37.95,26.79,'Semûd kavminin kayaları oyarak evler yaptığı yer'],
+  ['Me’rib',45.33,15.42,'Sebe’ halkının yurdu; ünlü seddin bulunduğu yer'],['Necran',44.13,17.49,'Hristiyan heyetinin Medine’ye geldiği Güney Arabistan şehri']];
+const MW = 390, MH = 502, proj = (lo, la) => [((lo - 28) / 24 * MW).toFixed(1), ((38 - la) / 28 * MH).toFixed(1)];
+const LAND = [
+  [[28,38],[28,36.7],[29.1,36.2],[30.6,36.85],[32,36.1],[33.8,36.2],[34.7,36.8],[36.2,36.6],[35.9,35.9],[35.7,34.6],[35.1,33.1],[34.9,32.5],[34.3,31.4],[33,31.1],[32.3,31.25],[32.55,29.95],[33.2,28.4],[34.25,27.75],[34.7,28.8],[34.95,29.5],[35,28.8],[34.6,28],[35.5,27.2],[36.5,26],[37.2,24.8],[38.1,24.05],[39.1,21.5],[40.2,20],[41.1,18.7],[42.3,17],[42.8,15.5],[43.2,13.5],[43.5,12.7],[45,12.8],[48,14],[49.5,14.8],[52,16.3],[52,24.1],[51.6,24.6],[51.5,26],[50.9,25.6],[50.6,25],[50.2,25.6],[50.1,26.6],[49.2,27.5],[48.6,28.4],[48,29.4],[48.2,29.9],[48.8,30.3],[49.8,30.2],[50.8,29.2],[51.5,27.9],[52,27.6],[52,38]],
+  [[28,31.2],[29,30.9],[31,31.5],[32.3,31.25],[32.45,29.95],[32.7,29],[33.5,27.6],[34.5,25.6],[35.5,23.9],[37,21.5],[37.3,19.5],[38.5,18],[39.3,16],[40,15],[41.5,13.5],[43,12.6],[43.4,11.6],[44.5,10.5],[47,11.2],[49,11.3],[51.3,11.8],[51.3,10],[28,10]],
+  [[32.3,35],[33,35.3],[34.5,35.6],[34,35],[33,34.6]]
+].map(p => 'M' + p.map(q => proj(...q).join(',')).join('L') + 'Z');
+const kmBetween = (lo1, la1, lo2, la2) => { const r = Math.PI / 180, a = Math.sin((la2 - la1) * r / 2) ** 2 + Math.cos(la1 * r) * Math.cos(la2 * r) * Math.sin((lo2 - lo1) * r / 2) ** 2; return Math.round(12742 * Math.asin(Math.sqrt(a))); };
+function haritaStart() { Object.assign(G, { sc: [0, 0], round: 0, seq: shuffle(PLACES) }); haritaRound(); }
+function haritaRound() { if (G.round === 5) return duel(G.sc[0], G.sc[1]); G.pl = G.seq[G.round++]; G.rev = null; haritaRender(); countdown(12, () => haritaGuess(null)); }
+function haritaGuess(pt) { if (G.rev) return; stopClock(); const [, lo, la] = G.pl, ang = Math.random() * 6.28, bd = Math.random() < .3 ? rnd(60) : 80 + rnd(520), b = [lo + Math.cos(ang) * bd / 100, la + Math.sin(ang) * bd / 111];
+  const dm = pt ? kmBetween(pt[0], pt[1], lo, la) : Infinity, db = kmBetween(b[0], b[1], lo, la); if (dm <= db) G.sc[0]++; else G.sc[1]++;
+  G.rev = { pt, b, dm, db }; haritaRender(); later(haritaRound, 3400); }
+function haritaRender() { const [name, lo, la, clue] = G.pl, r = G.rev, pin = (p, c, rad = 6) => { const [x, y] = proj(...p); return `<circle class="${c}" cx="${x}" cy="${y}" r="${rad}"/>`; }, [tx, ty] = proj(lo, la);
+  app.innerHTML = vsH(G.sc[0], G.sc[1]) + clockH() + `<div class="qbox"><small>TUR ${G.round}/5 · HARİTADA YERİNE DOKUN, YAKIN OLAN KAZANIR</small><b>${name}</b><p class="stmt">${clue}</p></div>
+  <svg id="map" viewBox="0 0 ${MW} ${MH}" role="img" aria-label="Arap Yarımadası ve çevresinin şematik haritası"><rect class="sea" width="${MW}" height="${MH}" rx="14"/>${LAND.map(d => `<path class="land" d="${d}"/>`).join('')}
+  <text class="lbl" x="20" y="82">Akdeniz</text><text class="lbl" x="150" y="330" transform="rotate(62 150 330)">Kızıldeniz</text><text class="lbl" x="328" y="196" transform="rotate(48 328 196)">Basra Körfezi</text>
+  ${r ? (r.pt ? pin(r.pt, 'pme') : '') + pin(r.b, 'pbot') + pin([lo, la], 'ptrue', 8) + `<text class="lbl on" x="${+tx + 12}" y="${+ty + 4}">${name}</text>` : ''}</svg>
+  <p class="turn ${r ? (r.dm <= r.db ? 'me' : 'bot') : 'me'}">${r ? `Sen ${r.pt ? r.dm + ' km' : 'işaretlemedin'} · ${G.opp} ${r.db} km` : '&nbsp;'}</p>` + quitH; paintTime(); }
+
+/* ---------- Kelime (Wordle tarzı) ---------- */
+const WORDS = { 'İbadet': 'NAMAZ ZEKAT TAVAF İHRAM İMSAK İFTAR SAHUR FİTRE VİTİR KAMET KIYAM NİYET SECDE HATİM ZİKİR',
+  'Kavram': 'KIBLE VAHİY RESUL HADİS FIKIH HELAL HARAM SEVAP GÜNAH ŞEHİT TEVBE SABIR ŞÜKÜR SELAM MELEK KİTAP MÜMİN NİSAP HAFIZ KABİR AHLAK TAKVA İHSAN HİCRİ KURAN',
+  'Siyer': 'BEDİR MEKKE GAZVE KUDÜS MİRAÇ', 'Peygamber': 'YUSUF YUNUS DAVUD EYYUB ŞUAYB HARUN İSHAK YAKUB YAHYA İLYAS SALİH İDRİS',
+  'Sure': 'İHLAS KADİR YASİN FATIR ENFAL ZÜMER ŞUARA KASAS KAMER HADİD TALAK FELAK MAİDE' };
+const WLIST = Object.entries(WORDS).flatMap(([c, s]) => s.split(' ').map(w => [w, c]));
+const KEYS = ['ERTYUIOPĞÜ', 'ASDFGHJKLŞİ', '↵ZCVBNMÖÇ⌫'];
+function wScore(g, w) { const r = Array(5).fill('x'), left = [...w]; g.forEach((ch, i) => { if (ch === w[i]) { r[i] = 'ok'; left[i] = null; } });
+  g.forEach((ch, i) => { if (r[i] === 'x') { const j = left.indexOf(ch); if (j >= 0) { r[i] = 'mid'; left[j] = null; } } }); return r; }
+function kelimeStart() { const daily = G.topic === 'gunluk', key = 'k' + today();
+  if (daily && P.done[key]) return finish('', 'Bugünkü kelimeyi tamamladın', 0, shareH(P.done[key]), false);
+  const [w, c] = daily ? WLIST[seedOf(key) % WLIST.length] : pick(WLIST); Object.assign(G, { w: [...w], cat: c, rows: [], cur: [], hint: false, end: false }); kelimeRender(); }
+function kelimeKey(k) { if (G.end) return;
+  if (k === '⌫') G.cur.pop();
+  else if (k === '↵') { if (G.cur.length < 5) return toast('Beş harf yaz'); const r = wScore(G.cur, G.w); G.rows.push([G.cur, r]); G.cur = [];
+    if (r.every(x => x === 'ok') || G.rows.length === 6) { kelimeRender(); return kelimeEnd(r.every(x => x === 'ok')); } }
+  else if (G.cur.length < 5) G.cur.push(k);
+  kelimeRender(); }
+function kelimeEnd(win) { G.end = true; const sq = { ok: '🟩', mid: '🟨', x: '⬛' }, daily = G.topic === 'gunluk';
+  const text = `İlim Meydanı · ${daily ? 'Günün kelimesi ' + dateTR() : 'Kelime'} · ${win ? G.rows.length : 'X'}/6\n` + G.rows.map(([, r]) => r.map(x => sq[x]).join('')).join('\n');
+  if (daily) P.done['k' + today()] = text; later(() => finish(win ? 'w' : 'l', win ? 'Buldun' : 'Kelime: ' + G.w.join(''), win ? 10 : 0, shareH(text), !daily), 900); }
+function kelimeRender() { const st = {}; G.rows.forEach(([g, r]) => g.forEach((ch, i) => { if (st[ch] !== 'ok' && !(st[ch] === 'mid' && r[i] === 'x')) st[ch] = r[i]; }));
+  app.innerHTML = `<h1 style="font-size:24px">${G.topic === 'gunluk' ? 'Günün kelimesi' : 'Kelime'}</h1><p class="lede">${G.topic === 'gunluk' ? dateTR() + ' · ' : ''}Beş harfli dinî bir kelime. Altı tahmin hakkın var.</p>
+  <div class="wgrid">${Array.from({ length: 6 }, (_, r) => Array.from({ length: 5 }, (_, i) => { const row = G.rows[r]; return `<span class="tile ${row ? row[1][i] : ''}">${row ? row[0][i] : r === G.rows.length ? G.cur[i] || '' : ''}</span>`; }).join('')).join('')}</div>
+  <p class="hint" style="text-align:center">${G.hint ? 'Kategori: ' + G.cat : '<button class="quit" data-act="whint">Kategoriyi göster</button>'}</p>
+  <div class="kb">${KEYS.map(k => `<div>${[...k].map(c => `<button class="key ${st[c] || ''} ${c === '↵' || c === '⌫' ? 'wide' : ''}" data-act="wk" data-k="${c}" aria-label="${c === '↵' ? 'Gönder' : c === '⌫' ? 'Sil' : c}">${c === '↵' ? 'Gir' : c}</button>`).join('')}</div>`).join('')}</div>` + exitH; }
+
+/* ---------- Günün bulmacası (tek kişilik ızgara) ---------- */
+function gunlukStart() { const key = 'g' + today(); if (P.done[key]) return finish('', 'Bugünkü ızgarayı tamamladın', 0, shareH(P.done[key]), false);
+  const seed = seedOf(key), deck = DECKS[['sure', 'peygamber', 'sahabe'][seed % 3]];
+  Object.assign(G, seeded(seed, () => makeBoard(deck)), { deck, cells: Array.from({ length: 9 }, () => ({})), used: new Set(), tries: 12, jk: { hint: 0 }, onPick: gunlukPick }); gunlukRender(); }
+function gunlukPick(e) { const i = G.sel; G.sel = null; G.tries--;
+  if (tttValid(i).includes(e)) { G.cells[i] = { o: 'me', e }; G.used.add(e.id); } else toast('Yanlış cevap: ' + e.name);
+  const n = G.cells.filter(c => c.o).length; gunlukRender();
+  if (n === 9 || !G.tries) { const text = `İlim Meydanı · Günün ızgarası ${dateTR()} · ${n}/9\n` + [0, 1, 2].map(r => [0, 1, 2].map(c => G.cells[r * 3 + c].o ? '🟩' : '⬜').join('')).join('\n');
+    P.done['g' + today()] = text; finish(n === 9 ? 'w' : '', n + '/9 kare', n, shareH(text), false); } }
+function gunlukRender() {
+  app.innerHTML = `<h1 style="font-size:24px">Günün ızgarası</h1><p class="lede">${dateTR()} · ${G.deck.label} · herkes aynı ızgarayı çözüyor. Kalan tahmin: <b class="num">${G.tries}</b></p>
+  <div class="grid"><div class="corner"><span class="star"></span></div>${G.cols.map(c => `<div class="hd">${c.l}</div>`).join('')}
+  ${G.rows.map((r, ri) => `<div class="hd">${r.l}</div>` + [0, 1, 2].map(ci => { const i = ri * 3 + ci, c = G.cells[i];
+    return `<button class="cell ${c.o || ''}" data-act="cell" data-i="${i}" ${c.o ? 'disabled style="opacity:1"' : ''} aria-label="${r.l}, ${G.cols[ci].l}">${c.o ? '<span class="star"></span>' + c.e.name : '<span class="plus">+</span>'}</button>`; }).join('')).join('')}</div>` + exitH; }
+
+/* ---------- Seri ---------- */
+function seriStart() { Object.assign(G, { n: 0, pool: {} }); seriNext(); }
+function seriQ() { const t = G.topic === 'karisik' ? pick(['sure', 'siyer', 'peygamber', 'genel']) : G.topic; if (t === 'sure') return sureQ();
+  if (!G.pool[t] || !G.pool[t].length) G.pool[t] = shuffle(BANK[t]); return staticQ(G.pool[t].pop()); }
+function seriNext() { G.q = seriQ(); G.ans = null; G.rev = false; seriRender(); countdown(15, () => seriAns(-1)); }
+function seriAns(i) { if (G.rev) return; stopClock(); G.ans = i; G.rev = true; const ok = i === G.q.c; if (ok) G.n++; else miss(G.q); seriRender();
+  later(ok ? seriNext : () => { const rec = G.n > P.best; P.best = Math.max(P.best, G.n); finish(rec ? 'w' : '', 'Serin: ' + G.n, Math.min(25, G.n), `<p class="hint">${rec ? 'Yeni rekor.' : 'Rekorun: ' + P.best + '.'} Yanlış yaptığın soru Öğren’e eklendi.</p>`); }, ok ? 800 : 1800); }
+function seriRender() { const q = G.q;
+  app.innerHTML = `<div class="vs"><div class="p"><div><b>Seri</b><small>${TOPIC[G.topic]}</small></div></div><div class="sc num"><span class="a">${G.n}</span></div><div class="p r"><div><b class="num">${P.best}</b><small>rekor</small></div></div></div>` + clockH() +
+  `<div class="qbox">${q.ctx ? `<span class="ctx">${q.ctx}</span><br>` : ''}<small>TEK YANLIŞTA BİTER</small><b>${q.t}</b></div>` + optsH(q, G.ans, G.rev, 'sans') + exitH; paintTime(); }
+
+/* ---------- Öğren ---------- */
+function ogrenStart() { Object.assign(G, { list: P.miss.slice(), done: 0, total: P.miss.length }); ogrenNext(); }
+function ogrenNext() { if (!G.list.length) return finish(G.done ? 'w' : '', G.total ? G.done + '/' + G.total + ' soruyu öğrendin' : 'Bekleyen soru yok', 0,
+    `<p class="hint">${G.total ? 'Bilemediklerin listede kaldı; sonra tekrar gelir.' : 'Bilgi Yarışması ya da Seri’de yanlış yaptığın sorular burada birikir.'}</p>`, G.total > 0);
+  const m = G.list.shift(); G.q = { t: m.t, ctx: m.ctx, opts: m.o.map(l => ({ l })), c: m.c }; G.ans = null; G.rev = false; ogrenRender(); }
+function ogrenAns(i) { G.ans = i; G.rev = true; if (i === G.q.c) { G.done++; P.miss = P.miss.filter(m => m.t !== G.q.t); save(); } ogrenRender(); }
+function ogrenRender() { const q = G.q;
+  app.innerHTML = `<h1 style="font-size:24px">Öğren</h1><p class="lede">Daha önce yanlış yaptığın sorular. Doğru bildiğin listeden çıkar. Kalan: <b class="num">${G.list.length + 1}</b></p>
+  <div class="qbox">${q.ctx ? `<span class="ctx">${q.ctx}</span><br>` : ''}<b>${q.t}</b></div>` + optsH(q, G.ans, G.rev, 'oans') +
+  (G.rev ? `<p class="turn ${G.ans === q.c ? 'me' : 'bot'}">${G.ans === q.c ? 'Doğru, listeden çıktı' : 'Doğrusu: ' + q.opts[q.c].l}</p><button class="btn" data-act="onext">Sonraki</button>` : '') + exitH; }
+
+document.addEventListener('keydown', ev => { if (!G || G.mode !== 'kelime' || ev.ctrlKey || ev.metaKey) return;
+  if (ev.key === 'Enter') kelimeKey('↵'); else if (ev.key === 'Backspace') kelimeKey('⌫'); else if (ev.key.length === 1) { const u = ev.key.toLocaleUpperCase('tr'); if (KEYS.join('').includes(u) && u !== '↵' && u !== '⌫') kelimeKey(u); } });
+document.addEventListener('click', ev => { const m = ev.target.closest('#map'); if (!m || !G || G.mode !== 'harita' || G.rev) return; const r = m.getBoundingClientRect();
+  haritaGuess([28 + (ev.clientX - r.left) / r.width * 24, 38 - (ev.clientY - r.top) / r.height * 28]); });
+
+/* ================= çok oyunculu: oda koduyla, tarayıcıdan tarayıcıya ================= */
+const QS = new URLSearchParams(location.search), LOCAL = QS.has('local'), MPOK = LOCAL || typeof Peer !== 'undefined', PREFIX = 'ilim-meydani-v1-';
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+let S = null, ME = null, NET = null, CONNS = [], HOST = false, mpUntil = 0, mpTimer = null, mpTickI = null, L = {};
+const myId = () => { try { let v = sessionStorage.getItem('im-id'); if (!v) { v = Math.random().toString(36).slice(2, 10); sessionStorage.setItem('im-id', v); } return v; } catch (e) { return L.id || (L.id = Math.random().toString(36).slice(2, 10)); } };
+const MPM = { quiz: { name: 'Bilgi Yarışması', n: [2, 3, 4], topics: ['karisik', 'sure', 'siyer', 'peygamber', 'genel'], d: '2–4 kişi; 4 kişiyle 2v2 de olur' },
+  ping: { name: 'Pingpong', n: [2, 4], topics: ['sure', 'peygamber', 'sahabe'], d: '1v1 ya da 2v2' },
+  ttt: { name: 'Izgara', n: [2], topics: ['sure', 'peygamber', 'sahabe'], d: '1v1' },
+  kart: { name: 'Kart Savaşı', n: [2], topics: ['sure', 'peygamber', 'siyer'], d: '1v1' } };
+const NETERR = { 'peer-unavailable': 'Bu kodla açık bir oda bulunamadı.', 'network': 'Eşleştirme servisine ulaşılamadı. İnternet bağlantını kontrol et.', 'server-error': 'Eşleştirme servisi şu an yanıt vermiyor. Biraz sonra tekrar dene.',
+  'socket-error': 'Eşleştirme servisiyle bağlantı koptu.', 'browser-incompatible': 'Bu tarayıcı doğrudan bağlantıyı desteklemiyor.' };
+
+/* --- taşıma katmanı: PeerJS; ?local=1 ile aynı tarayıcıda sekmeler arası (test için) --- */
+function netHost(code, cb) {
+  if (LOCAL) { const ch = new BroadcastChannel('im-' + code), cs = {};
+    ch.onmessage = ev => { const m = ev.data; if (m.to !== 'host') return; let c = cs[m.from];
+      if (!c) { c = cs[m.from] = { send: d => ch.postMessage({ to: m.from, d }), close() { ch.postMessage({ to: m.from, bye: 1 }); } }; cb.join(c); }
+      if (m.bye) { delete cs[m.from]; c.onclose && c.onclose(); } else if (m.d) c.ondata && c.ondata(m.d); };
+    setTimeout(cb.open, 0); return { close() { Object.values(cs).forEach(c => c.close()); ch.close(); } }; }
+  const peer = new Peer(PREFIX + code);
+  peer.on('open', cb.open); peer.on('error', e => cb.err(e.type));
+  peer.on('connection', conn => { const c = { send: d => conn.send(d), close: () => conn.close() };
+    conn.on('open', () => cb.join(c)); conn.on('data', d => c.ondata && c.ondata(d)); conn.on('close', () => c.onclose && c.onclose()); });
+  return { close: () => peer.destroy() };
+}
+function netJoin(code, cb) {
+  if (LOCAL) { const ch = new BroadcastChannel('im-' + code), from = myId(), c = { send: d => ch.postMessage({ to: 'host', from, d }) };
+    ch.onmessage = ev => { const m = ev.data; if (m.to !== from) return; if (m.bye) c.onclose && c.onclose(); else c.ondata && c.ondata(m.d); };
+    setTimeout(() => cb.open(c), 0); return { close() { ch.postMessage({ to: 'host', from, bye: 1 }); ch.close(); } }; }
+  const peer = new Peer();
+  peer.on('error', e => cb.err(e.type));
+  peer.on('open', () => { const conn = peer.connect(PREFIX + code, { reliable: true, serialization: 'json' }), c = { send: d => conn.send(d) };
+    conn.on('open', () => cb.open(c)); conn.on('data', d => c.ondata && c.ondata(d)); conn.on('close', () => c.onclose && c.onclose()); });
+  return { close: () => peer.destroy() };
+}
+
+/* --- oda yaşam döngüsü --- */
+function mpClean() { clearTimeout(mpTimer); clearInterval(mpTickI); mpTickI = null; clearTimeout(L.to); const n = NET; NET = null; try { n && n.close(); } catch (e) {} CONNS = []; S = null; HOST = false; mpUntil = 0; L = {}; }
+function mpFail(msg) { mpClean(); mpHomeR(); toast(msg); }
+function mpWaitR(t) { app.classList.remove('enter'); app.innerHTML = `<div class="center">${patH()}<span class="medal big"><i>…</i></span><h1>${t}</h1><button class="btn ghost" data-act="mpleave">İptal</button></div>`; }
+function mpName() { const v = ($('#mpname')?.value || P.name || '').trim().slice(0, 16) || 'Oyuncu'; P.name = v; save(); return v; }
+function mpCreate() { const name = mpName(), code = Array.from({ length: 5 }, () => pick([...'ABCDEFGHJKLMNPRSTUVYZ23456789'])).join('');
+  mpClean(); HOST = true; ME = myId(); mpWaitR('Oda kuruluyor'); L.to = setTimeout(() => mpFail('Oda kurulamadı. Eşleştirme servisine ulaşılamıyor olabilir.'), 15000);
+  NET = netHost(code, { open() { clearTimeout(L.to); S = { code, phase: 'lobby', players: [{ id: ME, name }], mode: 'quiz', topic: 'karisik', team: false, note: '' }; mpSync(); },
+    join: mpJoinConn, err(t) { if (t === 'unavailable-id') return mpCreate(); if (!S) mpFail(NETERR[t] || 'Oda kurulamadı (' + t + ').'); else if (t !== 'peer-unavailable') toast(NETERR[t] || 'Bağlantı sorunu: ' + t); } }); }
+function mpJoinConn(c) {
+  c.ondata = m => { if (!S || !m) return;
+    if (m.t === 'hello') { if (c.pid) return;
+      if (S.phase !== 'lobby' || S.players.length >= 4) return c.send({ t: 'no', why: S.phase !== 'lobby' ? 'Bu odada maç sürüyor. Bitince tekrar dene.' : 'Oda dolu (en çok 4 kişi).' });
+      c.pid = String(m.id).slice(0, 12); CONNS.push(c); S.players.push({ id: c.pid, name: String(m.name || 'Oyuncu').slice(0, 16) }); mpSync(); }
+    else if (m.t === 'act' && c.pid) mpAct(S.players.findIndex(p => p.id === c.pid), m.a); };
+  c.onclose = () => { if (!S || !c.pid) return; CONNS = CONNS.filter(x => x !== c); const p = S.players.find(x => x.id === c.pid); S.players = S.players.filter(x => x !== p); c.pid = null;
+    if (S.phase !== 'lobby') { mpStopT(); S.phase = 'lobby'; S.g = null; S.note = (p ? p.name : 'Bir oyuncu') + ' ayrıldı, maç sonlandı.'; } mpSync(); };
+}
+function mpJoin() { const name = mpName(), code = ($('#mpcode')?.value || '').trim().toLocaleUpperCase('tr').replace(/[^A-Z0-9]/g, ''); if (code.length !== 5) return toast('Oda kodu 5 karakterdir');
+  mpClean(); ME = myId(); mpWaitR('Odaya bağlanılıyor'); L.to = setTimeout(() => mpFail('Bağlanılamadı. Kodu kontrol et; olmazsa Wi-Fi ile dene.'), 15000);
+  NET = netJoin(code, { open(c) { NET.c = c; c.ondata = m => { if (!m) return; if (m.t === 'state') { clearTimeout(L.to); mpApply(m.s, m.rem); } else if (m.t === 'toast') toast(m.m); else if (m.t === 'no') mpFail(m.why); };
+      c.onclose = () => { if (NET) mpFail('Oda kapandı ya da bağlantı koptu.'); }; c.send({ t: 'hello', id: ME, name }); },
+    err(t) { if (NET) mpFail(NETERR[t] || 'Bağlanılamadı (' + t + ').'); } }); }
+function mpSync() { if (!HOST || !S) return; const rem = mpUntil ? mpUntil - Date.now() : 0; CONNS.forEach(c => { try { c.send({ t: 'state', s: S, rem }); } catch (e) {} }); mpApply(S, rem); }
+function mpApply(s, rem) { S = s; L.until = rem > 0 ? Date.now() + rem : 0; mpRender(); }
+function mpAfter(ms, fn, shown = true) { clearTimeout(mpTimer); mpUntil = shown ? Date.now() + ms : 0; mpTimer = setTimeout(() => { mpUntil = 0; if (S) fn(); }, ms); }
+function mpStopT() { clearTimeout(mpTimer); mpUntil = 0; }
+function mpSend(a) { if (HOST) mpAct(mpIdx(), a); else if (NET && NET.c) NET.c.send({ t: 'act', a }); }
+function mpToast(m) { toast(m); CONNS.forEach(c => { try { c.send({ t: 'toast', m }); } catch (e) {} }); }
+function mpAct(i, a) { if (!S || S.phase !== 'game' || i < 0 || !a) return; try { MPG[S.mode].act(i, a); } catch (e) { console.log('mp act', e); } }
+function mpEnd(res) { mpStopT(); S.phase = 'result'; S.res = res; mpSync(); }
+const mpIdx = () => S.players.findIndex(p => p.id === ME);
+const mpTeams = () => S.players.length === 4 && (S.mode === 'ping' || (S.mode === 'quiz' && S.team));
+const sideOf = i => mpTeams() ? i % 2 : i;
+const mpNames = side => S.players.filter((p, i) => sideOf(i) === side).map(p => esc(p.name)).join(' & ');
+const ent = (d, id) => d.ents.find(x => x.id === id);
+const mpQuitH = '<button class="quit" data-act="mpleave">Odadan çık</button>';
+function mpVs(sc) { const m = sideOf(mpIdx()), o = m ? 0 : 1, mn = S.players[mpIdx()].name, on = S.players.find((p, i) => sideOf(i) === o).name;
+  return `<div class="vs"><div class="p"><span class="medal me"><i>${esc(mn[0].toLocaleUpperCase('tr'))}</i></span><div><b>${mpTeams() ? mpNames(m) : 'Sen'}</b><small>${mpTeams() ? 'takımın' : esc(mn)}</small></div></div>
+  <div class="sc num"><span class="a">${sc[m]}</span><em>vs</em><span class="b">${sc[o]}</span></div><div class="p r"><div><b>${mpNames(o)}</b><small>rakip</small></div><span class="medal bot"><i>${esc(on[0].toLocaleUpperCase('tr'))}</i></span></div></div>`; }
+
+/* --- ekranlar --- */
+function mpHomeR(code = '') { stopAll(); G = null; app.classList.add('enter');
+  app.innerHTML = `<header class="top"><span class="brand">Arkadaşınla oyna</span><button class="quit" data-act="home">Geri</button></header>
+  <p class="lede">Biriniz oda kurar ve çıkan kodu diğerlerine gönderir. 2 ile 4 kişi arasında oynanır; hesap açmak gerekmez.</p>
+  <label class="fld"><span>Adın</span><input id="mpname" class="inp" maxlength="16" autocomplete="nickname" placeholder="Görünecek adın" value="${esc(P.name || '')}"></label>
+  ${code ? '' : '<button class="btn" data-act="mpcreate">Oda kur</button><div class="sec"><h2>Kodun var mı?</h2></div>'}
+  <div class="row"><input id="mpcode" class="inp code-in" maxlength="5" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Oda kodu" value="${esc(code)}"><button class="btn" data-act="mpjoin">Katıl</button></div>
+  ${code ? '<button class="btn ghost" data-act="mpcreate">Bunun yerine yeni oda kur</button>' : ''}
+  <p class="note">Bağlantı doğrudan cihazlar arasında kurulur; oyunu odayı kuran kişinin cihazı yönetir. Oda sahibi sayfayı kapatırsa oda da kapanır. Bazı mobil ve kurumsal ağlarda bağlantı kurulamayabilir; o durumda Wi-Fi ile deneyin.</p>`; }
+function mpLobbyR() { const n = S.players.length, m = MPM[S.mode], ok = m.n.includes(n), four = n === 4;
+  const who = S.players.map((p, i) => `<div class="${p.id === ME ? 'me' : ''}"><span>${i + 1}</span><span>${esc(p.name)}${p.id === ME ? ' (sen)' : ''}${i === 0 ? ' · oda sahibi' : ''}</span><span>${mpTeams() ? (i % 2 ? 'B takımı' : 'A takımı') : ''}</span></div>`).join('');
+  app.innerHTML = `<header class="top"><span class="brand">Oda</span>${mpQuitH}</header>
+  <div class="qbox"><small>Oda kodu</small><b class="code num">${S.code}</b><p class="stmt">Arkadaşların bu kodu girerek ya da davet bağlantısıyla katılır.</p></div>
+  <button class="btn ghost" data-act="mpcopy">Davet bağlantısını kopyala</button>
+  ${S.note ? `<p class="turn bot">${esc(S.note)}</p>` : ''}
+  <div class="sec"><h2>Oyuncular</h2><span>${n}/4</span></div><div class="lb">${who}</div>
+  ${HOST ? `<div class="sec"><h2>Oyun</h2><span>${m.d}</span></div><div class="chips">${Object.entries(MPM).map(([k, x]) => `<button class="chip ${k === S.mode ? 'on' : ''}" data-act="mpm" data-m="${k}">${x.name}</button>`).join('')}</div>
+    <div class="sec"><h2>Konu</h2></div><div class="chips">${m.topics.map(t => `<button class="chip ${t === S.topic ? 'on' : ''}" data-act="mpt" data-t="${t}">${TOPIC[t]}</button>`).join('')}</div>
+    ${four && S.mode === 'quiz' ? `<div class="chips"><button class="chip ${S.team ? '' : 'on'}" data-act="mpteam" data-v="0">Herkes tek</button><button class="chip ${S.team ? 'on' : ''}" data-act="mpteam" data-v="1">2v2 takım</button></div>` : ''}
+    ${mpTeams() ? '<button class="btn ghost" data-act="mpshuf">Takımları karıştır</button>' : ''}
+    <button class="btn" data-act="mpstart" ${ok ? '' : 'disabled'}>Maçı başlat</button>
+    ${ok ? '' : `<p class="hint" style="text-align:center">${m.name} ${m.n.join(' ya da ')} kişiyle oynanır; şu an ${n} kişisiniz.</p>`}`
+  : `<div class="qbox"><small>Seçilen oyun</small><b>${m.name}</b><p class="stmt">${TOPIC[S.topic]}${mpTeams() ? ' · 2v2 takım' : ''}</p></div><p class="hint" style="text-align:center">Oda sahibi maçı başlatacak.</p>`}`; }
+function mpResultR() { const r = S.res, m = sideOf(mpIdx()), sides = mpTeams() ? 2 : S.players.length, rows = Array.from({ length: sides }, (_, s) => s).sort((a, b) => r.sc[b] - r.sc[a]);
+  app.innerHTML = `<div class="center" style="padding:40px 0 10px">${patH()}<span class="eyebrow">${MPM[S.mode].name} · ${TOPIC[S.topic]}</span><h1 class="out ${r.win === m ? 'w' : r.win === -1 ? '' : 'l'}">${r.win === -1 ? 'Berabere' : r.win === m ? 'Galibiyet' : 'Mağlubiyet'}</h1></div>
+  <div class="lb">${rows.map((s, i) => `<div class="${s === m ? 'me' : ''}"><span>${i + 1}</span><span>${mpNames(s)}</span><span class="num">${r.sc[s]}</span></div>`).join('')}</div>
+  ${HOST ? '<button class="btn" data-act="mpstart">Rövanş</button><button class="btn ghost" data-act="mpback">Odaya dön, oyun değiştir</button>' : '<p class="hint" style="text-align:center">Oda sahibi rövanşı başlatabilir ya da oyunu değiştirebilir.</p>'}` + mpQuitH; }
+function mpRender() { if (!S) return; app.classList.remove('enter');
+  if (!mpTickI) mpTickI = setInterval(() => { if (!S || S.phase !== 'game') return; tLeft = Math.max(0, (L.until - Date.now()) / 1000); tMax = S.g.dur || 1; paintTime(); }, 100);
+  if (S.phase === 'lobby') return mpLobbyR(); if (S.phase === 'result') return mpResultR();
+  MPG[S.mode].render(); tLeft = Math.max(0, (L.until - Date.now()) / 1000); tMax = S.g.dur || 1; paintTime(); }
+function mpStart() { if (!HOST || !MPM[S.mode].n.includes(S.players.length)) return; S.phase = 'game'; S.note = ''; S.gid = Math.random().toString(36).slice(2, 8); MPG[S.mode].init(); }
+
+/* --- oyunlar: durum düz veri, kuralları oda sahibi işletir --- */
+const MPG = {
+  ttt: {
+    init() { const d = DECKS[S.topic], b = makeBoard(d); S.g = { rows: b.rows.map(c => d.crit.indexOf(c)), cols: b.cols.map(c => d.crit.indexOf(c)), cells: Array(9).fill(null), used: [], turn: rnd(2), turns: 0, dur: 25, sc: [0, 0] }; mtTurn(false); },
+    act(i, a) { const g = S.g, d = DECKS[S.topic]; if (i !== g.turn || a.k !== 'pick' || !(a.i >= 0 && a.i < 9) || g.cells[a.i]) return; const e = ent(d, a.id); if (!e) return;
+      if (d.crit[g.rows[Math.floor(a.i / 3)]].t(e) && d.crit[g.cols[a.i % 3]].t(e) && !g.used.includes(e.id)) { g.cells[a.i] = { o: i, e: e.id }; g.used.push(e.id); } else mpToast(S.players[i].name + ' yanlış cevap verdi: ' + e.name);
+      mtTurn(true); },
+    render() { const g = S.g, d = DECKS[S.topic], me = mpIdx(), mine = g.turn === me;
+      G = { mode: 'mp', deck: d, rows: g.rows.map(i => d.crit[i]), cols: g.cols.map(i => d.crit[i]), used: new Set(g.used), jk: { hint: 0 }, sel: null, onPick: e => { const i = G.sel; $('.overlay')?.remove(); mpSend({ k: 'pick', i, id: e.id }); } };
+      app.innerHTML = mpVs(g.sc) + clockH() + `<p class="turn ${mine ? 'me' : 'bot'}">${mine ? 'Sıra sende' : esc(S.players[g.turn].name) + ' oynuyor'}</p>
+      <div class="grid"><div class="corner"><span class="star"></span></div>${G.cols.map(c => `<div class="hd">${c.l}</div>`).join('')}
+      ${G.rows.map((r, ri) => `<div class="hd">${r.l}</div>` + [0, 1, 2].map(ci => { const i = ri * 3 + ci, c = g.cells[i];
+        return `<button class="cell ${c ? (c.o === me ? 'me' : 'bot') : ''}" data-act="cell" data-i="${i}" ${mine && !c ? '' : 'disabled style="opacity:1"'} aria-label="${r.l}, ${G.cols[ci].l}">${c ? (c.o === me ? '<span class="star"></span>' : '<span class="dot"></span>') + ent(d, c.e).name : '<span class="plus">+</span>'}</button>`; }).join('')).join('')}</div>` + mpQuitH; }
+  },
+  quiz: {
+    init() { const n = S.players.length; S.g = { qs: JSON.parse(JSON.stringify(buildQuiz(S.topic))), r: -1, sc: Array(n).fill(0), dur: 13 }; mqNext(); },
+    act(i, a) { const g = S.g; if (g.rev || a.k !== 'ans' || g.ans[i] != null || !(a.i >= 0 && a.i < 4)) return; g.ans[i] = a.i; g.fr[i] = Math.max(0, 1 - (Date.now() - g.t0) / (g.dur * 1000)); if (g.ans.every(x => x != null)) return mqReveal(); mpSync(); },
+    render() { const g = S.g, q = g.qs[g.r], me = mpIdx(), mine = g.ans[me], done = mine != null || g.rev, sides = mpTeams() ? 2 : S.players.length, ss = mqSides(), m = sideOf(me);
+      app.innerHTML = `<div class="lb">${Array.from({ length: sides }, (_, s) => s).sort((a, b) => ss[b] - ss[a]).map((s, i) => `<div class="${s === m ? 'me' : ''}"><span>${i + 1}</span><span>${mpNames(s)}</span><span class="num">${ss[s]}</span></div>`).join('')}</div>
+      <h2 style="text-align:center">Tur ${g.r + 1}/8 · ${TOPIC[S.topic]}</h2>` + clockH() + `<div class="qbox">${q.ctx ? `<span class="ctx">${q.ctx}</span><br>` : ''}<b>${q.t}</b></div>
+      <div class="opts">${q.opts.map((o, i) => `<button class="opt ${g.rev ? (i === q.c ? 'ok' : i === mine ? 'no' : '') : i === mine ? 'sel' : ''}" data-act="mpans" data-i="${i}" ${done ? 'disabled' : ''}>${o.l}${g.rev && o.n != null ? `<small class="num">${o.n}</small>` : ''}</button>`).join('')}</div>
+      <p class="turn ${g.rev && !g.gain[me] ? 'bot' : 'me'}">${g.rev ? (g.gain[me] ? '+' + g.gain[me] + ' puan' : mine == null ? 'Süre doldu' : 'Yanlış cevap') : g.ans.filter(x => x != null).length + '/' + S.players.length + ' oyuncu cevapladı'}</p>` + mpQuitH; }
+  },
+  ping: {
+    init() { S.g = { sc: [0, 0], serve: rnd(S.players.length), dur: 12, crit: -1 }; mpServe(); },
+    act(i, a) { const g = S.g, d = DECKS[S.topic]; if (i !== g.turn || a.k !== 'pick') return; const e = ent(d, a.id); if (!e) return;
+      if (d.crit[g.crit].t(e) && !g.used.includes(e.id)) { g.used.push(e.id); g.rally.push([e.id, i]); g.turn = (g.turn + 1) % S.players.length; mpTurnP(); } else mpPoint(1 - sideOf(i), S.players[i].name + ': ' + e.name + (g.used.includes(e.id) ? ' zaten söylendi' : ' uymuyor')); },
+    render() { const g = S.g, d = DECKS[S.topic], me = mpIdx(), mine = g.turn === me, ms = sideOf(me);
+      G = { mode: 'mp', deck: d, used: new Set(g.used), onPick: e => mpSend({ k: 'pick', id: e.id }) };
+      app.innerHTML = mpVs(g.sc) + clockH() + `<div class="qbox"><small>İlk 3 sayıyı alan kazanır · tekrar yok</small><b>${d.crit[g.crit].l}</b></div>
+      <div class="chips">${g.rally.slice(-8).map(([id, o]) => chip(ent(d, id).name, sideOf(o) === ms ? 'me' : 'bot')).join('') || '<span class="hint">Henüz isim söylenmedi.</span>'}</div>` +
+      (mine ? '<p class="turn me">Sıra sende: uyan bir isim söyle</p>' + searchH(d.ph) : `<p class="turn bot">${g.wait ? esc(g.msg) : esc(S.players[g.turn].name) + ' düşünüyor…'}</p>`) + mpQuitH; bindSearch(); }
+  },
+  kart: {
+    init() { const d = DECKS[S.topic]; S.g = { phase: 'draft', pools: [0, 1].map(() => shuffle(d.ents).slice(0, 12).map(e => e.id)), hands: [null, null], sc: [0, 0], round: 0, dur: 40, q: -1 };
+      mpAfter(40000, () => { S.g.hands = S.g.hands.map((h, i) => h || shuffle(S.g.pools[i]).slice(0, 5)); mkRound(); }); mpSync(); },
+    act(i, a) { const g = S.g;
+      if (a.k === 'ready' && g.phase === 'draft' && !g.hands[i] && Array.isArray(a.ids) && new Set(a.ids).size === 5 && a.ids.every(x => g.pools[i].includes(x))) { g.hands[i] = a.ids; if (g.hands.every(Boolean)) { mpStopT(); return mkRound(); } return mpSync(); }
+      if (a.k === 'play' && g.phase === 'play' && !g.rev && g.played[i] == null && g.hands[i].includes(a.id)) { g.played[i] = a.id; if (g.played.every(x => x != null)) return mkReveal(); mpSync(); } },
+    render() { const g = S.g, d = DECKS[S.topic], me = mpIdx(), op = 1 - me;
+      if (L.gid !== S.gid) { L.gid = S.gid; L.sel = []; }
+      if (g.phase === 'draft') { const rdy = !!g.hands[me];
+        app.innerHTML = `<h1 style="font-size:24px">Desteni kur</h1><p class="lede">${rdy ? 'Desten hazır. Rakibin seçmesi bekleniyor.' : 'Havuzdan 5 kart seç. ' + L.sel.length + '/5 seçildi.'}</p>` + clockH() +
+        `<div class="pool">${g.pools[me].map(id => cardH(ent(d, id), (rdy ? g.hands[me] : L.sel).includes(id) ? 'sel' : '', '', `data-act="mkd" data-id="${id}" ${rdy ? 'disabled' : ''}`)).join('')}</div>
+        <button class="btn" data-act="mkready" ${!rdy && L.sel.length === 5 ? '' : 'disabled'}>Hazır</button>` + mpQuitH; return; }
+      const q = d.qs[g.q], res = me ? -g.res : g.res, played = g.played[me] != null;
+      app.innerHTML = mpVs(g.sc) + clockH() + `<div class="qbox"><small>${g.round}. tur</small><b>${q.t}</b></div>
+      <div class="hand">${g.hands[op].filter(id => id !== g.played[op]).map(() => '<div class="card back"><span class="star"></span></div>').join('')}</div>
+      <div class="arena">${g.rev ? [[me, 'Sen', res > 0], [op, esc(S.players[op].name), res < 0]].map(([p, n, w]) => { const e = ent(d, g.played[p]); return `<div class="slot">${cardH(e, w ? 'win' : res ? 'lose' : '', `<small>${q.f(e[q.k])}</small>`, 'disabled style="opacity:1"')}${n}</div>`; }).join('') : ''}</div>
+      <p class="turn ${g.rev ? (res > 0 ? 'me' : 'bot') : 'me'}">${g.rev ? (res > 0 ? 'Turu aldın' : res < 0 ? 'Turu kaybettin' : 'Berabere') : played ? 'Kartını oynadın, rakip bekleniyor' : 'Kartını seç'}</p>
+      <div class="hand mine">${g.hands[me].filter(id => id !== g.played[me]).map(id => cardH(ent(d, id), '', '', `data-act="mkp" data-id="${id}" ${g.rev || played ? 'disabled' : ''}`)).join('')}</div>` + mpQuitH; }
+  }
+};
+function mtTurn(sw) { const g = S.g; if (sw) g.turn = 1 - g.turn; g.turns++; g.sc = [0, 1].map(o => g.cells.filter(c => c && c.o === o).length);
+  const w = [0, 1].find(o => LINES.some(l => l.every(i => g.cells[i] && g.cells[i].o === o)));
+  if (w != null) return mpEnd({ win: w, sc: g.sc }); if (g.cells.every(Boolean) || g.turns > 30) return mpEnd({ win: g.sc[0] === g.sc[1] ? -1 : +(g.sc[1] > g.sc[0]), sc: g.sc });
+  mpAfter(g.dur * 1000, () => { mpToast(S.players[S.g.turn].name + ' süreyi doldurdu'); mtTurn(true); }); mpSync(); }
+const mqSides = () => { const sides = mpTeams() ? 2 : S.players.length, r = Array(sides).fill(0); S.g.sc.forEach((v, i) => r[sideOf(i)] += v); return r; };
+function mqNext() { const g = S.g, n = S.players.length; if (g.r === 7) { const ss = mqSides(), mx = Math.max(...ss), w = ss.filter(v => v === mx).length > 1 ? -1 : ss.indexOf(mx); return mpEnd({ win: w, sc: ss }); }
+  g.r++; g.ans = Array(n).fill(null); g.fr = Array(n).fill(0); g.gain = Array(n).fill(0); g.rev = false; g.t0 = Date.now(); mpAfter(g.dur * 1000, mqReveal); mpSync(); }
+function mqReveal() { const g = S.g; if (g.rev) return; mpStopT(); g.rev = true; const c = g.qs[g.r].c; g.gain = g.ans.map((x, i) => x === c ? Math.round(500 + 500 * g.fr[i]) : 0); g.gain.forEach((v, i) => g.sc[i] += v); mpAfter(2800, mqNext, false); mpSync(); }
+function mpServe() { const g = S.g, d = DECKS[S.topic]; if (g.sc[0] === 3 || g.sc[1] === 3) return mpEnd({ win: +(g.sc[1] === 3), sc: g.sc });
+  let c; do { c = rnd(d.crit.length); } while (c === g.crit || d.ents.filter(e => d.crit[c].t(e)).length < d.min * 4);
+  g.crit = c; g.used = []; g.rally = []; g.msg = ''; g.serve = (g.serve + 1) % S.players.length; g.turn = g.serve; mpTurnP(); }
+function mpTurnP() { const g = S.g; g.wait = false; mpAfter(g.dur * 1000, () => mpPoint(1 - sideOf(S.g.turn), S.players[S.g.turn].name + ' süreyi doldurdu')); mpSync(); }
+function mpPoint(side, msg) { const g = S.g; mpStopT(); g.sc[side]++; g.msg = msg + ' · sayı ' + mpNames(side).replace(/&amp;/g, '&'); g.wait = true; g.turn = -1; mpAfter(2200, mpServe, false); mpSync(); }
+function mkRound() { const g = S.g, d = DECKS[S.topic]; if (g.round === 5) return mpEnd({ win: g.sc[0] === g.sc[1] ? -1 : +(g.sc[1] > g.sc[0]), sc: g.sc });
+  g.phase = 'play'; g.round++; let q; do { q = rnd(d.qs.length); } while (d.qs.length > 1 && q === g.q); g.q = q; g.played = [null, null]; g.rev = false; g.dur = 20; mpAfter(20000, mkReveal); mpSync(); }
+function mkReveal() { const g = S.g, d = DECKS[S.topic], q = d.qs[g.q]; if (g.rev) return; mpStopT(); g.played = g.played.map((p, i) => p ?? pick(g.hands[i]));
+  const v = g.played.map(id => ent(d, id)[q.k] * q.d); g.res = Math.sign(v[0] - v[1]); if (g.res > 0) g.sc[0]++; if (g.res < 0) g.sc[1]++; g.rev = true;
+  mpAfter(3000, () => { const g = S.g; g.hands = g.hands.map((h, i) => h.filter(x => x !== g.played[i])); mkRound(); }, false); mpSync(); }
+const MPACT = {
+  mproom: () => mpHomeR(), mpcreate: mpCreate, mpjoin: mpJoin, mpleave: () => { mpClean(); home(); },
+  mpm: d => { if (!HOST) return; S.mode = d.m; if (!MPM[S.mode].topics.includes(S.topic)) S.topic = MPM[S.mode].topics[0]; mpSync(); },
+  mpt: d => { if (HOST) { S.topic = d.t; mpSync(); } }, mpteam: d => { if (HOST) { S.team = d.v === '1'; mpSync(); } },
+  mpshuf: () => { if (HOST) { S.players = shuffle(S.players); mpSync(); } }, mpstart: mpStart, mpback: () => { if (HOST) { S.phase = 'lobby'; S.g = null; mpSync(); } },
+  mpcopy: () => { const u = location.origin + location.pathname + '?oda=' + S.code + (LOCAL ? '&local=1' : ''), ok = () => toast('Davet bağlantısı kopyalandı'), no = () => toast('Kopyalanamadı. Kodu elle gönder: ' + S.code); try { navigator.clipboard.writeText(u).then(ok, no); } catch (e) { no(); } },
+  mpans: d => mpSend({ k: 'ans', i: +d.i }),
+  mkd: d => { L.sel = L.sel.includes(d.id) ? L.sel.filter(x => x !== d.id) : L.sel.length < 5 ? [...L.sel, d.id] : L.sel; mpRender(); },
+  mkready: () => mpSend({ k: 'ready', ids: L.sel }), mkp: d => mpSend({ k: 'play', id: d.id })
+};
+addEventListener('pagehide', () => { if (NET) mpClean(); });
+
+/* ---------- olaylar ---------- */
+const ACT = {
+  ...MPACT,
+  home, open: d => openMode(d.mode), start: d => start(d.mode, d.topic),
+  close: () => { $('.overlay')?.remove(); if (G) G.sel = null; },
+  quit: () => finish('l', 'Maçtan çekildin', G.mode === 'quiz' ? -15 : -10),
+  esl: d => { G.sel = +d.i; esmaRender(); }, esr: d => esmaPick(+d.i), dy1: () => dyAns(true), dy0: () => dyAns(false),
+  wk: d => kelimeKey(d.k), whint: () => { G.hint = true; kelimeRender(); },
+  sans: d => seriAns(+d.i), oans: d => ogrenAns(+d.i), onext: () => ogrenNext(),
+  copy: () => { const ok = () => toast('Sonuç kopyalandı'), no = () => toast('Kopyalanamadı; metni seçip kopyala'); try { navigator.clipboard.writeText(G.share).then(ok, no); } catch (e) { no(); } },
+  cell: d => tttOpen(+d.i), pick: d => G.onPick ? G.onPick(G.deck.ents.find(x => x.id === d.id)) : tttPick(d.id),
+  shint: () => { G.jk.hint--; hint3(seckiValid(), '[data-act="shint"]'); }, spas: () => { G.jk.pas--; G.crit = seckiCrit(); seckiRender(); },
+  bcell: d => bingoPlace(+d.i), bpas: () => bingoPlace(-1),
+  guess: () => { const v = $('#g').value; if (v === '') return toast('Bir sayı yaz'); numaraGuess(+v); },
+  azans: () => azAns(), azpas: () => azNext(),
+  jtime: () => { G.jk.time--; tLeft = Math.min(tLeft + 15, 40); tMax = Math.max(tMax, tLeft); tttRender(); },
+  jsteal: () => { G.steal = !G.steal; tttRender(); },
+  jhint: () => { G.jk.hint--; const v = tttValid(G.sel), w = shuffle(G.deck.ents.filter(e => !v.includes(e) && !G.used.has(e.id))).slice(0, 2);
+    $('#res').innerHTML = '<p class="hint">Bu üç adaydan biri doğru.</p>' + resH(shuffle([...(v.length ? [pick(v)] : []), ...w])); $('[data-act="jhint"]').disabled = true; },
+  draft: d => { const e = G.pool.find(x => x.id === d.id); G.pickd = G.pickd.includes(e) ? G.pickd.filter(x => x !== e) : G.pickd.length < 5 ? [...G.pickd, e] : G.pickd; kartRender(); },
+  ready: () => { G.phase = 'play'; G.hand = G.pickd; G.bot = shuffle(G.deck.ents).slice(0, 5); kartRound(); },
+  play: d => kartPlay(d.id), khint: () => { G.jk.hint--; G.hint = true; kartRender(); }, kdbl: () => { G.jk.dbl--; G.dbl = true; kartRender(); },
+  ans: d => { if (G.ans != null || G.rev) return; G.ans = +d.i; G.left = tLeft; quizRender(); later(quizReveal, 700); },
+  qhalf: () => { G.jk.half--; G.gone = shuffle(G.q.opts.map((_, i) => i).filter(i => i !== G.q.c)).slice(0, 2); quizRender(); },
+  qdbl: () => { G.jk.dbl--; G.dbl = true; quizRender(); }
+};
+document.addEventListener('click', ev => { const b = ev.target.closest('[data-act]'); if (b && !b.disabled) ACT[b.dataset.act](b.dataset); });
+if (MPOK && QS.get('oda')) mpHomeR(QS.get('oda').toUpperCase().slice(0, 5)); else home();
+</script>

@@ -1,0 +1,9 @@
+{
+  "name": "ilim-meydani",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Sureler, siyer, peygamberler tarihi ve dinî genel kültür üzerine mini oyunlar",
+  "scripts": { "build": "node build.mjs" },
+  "devDependencies": { "peerjs": "1.5.4", "quran-json": "^3.1.2", "quran-meta": "^6.0.0" }
+}
